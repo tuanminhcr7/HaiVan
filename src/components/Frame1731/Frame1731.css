@@ -1,0 +1,155 @@
+@import '~antd/dist/antd.css';
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.App {
+  display: flex;
+  width: 100vw;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.header-content {
+  width: 100%;
+}
+
+header {
+    height: 50px;
+    background-color: #ffc20e;
+    width: 100%;
+}
+
+section {
+  background-image: url('../../images/bg-qlnb.png');
+}
+
+.toggle-menu {
+  
+}
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  width: 100%;
+  
+}
+
+.menu li a {
+  text-decoration: none;
+  color: #201f1e;
+  display: block;
+  align-items: center;
+  font-size: smaller;
+  transition: 0.5s;
+}
+
+.menu li a:hover {
+  background-color: #aaa;
+}
+
+
+
+.col {
+  padding: 0;
+}
+
+.user-name {
+  list-style-type: none;
+  margin-left: 50%;
+}
+
+.user-name .user-name-drop {
+  min-width: none;
+  display: block;
+  transition: 0.5s;
+}
+
+.user-name .user-name-drop b {
+  margin-right: 10px;
+}
+
+.user-name .user-name-drop img {
+  border-radius: 50%;
+}
+
+.user-name .user-name-drop .status {
+  width: 20px;
+  height: 20px;
+  background-color: green;
+  border: 1px solid white;
+}
+
+.user-name-dropdown {
+  padding-left: 0;
+  width: 70%;
+  position: absolute;
+  display: none;
+}
+
+.user-name-dropdown li{
+  width: 100%;
+}
+
+.user-name-dropdown li a {
+  text-decoration: none;
+  display: block;
+  padding: 5px 10px;
+  color: #201f1e;
+  transition: 0.5s;
+}
+
+.user-name-dropdown li a span {
+  margin-top: 0;
+  margin-right: 10px;
+}
+
+.user-name-dropdown li a:hover {
+  background-color: #aaa;
+}
+
+.user-name-drop:hover .user-name-dropdown {
+  display: block;
+  width: 15%;
+  transition: 0.5s;
+}
+

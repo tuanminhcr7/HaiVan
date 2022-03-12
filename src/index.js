@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Login from './components/Login/Login';
+import Frame1656 from './components/Frame1731/Frame1731';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Frame1656 />
   </React.StrictMode>,
   document.getElementById('root')
 );
