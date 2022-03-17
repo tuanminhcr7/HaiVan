@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Login from './components/Login/Login';
-import Frame1656 from './components/Frame1731/Frame1731';
+import Login from './view/Login/Login';
+import Home from './view/Home/Home';
 import reportWebVitals from './reportWebVitals';
+import App from './App.js';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Frame1656 />
-  </React.StrictMode>,
+  <App/>,
   document.getElementById('root')
 );
 

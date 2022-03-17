@@ -1,8 +1,9 @@
-import './Frame1731.css';
+import './Home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {FolderOpenOutlined, LogoutOutlined, ProfileOutlined,UserOutlined} from '@ant-design/icons';
 import avatar from '../../images/T1.jpg';
 import Img2 from '../../images/bg-qlnb.png';
+import { Link } from 'react-router-dom';
 
 var sectionStyle = {
   width: "100%",
@@ -15,7 +16,7 @@ function App() {
       <div className="App">
         <div style={{width: '15%',background: '#f3f2f1', height: '100vh'}} className='toggle-menu'>
           <h2>
-            <a href='' className='px-4 py-1' style={{ display:'block', textDecoration:'none', fontWeight: 'bold', color: '#58595b' }}><b>HAIVAN</b></a>
+            <Link to={'/'} className='px-4 py-1' style={{ display:'block', textDecoration:'none', fontWeight: 'bold', color: '#58595b' }}><b>HAIVAN</b></Link>
           </h2>
           <ul className='menu'>
             <li><a href='' className='px-4 py-2 mb-1'><FolderOpenOutlined className='px-2'/>Quản lý tài liệu</a></li>
@@ -35,7 +36,7 @@ function App() {
                     {/* <sup style={{ width: '1px', border: '1px solid white', padding: '1px', borderRadius: '50%' }}></sup> */}
                     
                     <div style={{ paddingTop: 15 }}>
-                      <ul className='user-name-dropdown shadow py-1' style={{ listStyleType: 'none',  }}>
+                      <ul className='user-name-dropdown shadow py-1 collapse show' style={{ listStyleType: 'none',  }}>
                         <li><a href=''><UserOutlined />Tài khoản</a></li>
                         <li><a href=''><LogoutOutlined />Đăng xuất</a></li>
                       </ul>
