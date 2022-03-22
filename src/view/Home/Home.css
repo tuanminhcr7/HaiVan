@@ -63,6 +63,11 @@ section {
   
 }
 
+.link {
+  text-decoration: none;
+  display: block;
+}
+
 .menu {
   list-style-type: none;
   padding: 0;

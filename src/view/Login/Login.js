@@ -8,52 +8,106 @@ import { Component } from 'react';
 import { render } from '@testing-library/react';
 import { Navigate, useNavigate } from 'react-router';
 
+
+
 class Login extends Component {
   
-
+  
   // onSubmitHandler = (e) => {
   //   e.preventDefault();
   //   this.history.push('/');
   // }
 
+  // state = {
+  //     name: '',
+  //     password: ''
+  //   };
+
+
+  // handleChangeName = event => {
+  //   this.setState({ name: event.target.value });
+  // }
+
+  // handleChangePassword = event => {
+  //   this.setState({ password: event.target.value });
+  // }
+
+  // handleSubmit = event => {
+  //   event.preventDefault();
+  //   const apiBaseUrl = 'https://dev.api.qlnb.haivanexpress.vn/api/login';
+    
+  //   const navigate = useNavigate();
+
+  //   const user = {
+  //     name: this.state.name,
+  //     password: this.state.password
+  //   }
+
+  //   axios.post(apiBaseUrl, {user})
+  //     .then(res => {
+  //       // Đăng nhập thành công => chuyển đến trang Home với URL: '/'
+  //       console.log(res);
+  //       console.log(res.data);
+  //     }).catch (err => {
+  //       console.log(err);
+  //     })
+
+  // }
   state = {
-    name: '',
+    username: '',
     password: ''
   }
 
-  
+  handleChangeUsername = event => {
+    this.setState({ username: event.target.value });
+  }
+  handleChangePassword = event => {
+    this.setState({ password: event.target.value });
+  }
 
   handleSubmit = event => {
-    const navigate = useNavigate();
     event.preventDefault();
-
+    const navigate = useNavigate();
     const user = {
-      name: this.state.name,
+      username: this.state.username,
       password: this.state.password
     };
 
-    axios.post(`https://dev.api.qlnb.haivanexpress.vn/api/login`, { user })
-      .then(res => {
-        navigate('/')
+    axios.post(
+      `https://dev.api.qlnb.haivanexpress.vn/api/login`, user, {
+      "headers": {
+        'Content-Type': 'application/json',
+      }
       })
-    
-    
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        try {
+          navigate('/', true);
+        } catch(err) {
+          console.log(err);
+        }
+        
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   render () {
     return (
       <div className="App">
-        <div class="background">
+        <div className="background">
           <img src={Img} alt="Hải Vân"/>
         </div>
-        <div class="form-login">
-          <form method='POST' >
+        <div className="form-login">
+          
             <p>Chào bạn!</p>
             <h2>Vui lòng đăng nhập</h2>
   
             
-            <Input size="large" placeholder='Tên tài khoản' name='name' prefix={<UserOutlined />}  style={{ width: "100%" }} /><br/><br/>
-            <Input size="large" type={'password'} name='password' placeholder='Mật khẩu' prefix={<LockOutlined />}  style={{ width: "100%" }} /><br/><br/>
+            <Input size="large" onChange={this.handleChangeUsername}  placeholder='Tên tài khoản' name='username' prefix={<UserOutlined />}  style={{ width: "100%" }} /><br/><br/>
+            <Input size="large" onChange={this.handleChangePassword}  type={'password'} name='password' placeholder='Mật khẩu' prefix={<LockOutlined />}  style={{ width: "100%" }} /><br/><br/>
             <Checkbox defaultChecked>Ghi nhớ tài khoản</Checkbox>
             {/* <Anchor><Link href="#" title="Quên mật khẩu?"/></Anchor> */}
             <br/><br/>
@@ -64,7 +118,7 @@ class Login extends Component {
             <p>Liên hệ tổng đài 1900 6763 để được tư vấn</p>
             
             
-          </form>
+          
         </div>
       </div>
     );

@@ -1,29 +1,66 @@
 import './Home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {FolderOpenOutlined, LogoutOutlined, ProfileOutlined,UserOutlined} from '@ant-design/icons';
+import {FolderOpenOutlined, LogoutOutlined, ProfileOutlined,UserOutlined, AppstoreOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  PieChartOutlined,
+  DesktopOutlined,
+  ContainerOutlined,
+  MailOutlined,
+  FolderOutlined,} from '@ant-design/icons';
 import avatar from '../../images/T1.jpg';
 import Img2 from '../../images/bg-qlnb.png';
 import { Link } from 'react-router-dom';
+import { Component } from 'react';
+import {Menu, Button} from 'antd';
+import React from 'react';
+const {SubMenu} = Menu;
 
-var sectionStyle = {
-  width: "100%",
-  height: "100%",
-  backgroundImage: "url(" + { Img2 } + ")"
-};
+class Home extends Component {
+  sectionStyle = {
+    width: "100%",
+    height: "100%",
+    backgroundImage: "url(" + { Img2 } + ")"
+  };
 
-function App() {
+  state = {
+    collapsed: false,
+  };
+
+  toggleCollapsed = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  };
+
+  render() {
     return (
       <div className="App">
-        <div style={{width: '15%',background: '#f3f2f1', height: '100vh'}} className='toggle-menu'>
-          <h2>
-            <Link to={'/'} className='px-4 py-1' style={{ display:'block', textDecoration:'none', fontWeight: 'bold', color: '#58595b' }}><b>HAIVAN</b></Link>
-          </h2>
-          <ul className='menu'>
-            <li><a href='' className='px-4 py-2 mb-1'><FolderOpenOutlined className='px-2'/>Quản lý tài liệu</a></li>
-            <li><a href='' className='px-4 py-2 mb-1'><ProfileOutlined className='px-2'/>Quản lý công việc</a></li>
-            <li><a href='' className='px-4 py-2 mb-1'><ProfileOutlined className='px-2'/>Quản lý chấm công</a></li>
-          </ul>
-        </div>
+        <div style={{ width: 256, display: 'flex' }}>
+        
+        <Menu
+          
+          mode="inline"
+          theme="light"
+          inlineCollapsed={this.state.collapsed}
+          style={{ background: '#f3f2f1' }}
+        >
+          <h2><b>HAIVAN</b></h2>
+          <Menu.Item key="1" icon={<FolderOpenOutlined />}>
+            <a href='#' className='link' >Quản lý tài liệu</a>
+          </Menu.Item>
+          <Menu.Item key="2" icon={<ProfileOutlined />}>
+            <a href='#' className='link' >Quản lý tài liệu</a>
+          </Menu.Item>
+          <Menu.Item key="3" icon={<ProfileOutlined />}>
+            <a href='#' className='link' >Quản lý tài liệu</a>
+          </Menu.Item>
+          
+        </Menu>
+        <Button type="default" onClick={this.toggleCollapsed} style={{ marginBottom: 16, border:'none' }}>
+          {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
+        </Button>
+      </div>
         <div className='header-content'>
           <header style={{  }}>
             <div className='row'>
@@ -38,7 +75,7 @@ function App() {
                     <div style={{ paddingTop: 15 }}>
                       <ul className='user-name-dropdown shadow py-1 collapse show' style={{ listStyleType: 'none',  }}>
                         <li><a href=''><UserOutlined />Tài khoản</a></li>
-                        <li><a href=''><LogoutOutlined />Đăng xuất</a></li>
+                        <li><a href='/login'><LogoutOutlined />Đăng xuất</a></li>
                       </ul>
                     </div>
                     
@@ -48,7 +85,7 @@ function App() {
             </div>
 
           </header>
-          <section style={ sectionStyle }>
+          <section style={ this.sectionStyle }>
 
           </section>
         </div>
@@ -56,5 +93,6 @@ function App() {
       </div>
     );
   }
-  
-  export default App;
+}
+
+export default Home;
