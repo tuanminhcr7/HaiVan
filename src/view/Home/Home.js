@@ -14,9 +14,14 @@ import { Link } from 'react-router-dom';
 import { Component } from 'react';
 import {Menu, Button} from 'antd';
 import React from 'react';
+import MenuItem from 'antd/lib/menu/MenuItem';
+// import { Link } from 'react-router-dom';
 const {SubMenu} = Menu;
 
 class Home extends Component {
+  componentDidMount(){
+    document.title = "Quản lý nội bộ";
+  }  
   sectionStyle = {
     width: "100%",
     height: "100%",
@@ -30,42 +35,64 @@ class Home extends Component {
   toggleCollapsed = () => {
     this.setState({
       collapsed: !this.state.collapsed,
+      style: {
+        left: '-50'
+      }
     });
   };
 
   render() {
     return (
       <div className="App">
-        <div style={{ width: 256, display: 'flex' }}>
+        <div style={{ width:200, display: 'flex', position:'fixed' }}>
         
         <Menu
-          
           mode="inline"
           theme="light"
           inlineCollapsed={this.state.collapsed}
-          style={{ background: '#f3f2f1' }}
+          style={{ background: '#f3f2f1', zIndex: '2', height: '100vh'}}
         >
-          <h2><b>HAIVAN</b></h2>
-          <Menu.Item key="1" icon={<FolderOpenOutlined />}>
-            <a href='#' className='link' >Quản lý tài liệu</a>
-          </Menu.Item>
-          <Menu.Item key="2" icon={<ProfileOutlined />}>
-            <a href='#' className='link' >Quản lý tài liệu</a>
-          </Menu.Item>
-          <Menu.Item key="3" icon={<ProfileOutlined />}>
-            <a href='#' className='link' >Quản lý tài liệu</a>
-          </Menu.Item>
+          <MenuItem>
+          <Link to={'/'} className='px-4 py-1' style={{ display:'block', textDecoration:'none', fontWeight: 'bold', color: '#58595b' }}><h2 style={{ fontWeight:'bold' }}><b>HAIVAN</b></h2></Link>
+          </MenuItem>
+          
+            
+          
+          
+          <MenuItem key="1" icon={<FolderOpenOutlined />}>
+            <Link to={'/qltl'} className='link' >Quản lý tài liệu</Link>
+          </MenuItem>
+          <MenuItem key="2" icon={<ProfileOutlined />}>
+            <Link to={'#'} className='link' >Quản lý tài liệu</Link>
+          </MenuItem>
+          <MenuItem key="3" icon={<ProfileOutlined />}>
+            <Link to={'#'} className='link' >Quản lý tài liệu</Link>
+          </MenuItem>
           
         </Menu>
-        <Button type="default" onClick={this.toggleCollapsed} style={{ marginBottom: 16, border:'none' }}>
+        
+        <Button type="default" onClick={this.toggleCollapsed} 
+          style={{ 
+            marginBottom: 16, 
+            border:'none', 
+            fontSize:'25px', 
+            paddingTop: '0',
+            marginBottom:'0',
+            backgroundColor:'#f3f2f1',
+            zIndex:'3',
+            left:'-60px'
+            
+          }}>
           {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
         </Button>
+        
+        
       </div>
-        <div className='header-content'>
-          <header style={{  }}>
+        <div className='header-content'style={{ paddingLeft: 200 }}>
+          <header style={{ width:'88vw' }}>
             <div className='row'>
-              <div className='col'></div>
-              <div className='col'>
+              <div className='col p-0'></div>
+              <div className='col p-0'>
                 <ul className='user-name'>
                   <li className='pt-2 user-name-drop'>
                     <b>Chào, Vũ Nguyễn Tuấn Minh</b>
@@ -85,8 +112,8 @@ class Home extends Component {
             </div>
 
           </header>
-          <section style={ this.sectionStyle }>
-
+          <section className='section-home' style={ this.sectionStyle }>
+            
           </section>
         </div>
         

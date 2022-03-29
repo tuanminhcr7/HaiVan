@@ -52,12 +52,12 @@
 header {
     height: 50px;
     background-color: #ffc20e;
-    width: 100%;
+    width: 85%;
+    position: fixed;
+    z-index: 2;
 }
 
-.section-home {
-  background-image: url('../../images/bg-qlnb.png');
-}
+
 
 .toggle-menu {
   
@@ -77,6 +77,10 @@ header {
 .menu li {
   width: 100%;
   
+}
+
+Menu MenuItem {
+    margin-top: 1px;
 }
 
 Menu MenuItem a {
@@ -131,6 +135,7 @@ Menu MenuItem a:hover {
   width: 70%;
   position: absolute;
   display: none;
+  background-color: #fff;
 }
 
 .user-name-dropdown li{
@@ -151,15 +156,32 @@ Menu MenuItem a:hover {
 }
 
 .user-name-dropdown li a:hover {
-  background-color: #aaa;
-}
+  background-color: #f3f2f1;
+} 
 
 .user-name-drop:hover .user-name-dropdown {
   display: block;
-  width: 15%;
+  width: 20%;
   transition: 0.5s;
 }
 
 h2 {
   font-family: 'Roboto';
+}
+
+.img-folder {
+  background-image: url('https://dev.qlnb.haivanexpress.vn/static/media/folder_with_files.11b3cb6c.svg');
+  height: 100px;
+  width: 100px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.link-folder {
+  display: block;
+  text-decoration: none;
+}
+
+.link-folder:hover {
+  background-color: #f3f2f1;
 }
