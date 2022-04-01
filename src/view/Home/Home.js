@@ -21,6 +21,7 @@ const {SubMenu} = Menu;
 class Home extends Component {
   componentDidMount(){
     document.title = "Quản lý nội bộ";
+    
   }  
   sectionStyle = {
     width: "100%",
@@ -53,20 +54,20 @@ class Home extends Component {
           style={{ background: '#f3f2f1', zIndex: '2', height: '100vh'}}
         >
           <MenuItem>
-          <Link to={'/'} className='px-4 py-1' style={{ display:'block', textDecoration:'none', fontWeight: 'bold', color: '#58595b' }}><h2 style={{ fontWeight:'bold' }}><b>HAIVAN</b></h2></Link>
+          <Link to={'/'} className='px-4 pt-3' style={{ display:'block', textDecoration:'none', fontWeight: 'bold', color: '#58595b' }}><h2 style={{ fontWeight:'bold' }}><b>HAIVAN</b></h2></Link>
           </MenuItem>
           
             
           
           
           <MenuItem key="1" icon={<FolderOpenOutlined />}>
-            <Link to={'/qltl'} className='link' >Quản lý tài liệu</Link>
+            <Link to={'/qltl'} className='link' title='Quản lý tài liệu'>Quản lý tài liệu</Link>
           </MenuItem>
           <MenuItem key="2" icon={<ProfileOutlined />}>
-            <Link to={'#'} className='link' >Quản lý tài liệu</Link>
+            <Link to={'#'} className='link' title='Quản lý công việc'>Quản lý công việc</Link>
           </MenuItem>
           <MenuItem key="3" icon={<ProfileOutlined />}>
-            <Link to={'#'} className='link' >Quản lý tài liệu</Link>
+            <Link to={'#'} className='link' title='Quản lý chấm công'>Quản lý chấm công</Link>
           </MenuItem>
           
         </Menu>
@@ -78,7 +79,7 @@ class Home extends Component {
             fontSize:'25px', 
             paddingTop: '0',
             marginBottom:'0',
-            backgroundColor:'#f3f2f1',
+            backgroundColor:'transparent',
             zIndex:'3',
             left:'-60px'
             

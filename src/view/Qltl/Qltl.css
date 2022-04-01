@@ -80,14 +80,14 @@ header {
 }
 
 Menu MenuItem {
-    margin-top: 1px;
+  margin-top: 1px;
 }
 
 Menu MenuItem a {
   text-decoration: none;
   color: #201f1e;
   display: block;
-  align-items: center;
+  
   font-size: smaller;
   transition: 0.5s;
   width: 100%;
@@ -184,4 +184,46 @@ h2 {
 
 .link-folder:hover {
   background-color: #f3f2f1;
+}
+
+
+.table-link {
+  font-weight: bold;
+  text-decoration: none;
+  color: #000;
+  transition: 0.1s;
+}
+
+.table-link:hover {
+  color: #000;
+}
+
+.special-table {
+  list-style-type: none;
+  display: flex;
+  display: none;
+  transition: 0.1s;
+}
+
+.special-table li {
+  
+}
+
+.special-table>li>a {
+  display: block;
+  text-decoration: none;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 5px;
+  padding-bottom: 1px;
+  border-radius: 50%;
+  border: 1px solid #54b5ff;
+}
+.special-table>li>a:hover {
+  transform: scale(1.2);
+}
+
+.table-link:hover .special-table {
+  display: inline-flex;
+  transition: 0.1s;
 }
