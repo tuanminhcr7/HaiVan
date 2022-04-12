@@ -2,16 +2,16 @@ import { FileOutlined } from "@ant-design/icons";
 import { Collapse, Space, Table, Tag } from "antd";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Time from "react-time-format";
-const { Panel } = Collapse;
+const {Panel} = Collapse;
 
-const FolderShared = ({ shareds }) => {
-    const columns = [
+const FolderMyDoc = ({ myDocFiles }, {myDocFolders}) => {
+    const columnsFiles = [
         {
             title: () => {
                 return  <div style={{ display:'flex', alignItems:'center' }}>
                             <FileOutlined style={{ fontSize:18, color:'#605e5c' }} />
                             <p className="mx-2" style={{ margin:'0', paddingTop:5 }}>Tên</p>
+                            
                         </div>
             },
             dataIndex: 'name',
@@ -28,7 +28,7 @@ const FolderShared = ({ shareds }) => {
             title: 'Ngày tạo',
             dataIndex: 'created_at',
             key: 'created_at',
-            render: (date) => <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
+            render: (date) => <small>{new Intl.DateTimeFormat('vn-GB', { month: 'numeric', day: '2-digit', year: 'numeric' }).format(new Date(date))}</small>
         },
         {
             title: 'Chỉnh sửa',
@@ -38,21 +38,19 @@ const FolderShared = ({ shareds }) => {
         {
             title: 'Chia sẻ',
             key: 'is_editor',
-            render: (text, record) => <small style={{ margin: 0 }}>{(record.is_editor == 1) ? 'Đã chia sẻ' : ''}</small>
+            render: (text, record) => <small style={{ margin:0 }}>{(record.is_all_viewer == 1 && record.is_all_editor == 1) ? 'Đã chia sẻ' : 'Riêng tư'}</small>
         },
         {
             title: 'Đã chỉnh sửa',
             key: 'updated_at',
             dataIndex: 'updated_at',
-            render: (date) => <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
+            render: (date) => <small>{new Intl.DateTimeFormat('en-GB', { month: 'numeric', day: '2-digit', year: 'numeric' }).format(new Date(date))}</small>
         },
-
         {
             title: 'Kích cỡ',
             key: 'size',
-            render: (text, record) => <small style={{ margin: 0 }}>{(record.size * 9.537 * Math.pow(10, -7)).toFixed(2)}MB</small>
+            render: (text, record) => <small style={{ margin:0 }}>{(record.size*1*Math.pow(10, -6)).toFixed(2)}MB</small>
         },
-
         {
             title: 'Sở hữu',
             key: 'create_by',
@@ -62,14 +60,14 @@ const FolderShared = ({ shareds }) => {
 
     return (
         <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
-            <Panel style={{ border: 'none', fontSize: '18px' }} header="Được chia sẻ" key="1">
+            <Panel style={{ border: 'none', fontSize: '18px' }} header="Tệp" key="1">
                 <div className='' style={{ display: 'flex' }}>
-                    <Table columns={columns} dataSource={shareds} pagination={false} />
+                    <Table columns={columnsFiles} dataSource={myDocFiles} pagination={false} />
                 </div>
             </Panel>
         </Collapse>
     );
 }
 
-export default FolderShared;
+export default FolderMyDoc;
 

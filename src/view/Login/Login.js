@@ -13,11 +13,13 @@ const Login = () => {
     username: "",
     password: "",
   });
+  
   let navigate = useNavigate();
 
   const handleChangeUsername = (event) => {
     setForm({ ...form, username: event.target.value });
   };
+
   const handleChangePassword = (event) => {
     setForm({ ...form, password: event.target.value });
   };
@@ -36,6 +38,7 @@ const Login = () => {
         console.log(err);
       });
   };
+
   return (
     <div className="App">
       <div className="background">
@@ -43,50 +46,47 @@ const Login = () => {
       </div>
       <div className="form-login">
         <div className='form'>
-        <p>Chào bạn!</p>
-        <h2>Vui lòng đăng nhập</h2>
+            <p>Chào bạn!</p>
+            <h2>Vui lòng đăng nhập</h2>
 
-        <Input
-          size="large"
-          onChange={handleChangeUsername}
-          placeholder="Tên tài khoản"
-          name="username"
-          prefix={<UserOutlined />}
-          style={{ width: "100%" }}
-        />
-        <br />
-        <br />
-        <Input
-          size="large"
-          onChange={handleChangePassword}
-          type={"password"}
-          name="password"
-          placeholder="Mật khẩu"
-          prefix={<LockOutlined />}
-          style={{ width: "100%" }}
-        />
-        <br />
-        <br />
-        <Checkbox defaultChecked>Ghi nhớ tài khoản</Checkbox>
-        {/* {/ <Anchor><Link href="#" title="Quên mật khẩu?"/></Anchor> /} */}
-        <br />
-        <br />
-        <Button
-          size="large"
-          color="#fadb14"
-          htmlType="submit"
-          onClick={handleSubmit}
-          style={{ background: "#faad14" }}
-          block
-          
-        >
-          Đăng nhập
-        </Button>
-        <br />
-        <br />
-        <p>Liên hệ tổng đài 1900 6763 để được tư vấn</p>
+            <Input
+              size="large"
+              onChange={handleChangeUsername}
+              placeholder="Tên tài khoản"
+              name="username"
+              prefix={<UserOutlined />}
+              style={{ width: "100%" }}
+            />
+            <br /><br />
+
+            <Input
+              size="large"
+              onChange={handleChangePassword}
+              type={"password"}
+              name="password"
+              placeholder="Mật khẩu"
+              prefix={<LockOutlined />}
+              style={{ width: "100%" }}
+            />
+            <br /><br />
+
+            <Checkbox defaultChecked>Ghi nhớ tài khoản</Checkbox>
+            <br /><br />
+            
+            <Button
+              size="large"
+              color="#fadb14"
+              htmlType="submit"
+              onClick={handleSubmit}
+              style={{ background: "#faad14" }}
+              block   
+            >
+              Đăng nhập
+            </Button>
+            <br /><br />
+
+            <p>Liên hệ tổng đài 1900 6763 để được tư vấn</p>
         </div>
-        
       </div>
     </div>
   );

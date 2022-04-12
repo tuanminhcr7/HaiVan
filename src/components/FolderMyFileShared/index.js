@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Time from "react-time-format";
 const { Panel } = Collapse;
 
-const FolderShared = ({ shareds }) => {
+const FolderMyFileShared = ({ fileShareds }) => {
     const columns = [
         {
             title: () => {
@@ -16,7 +16,10 @@ const FolderShared = ({ shareds }) => {
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <Link to={`${record.id}/xem-tai-lieu-${record.slug}`} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
+            render: (text, record) => {
+                // const limit = text.subString(0, 20) + '...';
+                return <Link to={`${record.id}/xem-tai-lieu-${record.slug}`} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>    
+            }
         },
         {
             title: 'Mô tả',
@@ -28,7 +31,7 @@ const FolderShared = ({ shareds }) => {
             title: 'Ngày tạo',
             dataIndex: 'created_at',
             key: 'created_at',
-            render: (date) => <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
+            render: (date) => <small>{new Intl.DateTimeFormat('vn-GB', { month: '2-digit', day: '2-digit', year: 'numeric' }).format(new Date(date))}</small>
         },
         {
             title: 'Chỉnh sửa',
@@ -46,13 +49,11 @@ const FolderShared = ({ shareds }) => {
             dataIndex: 'updated_at',
             render: (date) => <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
         },
-
         {
             title: 'Kích cỡ',
             key: 'size',
             render: (text, record) => <small style={{ margin: 0 }}>{(record.size * 9.537 * Math.pow(10, -7)).toFixed(2)}MB</small>
         },
-
         {
             title: 'Sở hữu',
             key: 'create_by',
@@ -61,15 +62,9 @@ const FolderShared = ({ shareds }) => {
     ];
 
     return (
-        <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
-            <Panel style={{ border: 'none', fontSize: '18px' }} header="Được chia sẻ" key="1">
-                <div className='' style={{ display: 'flex' }}>
-                    <Table columns={columns} dataSource={shareds} pagination={false} />
-                </div>
-            </Panel>
-        </Collapse>
+        <Table columns={columns} dataSource={fileShareds} pagination={false} />
     );
 }
 
-export default FolderShared;
+export default FolderMyFileShared;
 

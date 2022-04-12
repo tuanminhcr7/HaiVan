@@ -1,3 +1,4 @@
+import { FileOutlined, FolderOpenFilled } from "@ant-design/icons";
 import { Collapse, Space, Table, Tag } from "antd";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
@@ -6,12 +7,18 @@ const { Panel } = Collapse;
 const FolderList = ({ folders }) => {
   const columns = [
     {
-      title: 'Tên',
+      title: () => {
+        return  <div style={{ display:'flex', alignItems:'center' }}>
+                    <FileOutlined style={{ fontSize:18, color:'#605e5c' }} />
+                    <p className="mx-2" style={{ margin:'0', paddingTop:5 }}>Tên</p>
+                </div>
+      },
       dataIndex: 'name',
       key: 'name',
-      render: (text, record) =>
-        // console.log(record, 'record');
-      <Link to={`${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
+      render: (text, record) => <div style={{ display:'flex', alignItems:'center' }}>
+                                  <FolderOpenFilled style={{ fontSize:20, color:'#ffda6a', margin:'0', marginRight:'5px' }} />
+                                  <Link to={`${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
+                                </div>
     },
     {
       title: 'Mô tả',
@@ -43,16 +50,13 @@ const FolderList = ({ folders }) => {
     },
   ];
 
-
-
   return (
     <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
       <Panel style={{ border: 'none', fontSize: '18px' }} header="Thư mục" key="1">
         <div className='' style={{ display: 'flex' }}>
-          <Table columns={columns} dataSource={folders} />
+          <Table columns={columns} dataSource={folders} pagination={false} />
         </div>
       </Panel>
-
     </Collapse>
   );
 };
