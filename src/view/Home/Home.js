@@ -52,7 +52,7 @@ class Home extends Component {
             style={{ background: '#f3f2f1', zIndex: '2', height: '100vh'}}
           >
             <MenuItem>
-            <Link to={'/'} className='px-4 pt-3' style={{ display:'block', textDecoration:'none', fontWeight: 'bold', color: '#58595b' }}><h2 style={{ fontWeight:'bold' }}><b>HAIVAN</b></h2></Link>
+              <Link to={'/'} className='pt-3' style={{ display:'block', textDecoration:'none', fontWeight: 'bold', color: '#58595b' }}><h2 style={{ fontWeight:'bold' }}>{!this.state.collapsed && <b>HAIVAN</b>}</h2></Link>
             </MenuItem>
 
             <MenuItem key="1" icon={<FolderOpenOutlined />}>
@@ -78,7 +78,6 @@ class Home extends Component {
               backgroundColor:'transparent',
               zIndex:'3',
               left:'-60px'
-              
             }}
           >
             {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}

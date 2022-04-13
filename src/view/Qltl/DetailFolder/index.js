@@ -1,25 +1,38 @@
 import { useEffect } from "react";
-import Header from "../Header";
 import { Link } from 'react-router-dom';
-import { Menu, Button, Upload, Space, Tag, Table } from 'antd';
+import { Menu, Button, Upload, Space, Tag, Table, Breadcrumb } from 'antd';
 import { Collapse } from "antd";
-const {Panel} = Collapse;
+import axios from "axios";
 
+const { Panel } = Collapse;
 
 const DetailFolder = (folders, users) => {
-    
+    // console.log(folders);
+
+    const handleDetail = () => {
+        axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/folders/${folders.id}`).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
     useEffect(() => {
         document.title = "Chi tiết thư mục";
+        handleDetail();
     });
 
     return (
         <div>
-            
-                        <div className='row px-4'>
-                            <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
-                                <Panel style={{ border: 'none', fontSize: '18px' }} header="Thư mục" key="1">
-                                    <div className='' style={{ display: 'flex' }}>
-                                        {/* {folders.map((item3) =>
+            <div className="row px-5">
+                <Breadcrumb separator=">">dfdfd</Breadcrumb>
+            </div>
+
+            <div className='row px-4'>
+                <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
+                    <Panel style={{ border: 'none', fontSize: '18px' }} header="Thư mục" key="1">
+                        <div className='' style={{ display: 'flex' }}>
+                            {/* {folders.map((item3) =>
                                             <Link to={`${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>
                                                 <div className=''>
                                                     <div className='img-folder' style={{ position: 'relative', backgroundPosition: 'center' }}>
@@ -38,12 +51,12 @@ const DetailFolder = (folders, users) => {
                                                 </div>
                                             </Link>
                                         )} */}
-                                    </div>
-                                </Panel>
-                            </Collapse>
                         </div>
-                        
-                    
+                    </Panel>
+                </Collapse>
+            </div>
+
+
         </div>
     );
 }

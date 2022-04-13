@@ -1,16 +1,18 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, Button, Upload, Space, Tag, Table } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined, DeleteOutlined, HistoryOutlined, FolderOutlined, TeamOutlined, HeartOutlined } from '@ant-design/icons';
 import MenuItem from 'antd/lib/menu/MenuItem';
-import { createBrowserHistory } from 'history';
+
+import React from 'react';
+import { Link , useNavigate} from 'react-router-dom';
+import { Menu, Button } from 'antd';
+import { MenuUnfoldOutlined, MenuFoldOutlined, DeleteOutlined, HistoryOutlined, FolderOutlined, TeamOutlined, HeartOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 
-const MenuNav = ({ menus, collapsed, toggleCollapsed }) => {
+const MenuFolder = ({ menus, collapsed, toggleCollapsed }) => {
+    
+    const navigate = useNavigate();
 
     return (
-        <div style={{ display: 'flex', position: 'fixed'}}>
+        <div style={{ display: 'flex', position: 'fixed' }}>
             <Menu
                 mode="inline"
                 theme="light"
@@ -18,9 +20,14 @@ const MenuNav = ({ menus, collapsed, toggleCollapsed }) => {
                 style={{ background: '#f3f2f1', zIndex: '2', height: '100vh', overflow: 'auto', scrollbarWidth: 'thin', maxWidth: 200 }}
             >
                 <MenuItem>
-                    <Link to={'/'} className='px-4 pt-3 link' style={{ display: 'block', textDecoration: 'none', fontWeight: 'bold', color: '#58595b' }}><h2 style={{ fontWeight: 'bold' }}><b>HAIVAN</b></h2></Link>
+                    <Link to={'/'} className='pt-3 link' style={{ display: 'block', textDecoration: 'none', fontWeight: 'bold', color: '#58595b' }}><h2 style={{ fontWeight: 'bold' }}>{!collapsed && <b>HAIVAN</b>}</h2></Link>
                 </MenuItem>
-                <div style={{}} className='py-3 px-4'><Link to={'/qltl'} style={{ textDecoration: 'none', color: '#201f1e', fontSize: '15px' }}><b>Quản lý tài liệu</b></Link></div>
+
+                {!collapsed &&
+                    <>
+                        <div style={{}} className='py-3 px-4'><Link to={'/qltl'} style={{ textDecoration: 'none', color: '#201f1e', fontSize: '15px' }}>{!collapsed && <b>Quản lý tài liệu</b>}</Link></div>
+                    </>
+                }
 
                 <MenuItem className='py-0 my-0' icon={<FolderOutlined />}>
                     <Link to={'/qltl/cua-toi'} className='link' title='Tài liệu của tôi'>Tài liệu của tôi</Link>
@@ -42,19 +49,15 @@ const MenuNav = ({ menus, collapsed, toggleCollapsed }) => {
                     <SubMenu icon={<FolderOutlined />} to={`${folder.slug}`} className='py-0 my-0' title={folder.name} onTitleClick={(id, slug) => {
                         id = folder.id;
                         slug = folder.slug;
-                        const history = createBrowserHistory();
                         const url = `/qltl/${id}/tai-lieu-${slug}`;
-                        console.log(url);
-                        history.push(url);
+                        navigate(url);
                     }}>
                         {folder.children.map((item) =>
                             <SubMenu style={{}} icon={<FolderOutlined />} title={item.name} onTitleClick={(id, slug) => {
                                 id = item.id;
                                 slug = item.slug;
-                                const history = createBrowserHistory();
                                 const url = `/qltl/${id}/tai-lieu-${slug}`;
-                                console.log(url);
-                                history.push(url);
+                                navigate(url);
                             }}>
                                 {item.children.map((item2) =>
                                     <MenuItem style={{}} icon={<FolderOutlined />} className='py-0 my-0'>
@@ -85,4 +88,4 @@ const MenuNav = ({ menus, collapsed, toggleCollapsed }) => {
     );
 }
 
-export default MenuNav;
+export default MenuFolder;

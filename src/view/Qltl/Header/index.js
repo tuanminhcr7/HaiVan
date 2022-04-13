@@ -1,8 +1,9 @@
-import { Component } from "react";
-import { Menu, Button, Upload, Space, Tag, Table } from 'antd';
-import Search from 'antd/lib/transfer/search';
-import { LogoutOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
 import avatar from '../../../images/T1.jpg';
+import Search from 'antd/lib/transfer/search';
+
+import { Button, Upload } from 'antd';
+import { LogoutOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
+
 
 const Header = ({ users }) => {
 
@@ -24,15 +25,15 @@ const Header = ({ users }) => {
                 <div className='col p-0'>
                     <ul className='user-name'>
                         <li className='pt-2 user-name-drop'>
-                            <div style={{ display:'flex', alignItems:'center' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <b>Chào, {users.name}</b>
                                 <img src={avatar} width={30} height={30} />
                             </div>
 
                             <div style={{ paddingTop: 15 }}>
                                 <ul className='user-name-dropdown shadow py-1 collapse show' style={{ listStyleType: 'none', }}>
-                                    <li><a href='/#' style={{ display:'flex', alignItems:'center' }}><UserOutlined />Tài khoản</a></li>
-                                    <li><a href='/login' style={{ display:'flex', alignItems:'center' }}><LogoutOutlined />Đăng xuất</a></li>
+                                    <li><a href='/#' style={{ display: 'flex', alignItems: 'center' }}><UserOutlined />Tài khoản</a></li>
+                                    <li><a href='/login' style={{ display: 'flex', alignItems: 'center' }}><LogoutOutlined />Đăng xuất</a></li>
                                 </ul>
                             </div>
                         </li>

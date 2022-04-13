@@ -1,20 +1,11 @@
 import '../Qltl.css';
-
+import FolderMyDoc from '../../../components/FolderMyDoc';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Link } from 'react-router-dom';
-import { Component } from 'react';
-import { Menu } from 'antd';
-import React from 'react';
-import { Collapse } from 'antd';
+import React, { Component } from 'react';
 import axios from 'axios';
 
-import Header from '../Header';
-import FolderMyDoc from '../../../components/FolderMyDoc';
-import MenuFolder from '../MenuFolder';
-
-const { Panel } = Collapse;
-const { SubMenu } = Menu;
 
 class MyDoc extends Component {
 
@@ -88,7 +79,6 @@ class MyDoc extends Component {
             </div>
         );
     }
-
 }
 
 export default MyDoc;

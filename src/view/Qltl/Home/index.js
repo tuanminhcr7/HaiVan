@@ -1,14 +1,14 @@
-
-
-import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import React, { Component } from 'react';
 import FolderGrid from '../../../components/FolderGrid';
 import FolderList from '../../../components/FolderList';
 import FolderRecent from '../../../components/FolderRecent';
 import FolderShared from '../../../components/FolderShared';
+
+import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import axios from 'axios';
+
 
 class Home extends Component {
     

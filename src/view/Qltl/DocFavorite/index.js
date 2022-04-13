@@ -1,53 +1,13 @@
 import '../Qltl.css';
-// import Folder from '../../components/FolderGrid';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-    FolderOpenOutlined, LogoutOutlined, ProfileOutlined, UserOutlined, AppstoreOutlined,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-    PieChartOutlined,
-    DesktopOutlined,
-    ContainerOutlined,
-    MailOutlined,
-    DeleteOutlined,
-    HistoryOutlined,
-    FolderOutlined,
-    TeamOutlined,
-    HeartOutlined,
-    UploadOutlined,
-    FileWordOutlined,
-    EditOutlined,
-    ShareAltOutlined,
-    ArrowDownOutlined,
-    EditFilled,
-    UnorderedListOutlined,
-    InsertRowAboveOutlined,
-} from '@ant-design/icons';
-// import avatar from '../../images/T1.jpg';
-import { Link } from 'react-router-dom';
-import { Component } from 'react';
-import { Menu, Button, Upload, Space, Tag, Table } from 'antd';
-import React from 'react';
-import MenuItem from 'antd/lib/menu/MenuItem';
-import Search from 'antd/lib/transfer/search';
-import { Collapse } from 'antd';
-import axios from 'axios';
-import { render } from '@testing-library/react';
-import FolderGrid from '../../../components/FolderGrid';
-// import FolderList from '../../../components/FolderList';
-import FolderRecent from '../../../components/FolderRecent';
-// import FolderShared from '../../../components/FolderShared';
-import styled from 'styled-components';
-// import DetailFolder from '../Qltl/DetailFolder';
-import Navigate from 'react-router';
-import { createBrowserHistory } from 'history';
-import Header from '../Header';
 import FolderDocFavorite from '../../../components/FolderDocFavorite';
 
-const { Panel } = Collapse;
-const { SubMenu } = Menu;
+import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
+import axios from 'axios';
 
-class Trash extends Component {
+
+class DocFavorite extends Component {
 
     myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
     adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
@@ -121,4 +81,4 @@ class Trash extends Component {
 
 }
 
-export default Trash;
+export default DocFavorite;
