@@ -19,8 +19,8 @@ const MenuFolder = ({ menus, collapsed, toggleCollapsed }) => {
                 inlineCollapsed={collapsed}
                 style={{ background: '#f3f2f1', zIndex: '2', height: '100vh', overflow: 'auto', scrollbarWidth: 'thin', maxWidth: 200 }}
             >
-                <MenuItem>
-                    <Link to={'/'} className='pt-3 link' style={{ display: 'block', textDecoration: 'none', fontWeight: 'bold', color: '#58595b' }}><h2 style={{ fontWeight: 'bold' }}>{!collapsed && <b>HAIVAN</b>}</h2></Link>
+                <MenuItem style={{}}>
+                    <Link to={'/'} className='' style={{ display: 'block', textDecoration: 'none', fontWeight: 'bold', color: '#58595b', position:'fixed', top:10 }}><h2 style={{ fontWeight: 'bold' }}>{!collapsed && <b>HAIVAN</b>}</h2></Link>
                 </MenuItem>
 
                 {!collapsed &&

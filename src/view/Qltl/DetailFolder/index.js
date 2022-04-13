@@ -1,17 +1,40 @@
-import { useEffect } from "react";
-import { Link } from 'react-router-dom';
-import { Menu, Button, Upload, Space, Tag, Table, Breadcrumb } from 'antd';
-import { Collapse } from "antd";
+import GridData from "../../../components/GridData";
+import ListDataFile from "../../../components/ListDataFile";
+
+import { useEffect, useState } from "react";
+import { Breadcrumb } from 'antd';
 import axios from "axios";
+import { useParams } from "react-router"; 
 
-const { Panel } = Collapse;
 
-const DetailFolder = (folders, users) => {
-    // console.log(folders);
+const DetailFolder = () => {
+    const [folders, setFolders] = useState();
+    const [files, setFiles] = useState();
+
+    const myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
+    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
+
+    const myHeaders = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${myToken}`
+        }
+    }
+
+    const adminHeaders = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+        }
+    }
+
+    const { id } = useParams();
+    console.log(id);
 
     const handleDetail = () => {
-        axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/folders/${folders.id}`).then(res => {
-            console.log(res);
+        axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/folders/${id}`, myHeaders).then(res => {
+            setFolders(res.data.data.folders);
+            setFiles(res.data.data.files);
         }).catch(err => {
             console.log(err);
         })
@@ -20,43 +43,21 @@ const DetailFolder = (folders, users) => {
     useEffect(() => {
         document.title = "Chi tiết thư mục";
         handleDetail();
-    });
+    }, [id]);
 
     return (
         <div>
             <div className="row px-5">
-                <Breadcrumb separator=">">dfdfd</Breadcrumb>
+                <Breadcrumb separator=">"/>
             </div>
 
             <div className='row px-4'>
-                <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
-                    <Panel style={{ border: 'none', fontSize: '18px' }} header="Thư mục" key="1">
-                        <div className='' style={{ display: 'flex' }}>
-                            {/* {folders.map((item3) =>
-                                            <Link to={`${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>
-                                                <div className=''>
-                                                    <div className='img-folder' style={{ position: 'relative', backgroundPosition: 'center' }}>
-                                                        <div style={{ position: 'absolute', fontSize: '12px', bottom: '30px', left: '25px', color: '#926e00', fontWeight: 'bold' }}>{item3.id}</div>
-                                                    </div>
-                                                    <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center' }}>{item3.name}</p>
-                                                    <small className='px-4' style={{ fontSize: 'small', color: '#605e5c' }}>
-                                                        {
-                                                            new Intl.DateTimeFormat('vn-GB', {
-                                                                month: '2-digit',
-                                                                day: '2-digit',
-                                                                year: 'numeric',
-                                                            }).format(new Date(item3.updated_at))
-                                                        }
-                                                    </small>
-                                                </div>
-                                            </Link>
-                                        )} */}
-                        </div>
-                    </Panel>
-                </Collapse>
+                <GridData data={folders} />
             </div>
 
-
+            <div className='row px-4'>     
+                <ListDataFile data={files} />
+            </div>
         </div>
     );
 }

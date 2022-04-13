@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 const { Panel } = Collapse;
 
-const FolderList = ({ folders }) => {
+const FolderList = ({ data }) => {
   const columns = [
     {
       title: () => {
@@ -54,7 +54,7 @@ const FolderList = ({ folders }) => {
     <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
       <Panel style={{ border: 'none', fontSize: '18px' }} header="Thư mục" key="1">
         <div className='' style={{ display: 'flex' }}>
-          <Table columns={columns} dataSource={folders} pagination={false} />
+          <Table columns={columns} dataSource={data} pagination={false} />
         </div>
       </Panel>
     </Collapse>

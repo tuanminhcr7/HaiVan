@@ -1,5 +1,5 @@
-import FolderGrid from '../../../components/FolderGrid';
-import FolderList from '../../../components/FolderList';
+import GridData from '../../../components/GridData';
+import ListData from '../../../components/ListData';
 import FolderRecent from '../../../components/FolderRecent';
 import FolderShared from '../../../components/FolderShared';
 
@@ -95,14 +95,14 @@ class Home extends Component {
                     <p className='px-5' style={{ fontSize: '18px' }}><Link to={'/qltl'} style={{ textDecoration: 'none', color: '#201f1e' }}>{document.title}</Link></p>
                 </div>
                 <div className='row px-5'>
-                    <FolderRecent recents={this.state.recents} />
+                    <FolderRecent data={this.state.recents} />
                 </div>
                 <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
                     <Button onClick={this.changeFolderGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
                     <Button onClick={this.changeFolderList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
                 </div>
                 <div className='row px-3 m-0'>
-                    {this.state.view ? <FolderGrid folders={this.state.folders} /> : <FolderList folders={this.state.folders} />}
+                    {this.state.view ? <GridData data={this.state.folders} /> : <ListData data={this.state.folders} />}
                 </div>
                 <div className='row px-4'>
                     <FolderShared shareds={this.state.shareds} />

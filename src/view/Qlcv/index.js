@@ -1,5 +1,5 @@
 import './style.css';
-import Folder from '../../components/FolderGrid';
+import Folder from '../../components/GridData';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { MenuUnfoldOutlined, MenuFoldOutlined, CheckCircleOutlined, AppstoreTwoTone, PlusSquareOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';

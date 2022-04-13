@@ -4,15 +4,17 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Time from "react-time-format";
 
-const FolderRecent = ({ data }) => {
+const {Panel} = Collapse;
+
+const ListDataFile = ({ data }) => {
     const columns = [
         {
             title: () => {
-                return  <div style={{ display:'flex', alignItems:'center' }}>
-                            <FileOutlined style={{ fontSize:18, color:'#605e5c' }} />
-                            <p className="mx-2" style={{ margin:'0', paddingTop:5 }}>Tên</p>
-                            
-                        </div>
+                return <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <FileOutlined style={{ fontSize: 18, color: '#605e5c' }} />
+                    <p className="mx-2" style={{ margin: '0', paddingTop: 5 }}>Tên</p>
+
+                </div>
             },
             dataIndex: 'name',
             key: 'name',
@@ -38,7 +40,7 @@ const FolderRecent = ({ data }) => {
         {
             title: 'Chia sẻ',
             key: 'is_editor',
-            render: (text, record) => <small style={{ margin:0 }}>{(record.is_all_viewer == 1 && record.is_all_editor == 1) ? 'Đã chia sẻ' : 'Riêng tư'}</small>
+            render: (text, record) => <small style={{ margin: 0 }}>{(record.is_all_viewer == 1 && record.is_all_editor == 1) ? 'Đã chia sẻ' : 'Riêng tư'}</small>
         },
         {
             title: 'Đã chỉnh sửa',
@@ -49,7 +51,7 @@ const FolderRecent = ({ data }) => {
         {
             title: 'Kích cỡ',
             key: 'size',
-            render: (text, record) => <small style={{ margin:0 }}>{(record.size*1*Math.pow(10, -6)).toFixed(2)}MB</small>
+            render: (text, record) => <small style={{ margin: 0 }}>{(record.size * 1 * Math.pow(10, -6)).toFixed(2)}MB</small>
         },
         {
             title: 'Sở hữu',
@@ -59,8 +61,14 @@ const FolderRecent = ({ data }) => {
     ];
 
     return (
-        <Table columns={columns} dataSource={data} pagination={false} />
+        <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
+            <Panel style={{ border: 'none', fontSize: '18px' }} header="Tệp" key="1">
+                <div style={{ display: 'flex' }}>
+                    <Table columns={columns} dataSource={data} pagination={false} />
+                </div>
+            </Panel>
+        </Collapse>
     );
 }
 
-export default FolderRecent;
+export default ListDataFile;

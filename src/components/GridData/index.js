@@ -1,16 +1,17 @@
 import { Collapse } from "antd";
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 const { Panel } = Collapse;
 
-const FolderGrid = ({ folders }) => {
+const GridData = ({ data }) => {
+
     return (
         <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
             <Panel style={{ border: 'none', fontSize: '18px' }} header="Thư mục" key="1">
-                <div className='' style={{ display: 'flex' }}>
-                    {folders.map((item3) =>
-                        <Link to={`${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>
-                            <div className=''>
+                <div style={{ display: 'flex' }}>
+                    {data && data.map((item3) =>
+                        <Link to={`/qltl/${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>
+                            <div>
                                 <div className='img-folder' style={{ position: 'relative', backgroundPosition: 'center' }}>
                                     <div style={{ position: 'absolute', fontSize: '12px', bottom: '30px', left: '25px', color: '#926e00', fontWeight: 'bold' }}>{item3.id}</div>
                                 </div>
@@ -33,4 +34,4 @@ const FolderGrid = ({ folders }) => {
     );
 }
 
-export default FolderGrid;
+export default GridData;

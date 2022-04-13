@@ -72,7 +72,7 @@ class RecentHistory extends Component {
 
                 </div>
                 <div className='row px-3'>
-                    <FolderRecent recents={this.state.recents} />
+                    <FolderRecent data={this.state.recents} />
                 </div>
             </div>
 
