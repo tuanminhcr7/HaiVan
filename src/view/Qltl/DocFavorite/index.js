@@ -33,7 +33,7 @@ class DocFavorite extends Component {
     };
 
     handleDocFavorite = () => {
-        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/doc-favorite', this.adminHeaders).then(res => {
+        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/doc-favorite', this.myHeaders).then(res => {
             console.log(res.data.data);
             this.setState({
                 docFavorites: res.data.data
@@ -72,7 +72,7 @@ class DocFavorite extends Component {
                     </p>
                 </div>
                 <div className='row px-5'>
-                    {(this.state.docFavorites == null) ? '' : <FolderDocFavorite docFavorites={this.state.docFavorites} />}
+                    {(this.state.docFavorites == null) ? '' : <FolderDocFavorite data={this.state.docFavorites} />}
                 </div>
 
             </div>

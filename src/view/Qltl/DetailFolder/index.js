@@ -1,17 +1,22 @@
 import GridData from "../../../components/GridData";
+import ListData from '../../../components/ListData';
 import ListDataFile from "../../../components/ListDataFile";
+import BreadCrumbRender from "../../../components/BreadCrumbRender";
 
 import { useEffect, useState } from "react";
-import { Breadcrumb } from 'antd';
+import { Breadcrumb, Button } from 'antd';
 import axios from "axios";
-import { useParams } from "react-router"; 
-import BreadCrumbRender from "../../../components/BreadCrumbRender";
+import { useParams } from "react-router";
+import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
+
 
 
 const DetailFolder = () => {
-    const [folders, setFolders] = useState();
-    const [files, setFiles] = useState();
+    const [folders, setFolders] = useState([]);
+    const [files, setFiles] = useState([]);
     const [breadCrumb, setBreadCrumb] = useState();
+    const [viewFolder, setViewFolder] = useState(true);
+    const [viewFile, setViewFile] = useState(false);
 
     const myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
     const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
@@ -31,7 +36,7 @@ const DetailFolder = () => {
     }
 
     const { id } = useParams();
-    console.log(id);
+    // console.log(id);
 
     const handleDetail = () => {
         axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/folders/${id}`, myHeaders).then(res => {
@@ -48,19 +53,53 @@ const DetailFolder = () => {
         handleDetail();
     }, [id]);
 
+    const changeFolderGird = () => {
+        setViewFolder(true);
+    }
+
+    const changeFolderList = () => {
+        setViewFolder(false);
+    }
+    const changeFileGird = () => {
+        setViewFile(true);
+    }
+
+    const changeFileList = () => {
+        setViewFile(false);
+    }
+
     return (
         <div>
             <div className="row px-5">
-                <BreadCrumbRender data={breadCrumb} separator=">"/>
+                <BreadCrumbRender data={breadCrumb} separator=">" />
             </div>
 
-            <div className='row px-4'>
-                <GridData data={folders} />
-            </div>            
+            {folders.length > 0 &&
+                <>
+                    <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
+                        <Button onClick={changeFolderGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
+                        <Button onClick={changeFolderList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
+                    </div>
+                    <div className='row px-4'>
+                        {viewFolder ? <GridData data={folders} title={'Thư mục'} /> : <ListData data={folders} title={'Thư mục'} />}
+                    </div>
+                </>
+            }
 
-            <div className='row px-4'>     
-                <ListDataFile data={files} />
-            </div>
+
+            {files.length > 0 &&
+                <>
+                    <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
+                        <Button onClick={changeFileGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
+                        <Button onClick={changeFileList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
+                    </div>
+
+                    <div className='row px-4'>
+                        {viewFile ? <GridData data={files} title={'Tệp'} /> : <ListDataFile data={files} />}
+                    </div>
+                </>
+            }
+
         </div>
     );
 }

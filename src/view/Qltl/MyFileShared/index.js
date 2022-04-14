@@ -69,8 +69,8 @@ class MyFileShared extends Component {
                         <Link to={'/qltl/chia-se'} style={{ textDecoration: 'none', color: '#201f1e' }}>Được chia sẻ</Link>
                     </p>
                 </div>
-                <div className='row px-5'>
-                    <FolderMyFileShared fileShareds={this.state.fileShareds} />
+                <div className='row px-4'>
+                    <FolderMyFileShared data={this.state.fileShareds} />
                 </div>
             </div>
         );

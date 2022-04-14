@@ -12,7 +12,7 @@ import ListDataFile from '../../../components/ListDataFile';
 
 
 class Home extends Component {
-    
+
     myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
     adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
 
@@ -35,7 +35,8 @@ class Home extends Component {
         folders: [],
         shareds: [],
         recents: [],
-        view: true
+        viewFolder: true,
+        viewFile: false
     };
 
 
@@ -79,13 +80,25 @@ class Home extends Component {
 
     changeFolderGird = () => {
         this.setState({
-            view: true
+            viewFolder: true
         });
     }
 
     changeFolderList = () => {
         this.setState({
-            view: false
+            viewFolder: false
+        });
+    }
+
+    changeFileGird = () => {
+        this.setState({
+            viewFile: true
+        });
+    }
+
+    changeFileList = () => {
+        this.setState({
+            viewFile: false
         });
     }
 
@@ -95,19 +108,41 @@ class Home extends Component {
                 <div className='row px-3'>
                     <p className='px-5' style={{ fontSize: '18px' }}><Link to={'/qltl'} style={{ textDecoration: 'none', color: '#201f1e' }}>{document.title}</Link></p>
                 </div>
-                <div className='row px-5'>
-                    <ListDataFile data={this.state.recents} />
-                </div>
-                <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
-                    <Button onClick={this.changeFolderGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
-                    <Button onClick={this.changeFolderList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
-                </div>
-                <div className='row px-3 m-0'>
-                    {this.state.view ? <GridData data={this.state.folders} /> : <ListData data={this.state.folders} />}
-                </div>
-                <div className='row px-4'>
-                    <ListDataFile data={this.state.shareds} />
-                </div>
+                
+                {this.state.recents.length > 0 &&
+                    <>
+                        <div className='row px-5'>
+                            <FolderRecent data={this.state.recents} />
+                        </div>
+                    </>
+                }
+
+                {this.state.folders.length > 0 &&
+                    <>
+                        <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
+                            <Button onClick={this.changeFolderGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
+                            <Button onClick={this.changeFolderList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
+                        </div>
+                        <div className='row px-3 m-0'>
+                            {this.state.viewFolder ? <GridData data={this.state.folders} title={'Thư mục'} /> : <ListData data={this.state.folders} title={'Thư mục'} />}
+                        </div>
+                    </>
+                }
+                {this.state.shareds.length > 0 &&
+                    <>
+                        <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
+                            <Link to={'/qltl/chia-se'} style={{ textDecoration: 'none', fontSize: 13, color: '#201f1e' }}>Xem tất cả</Link>
+                            <Button onClick={this.changeFileGird} className='mx-2' style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
+                            <Button onClick={this.changeFileList} style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
+                        </div>
+
+                        <div className='row px-4'>
+                            {this.state.viewFile ? <GridData data={this.state.shareds} title={'Tệp'} /> : <ListDataFile data={this.state.shareds} />}
+                        </div>
+                    </>
+                }
+
+
             </div>
         );
     }

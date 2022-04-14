@@ -33,7 +33,7 @@ class Trash extends Component {
     };
 
     handleTrash = () => {
-        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/trash', this.adminHeaders).then(res => {
+        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/trash', this.myHeaders).then(res => {
             this.setState({
                 trashes: res.data.data
             })

@@ -2,7 +2,7 @@ import RecentHistory from "./view/Qltl/RecentHistory";
 import Trash from "./view/Qltl/Trash";
 import Home from "./view/Qltl/Home";
 import DetailFolder from './view/Qltl/DetailFolder';
-// import DetailFile from './DetailFile';
+import DetailFile from './view/Qltl/DetailFile';
 import MyDoc from './view/Qltl/MyDoc';
 import Shared from './view/Qltl/MyFileShared';
 // import UploadFile from './UploadFile';
@@ -33,12 +33,12 @@ const routes = [
     component: DetailFolder,
     exact: true
   },
-  // {
-  //   path: "/:id/xem-tai-lieu-:slug",
-  //   name: "Chi tiết tệp",
-  //   component: DetailFile,
-  //   exact: true
-  // },
+  {
+    path: "/:id/xem-tai-lieu-:slug",
+    name: "Chi tiết tệp",
+    component: DetailFile,
+    exact: true
+  },
   {
     path: "/cua-toi",
     name: "Tài liệu của tôi",

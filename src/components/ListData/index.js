@@ -4,27 +4,27 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 const { Panel } = Collapse;
 
-const FolderList = ({ data }) => {
+const FolderList = ({ data, title }) => {
   const columns = [
     {
       title: () => {
-        return  <div style={{ display:'flex', alignItems:'center' }}>
-                    <FileOutlined style={{ fontSize:18, color:'#605e5c' }} />
-                    <p className="mx-2" style={{ margin:'0', paddingTop:5 }}>Tên</p>
-                </div>
+        return <div style={{ display: 'flex', alignItems: 'center' }}>
+          <FileOutlined style={{ fontSize: 18, color: '#605e5c' }} />
+          <p className="mx-2" style={{ margin: '0', paddingTop: 5 }}>Tên</p>
+        </div>
       },
       dataIndex: 'name',
       key: 'name',
-      render: (text, record) => <div style={{ display:'flex', alignItems:'center' }}>
-                                  <FolderOpenFilled style={{ fontSize:20, color:'#ffda6a', margin:'0', marginRight:'5px' }} />
-                                  <Link to={`${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
-                                </div>
+      render: (text, record) => <div style={{ display: 'flex', alignItems: 'center' }}>
+        <FolderOpenFilled style={{ fontSize: 20, color: '#ffda6a', margin: '0', marginRight: '5px' }} />
+        <Link to={`/qltl/${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
+      </div>
     },
     {
       title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
-      render: (text, record) => <small style={{ margin:0 }}>{record.description}</small>
+      render: (text, record) => <small style={{ margin: 0 }}>{record.description}</small>
     },
     {
       title: 'Ngày tạo',
@@ -35,7 +35,7 @@ const FolderList = ({ data }) => {
     {
       title: 'Chỉnh sửa',
       key: 'edit_by_name',
-      render: (text, record) => <small style={{ margin:0 }}>{record.edit_by?.name}</small>
+      render: (text, record) => <small style={{ margin: 0 }}>{record.edit_by?.name}</small>
     },
     {
       title: 'Đã chỉnh sửa',
@@ -52,9 +52,9 @@ const FolderList = ({ data }) => {
 
   return (
     <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
-      <Panel style={{ border: 'none', fontSize: '18px' }} header="Thư mục" key="1">
+      <Panel style={{ border: 'none', fontSize: '18px' }} header={title} key="1">
         <div className='' style={{ display: 'flex' }}>
-          <Table columns={columns} dataSource={data} pagination={false} />
+          <Table style={{ width: '100vw' }} columns={columns} dataSource={data} pagination={false} />
         </div>
       </Panel>
     </Collapse>
