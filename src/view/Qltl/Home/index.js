@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import axios from 'axios';
+import ListDataFile from '../../../components/ListDataFile';
 
 
 class Home extends Component {
@@ -95,7 +96,7 @@ class Home extends Component {
                     <p className='px-5' style={{ fontSize: '18px' }}><Link to={'/qltl'} style={{ textDecoration: 'none', color: '#201f1e' }}>{document.title}</Link></p>
                 </div>
                 <div className='row px-5'>
-                    <FolderRecent data={this.state.recents} />
+                    <ListDataFile data={this.state.recents} />
                 </div>
                 <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
                     <Button onClick={this.changeFolderGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
@@ -105,7 +106,7 @@ class Home extends Component {
                     {this.state.view ? <GridData data={this.state.folders} /> : <ListData data={this.state.folders} />}
                 </div>
                 <div className='row px-4'>
-                    <FolderShared shareds={this.state.shareds} />
+                    <ListDataFile data={this.state.shareds} />
                 </div>
             </div>
         );

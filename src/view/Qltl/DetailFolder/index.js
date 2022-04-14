@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import { Breadcrumb } from 'antd';
 import axios from "axios";
 import { useParams } from "react-router"; 
+import BreadCrumbRender from "../../../components/BreadCrumbRender";
 
 
 const DetailFolder = () => {
     const [folders, setFolders] = useState();
     const [files, setFiles] = useState();
+    const [breadCrumb, setBreadCrumb] = useState();
 
     const myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
     const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
@@ -35,6 +37,7 @@ const DetailFolder = () => {
         axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/folders/${id}`, myHeaders).then(res => {
             setFolders(res.data.data.folders);
             setFiles(res.data.data.files);
+            setBreadCrumb(res.data.data.bread_crumb);
         }).catch(err => {
             console.log(err);
         })
@@ -48,12 +51,12 @@ const DetailFolder = () => {
     return (
         <div>
             <div className="row px-5">
-                <Breadcrumb separator=">"/>
+                <BreadCrumbRender data={breadCrumb} separator=">"/>
             </div>
 
             <div className='row px-4'>
                 <GridData data={folders} />
-            </div>
+            </div>            
 
             <div className='row px-4'>     
                 <ListDataFile data={files} />

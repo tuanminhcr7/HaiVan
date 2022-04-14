@@ -16,7 +16,7 @@ const FolderRecent = ({ data }) => {
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <Link to={`${record.id}/xem-tai-lieu-${record.slug}`} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
+            render: (text, record) => <Link to={`${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
         },
         {
             title: 'Mô tả',
