@@ -1,7 +1,10 @@
+import folder from '../../images/icon/folder.svg';
+
 import { FileOutlined, FolderOpenFilled } from "@ant-design/icons";
 import { Collapse, Space, Table, Tag } from "antd";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+
 const { Panel } = Collapse;
 
 const FolderList = ({ data, title }) => {
@@ -16,9 +19,9 @@ const FolderList = ({ data, title }) => {
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => <div style={{ display: 'flex', alignItems: 'center' }}>
-        <FolderOpenFilled style={{ fontSize: 20, color: '#ffda6a', margin: '0', marginRight: '5px' }} />
-        <Link to={`/qltl/${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
-      </div>
+                                  <img src={folder} width={20} height={20} />&nbsp;&nbsp;
+                                  <Link to={`/qltl/${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
+                                </div>
     },
     {
       title: 'Mô tả',

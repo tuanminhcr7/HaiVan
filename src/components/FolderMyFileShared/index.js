@@ -1,8 +1,3 @@
-import { FileOutlined } from "@ant-design/icons";
-import { Collapse, Space, Table, Tag } from "antd";
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Time from "react-time-format";
 import xlsx from '../../images/icon/xlsx.svg';
 import csv from '../../images/icon/csv.svg';
 import txt from '../../images/icon/txt.svg';
@@ -10,6 +5,13 @@ import docx from '../../images/icon/docx.svg';
 import pdf from '../../images/icon/pdf.svg';
 import ppt from '../../images/icon/ppt.svg';
 import pptx from '../../images/icon/pptx.svg';
+
+import { FileOutlined } from "@ant-design/icons";
+import { Collapse, Space, Table, Tag } from "antd";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import Time from "react-time-format";
+
 const { Panel } = Collapse;
 
 const FolderMyFileShared = ({ data }) => {
@@ -69,7 +71,7 @@ const FolderMyFileShared = ({ data }) => {
             key: 'name',
             render: (text, record) =>   <div style={{ display: 'flex', alignItems: 'center' }}>
                                             {renderImage(record.type)}
-                                            <Link to={`${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}</Link>
+                                            <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}</Link>
                                         </div>
         },
         {
@@ -92,7 +94,7 @@ const FolderMyFileShared = ({ data }) => {
         {
             title: 'Chia sẻ',
             key: 'is_editor',
-            render: (text, record) => <small style={{ margin: 0 }}>{(record.is_editor == 1) ? 'Đã chia sẻ' : ''}</small>
+            render: (text, record) => <small style={{ margin: 0 }}>{(record.is_all_viewer == 1) ? 'Đã chia sẻ' : 'Riêng tư'}</small>
         },
         {
             title: 'Đã chỉnh sửa',

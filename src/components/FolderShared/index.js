@@ -1,8 +1,3 @@
-import { FileOutlined } from "@ant-design/icons";
-import { Collapse, Space, Table, Tag } from "antd";
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Time from "react-time-format";
 import xlsx from '../../images/icon/xlsx.svg';
 import csv from '../../images/icon/csv.svg';
 import txt from '../../images/icon/txt.svg';
@@ -10,6 +5,13 @@ import docx from '../../images/icon/docx.svg';
 import pdf from '../../images/icon/pdf.svg';
 import ppt from '../../images/icon/ppt.svg';
 import pptx from '../../images/icon/pptx.svg';
+
+import { FileOutlined } from "@ant-design/icons";
+import { Collapse, Space, Table, Tag } from "antd";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import Time from "react-time-format";
+
 
 const { Panel } = Collapse;
 
@@ -69,7 +71,7 @@ const FolderShared = ({ data }) => {
             key: 'name',
             render: (text, record) =>   <div style={{ display: 'flex', alignItems: 'center' }}>
                                             {renderImage(record.type)}
-                                            <Link to={`${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
+                                            <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
                                         </div>
         },
         {

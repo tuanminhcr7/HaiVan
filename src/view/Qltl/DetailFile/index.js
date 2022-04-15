@@ -1,13 +1,76 @@
+import BreadCrumbRender from "../../../components/BreadCrumbRender";
+import share from "../../../images/icon/share.svg";
+import download from "../../../images/icon/download.svg";
+import move from "../../../images/icon/move.svg";
+import edit from "../../../images/icon/edit.svg";
+import del from "../../../images/icon/delete.svg";
+import xlsx from '../../../images/icon/xlsx.svg';
+import csv from '../../../images/icon/csv.svg';
+import txt from '../../../images/icon/txt.svg';
+import docx from '../../../images/icon/docx.svg';
+import pdf from '../../../images/icon/pdf.svg';
+import ppt from '../../../images/icon/ppt.svg';
+import pptx from '../../../images/icon/pptx.svg';
+import folder from '../../../images/icon/folder.svg';
+
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import BreadCrumbRender from "../../../components/BreadCrumbRender";
-
+import { Link } from "react-router-dom";
+import Time from 'react-time-format';
+import { Breadcrumb } from "antd";
 
 
 const DetailFile = () => {
     const [file, setFile] = useState();
     const [breadCrumb, setBreadCrumb] = useState();
+
+    const renderImage = (type) => {
+        switch (type) {
+            case 'xlsx':
+                return (
+                    <img style={{ marginTop: -15 }} src={xlsx} />
+                );
+                break;
+            case 'csv':
+                return (
+                    <img style={{ marginTop: -15 }} src={csv} />
+                );
+                break;
+            case 'txt':
+                return (
+                    <img style={{ marginTop: -15 }} src={txt} />
+                );
+                break;
+            case 'docx':
+                return (
+                    <img style={{ marginTop: -15 }} src={docx} />
+                );
+                break;
+            case 'pdf':
+                return (
+                    <img style={{ marginTop: -15 }} src={pdf} />
+                );
+                break;
+            case 'ppt':
+                return (
+                    <img style={{ marginTop: -15 }} src={ppt} />
+                );
+                break;
+            case 'pptx':
+                return (
+                    <img style={{ marginTop: -15 }} src={pptx} />
+                );
+                break;
+            case 'folder':
+                return (
+                    <img style={{ marginTop: -15 }} src={folder} />
+                );
+                break;
+            default:
+                break;
+        }
+    }
 
     const myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
     const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
@@ -26,11 +89,10 @@ const DetailFile = () => {
         }
     }
 
-    const {id} = useParams();
+    const { id } = useParams();
 
     const handleBreadCrumb = () => {
         axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/files/${id}`, myHeaders).then(res => {
-            console.log(res.data.data.breadCrumb);
             setBreadCrumb(res.data.data.breadCrumb);
         }).catch(err => {
             console.log(err);
@@ -38,10 +100,16 @@ const DetailFile = () => {
     }
 
     const handleDetailFile = () => {
-        axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/get-share-file/${id}`, myHeaders).then(res => {
-            console.log(res.data.data);
+        axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/files/${id}`, myHeaders).then(res => {
+            setFile(res.data.data);
         }).catch(err => {
             console.log(err);
+        })
+    }
+
+    const downloadFile = () => {
+        axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/files/${id}`, myHeaders).then(res => {
+
         })
     }
 
@@ -51,15 +119,104 @@ const DetailFile = () => {
         handleDetailFile();
     }, [id]);
 
+    const linkStyle = {
+        textDecoration: 'none',
+        color: '#000',
+        display: 'inline',
+        alignItems: 'center',
+        fontSize: 14
+    }
+
     return (
         <div>
-            <div className="row px-5">
-                <BreadCrumbRender data={breadCrumb} separator=">"/>
-            </div>
-            
-            <div className="row px-5">
-                
-            </div>
+
+            {file &&
+                <>
+                    <div className="row px-5">
+                        <BreadCrumbRender data={breadCrumb} fontSize={18} separator=">" />
+                    </div>
+
+                    <div className="row px-5">
+                        <div className="col-8">
+                            <div className="row my-3" style={{ display: 'inline-block' }}>
+                                <Link to={''} style={linkStyle}><img src={share} width={20} height={20} />&nbsp;Chia sẻ</Link>
+                                <Link to={''} style={linkStyle}><img src={download} width={20} height={20} />&nbsp;Tải xuống</Link>
+                                <Link to={''} style={linkStyle}><img src={move} width={20} height={20} />&nbsp;Di chuyển tới</Link>
+                                <Link to={''} style={linkStyle}><img src={edit} width={20} height={20} />&nbsp;Chỉnh sửa</Link>
+                                <Link to={''} style={linkStyle}><img src={del} width={20} height={20} />&nbsp;Xóa</Link>
+                            </div>
+                            <div className="row">
+                                {file?.url && file?.type != "pdf" && file?.type != "txt" && file?.type != "csv" ? (
+                                    <iframe
+                                        style={{ height: '70vh' }}
+                                        src={
+                                            "//view.officeapps.live.com/op/embed.aspx?src=" +
+                                            file?.url
+                                        }
+                                        title="Embedded Document"
+                                        className="ead-iframe"
+                                    ></iframe>
+                                ) : (
+                                    <iframe
+                                        style={{ height: '70vh' }}
+                                        title={file?.name}
+                                        className="iframe-viewer"
+                                        src={
+                                            "https://docs.google.com/gview?url=" +
+                                            file?.url +
+                                            "&embedded=true"
+                                        }
+                                    ></iframe>
+                                )}
+                            </div>
+
+                        </div>
+                        <div className="col-4 mt-4 pt-4">
+                            <h5 className="pt-1" >{file.name}</h5>
+
+                            <h5 className="pt-2">Chi tiết</h5>
+
+                            <h6 className="pt-2" style={{ fontSize: 14 }}>Dạng</h6>
+                            <div className="mt-3">
+                                {renderImage(file.type)}
+                            </div>
+
+                            <h6 className="pt-2" style={{ fontSize: 14 }}>Chủ sở hữu</h6>
+                            <p style={{ fontSize: 14, color: '#8c8c8c' }}>{file.create_by.name}</p>
+
+                            <h6 style={{ fontSize: 14 }}>Chỉnh sửa gần đây</h6>
+                            {
+                                file.updated_at &&
+                                <p style={{ fontSize: 14, color: '#8c8c8c' }}>
+                                    <Time value={new Date(file.updated_at)} format="DD-MM-YYYY HH:mm" /> bởi {file.create_by.name}
+                                </p>
+                            }
+
+                            <h6 style={{ fontSize: 14 }}>Ngày tạo</h6>
+                            <p style={{ fontSize: 14, color: '#8c8c8c' }}>
+                                <Time value={new Date(file.created_at)} format="DD-MM-YYYY HH:mm" />
+                            </p>
+
+                            <h6 style={{ fontSize: 14 }}>Nơi lưu trữ bản cứng</h6>
+                            <h6 style={{ fontSize: 14 }}>Đường dẫn</h6>
+                            <Breadcrumb separator=">">
+                                {
+                                    file.breadCrumb && file.breadCrumb.map((item, index) => {
+                                        return (
+                                            <Breadcrumb.Item key={index} style={{ fontSize: 14 }}>{item?.name}</Breadcrumb.Item>
+                                        );
+                                    })
+                                }
+                            </Breadcrumb>
+
+                            <h6 className="pt-3" style={{ fontSize: 14 }}>Kích thước</h6>
+                            <p style={{ fontSize: 14, color: '#8c8c8c' }}>{(file.size * 1 * Math.pow(10, -6)).toFixed(2)}MB</p>
+                        </div>
+                    </div>
+                </>
+            }
+
+
         </div>
     );
 }

@@ -36,7 +36,6 @@ const DetailFolder = () => {
     }
 
     const { id } = useParams();
-    // console.log(id);
 
     const handleDetail = () => {
         axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/folders/${id}`, myHeaders).then(res => {
@@ -60,6 +59,7 @@ const DetailFolder = () => {
     const changeFolderList = () => {
         setViewFolder(false);
     }
+    
     const changeFileGird = () => {
         setViewFile(true);
     }
@@ -71,7 +71,7 @@ const DetailFolder = () => {
     return (
         <div>
             <div className="row px-5">
-                <BreadCrumbRender data={breadCrumb} separator=">" />
+                <BreadCrumbRender data={breadCrumb} fontSize={18} separator=">" />
             </div>
 
             {folders.length > 0 &&
@@ -86,7 +86,6 @@ const DetailFolder = () => {
                 </>
             }
 
-
             {files.length > 0 &&
                 <>
                     <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
@@ -99,7 +98,6 @@ const DetailFolder = () => {
                     </div>
                 </>
             }
-
         </div>
     );
 }

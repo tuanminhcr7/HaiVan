@@ -1,6 +1,3 @@
-import { Collapse } from "antd";
-import React from "react";
-import { Link } from "react-router-dom";
 import xlsx from '../../images/icon/xlsx.svg';
 import csv from '../../images/icon/csv.svg';
 import txt from '../../images/icon/txt.svg';
@@ -9,6 +6,11 @@ import pdf from '../../images/icon/pdf.svg';
 import ppt from '../../images/icon/ppt.svg';
 import pptx from '../../images/icon/pptx.svg';
 import folder from '../../images/icon/folder.svg';
+
+import { Collapse } from "antd";
+import React from "react";
+import { Link } from "react-router-dom";
+
 const { Panel } = Collapse;
 
 
@@ -71,7 +73,7 @@ const GridData = ({ data, title }) => {
                                 <div style={{ padding:'5px 15px' }}>
                                     {renderImage(item3.type)}
                                 </div>
-                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center' }}>{item3.name}</p>
+                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth:100 }}>{item3.name.length > 12 ? `${item3.name.substring(0, 12)}...` : item3.name }</p>
                                 <small className='px-4' style={{ fontSize: 'small', color: '#605e5c' }}>
                                     {
                                         new Intl.DateTimeFormat('vn-GB', {

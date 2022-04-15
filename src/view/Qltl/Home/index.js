@@ -1,14 +1,14 @@
 import GridData from '../../../components/GridData';
 import ListData from '../../../components/ListData';
 import FolderRecent from '../../../components/FolderRecent';
-import FolderShared from '../../../components/FolderShared';
+import ListDataFile from '../../../components/ListDataFile';
 
 import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import axios from 'axios';
-import ListDataFile from '../../../components/ListDataFile';
+
 
 
 class Home extends Component {
