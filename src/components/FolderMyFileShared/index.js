@@ -84,7 +84,7 @@ const FolderMyFileShared = ({ data }) => {
             title: 'Ngày tạo',
             dataIndex: 'created_at',
             key: 'created_at',
-            render: (date) => <small>{new Intl.DateTimeFormat('vn-GB', { month: '2-digit', day: '2-digit', year: 'numeric' }).format(new Date(date))}</small>
+            render: (date) => <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
         },
         {
             title: 'Chỉnh sửa',
@@ -94,13 +94,18 @@ const FolderMyFileShared = ({ data }) => {
         {
             title: 'Chia sẻ',
             key: 'is_editor',
-            render: (text, record) => <small style={{ margin: 0 }}>{(record.is_all_viewer == 1) ? 'Đã chia sẻ' : 'Riêng tư'}</small>
+            render: (text, record) => <small style={{ margin: 0 }}>{(record.is_all_viewer == 1 || record.is_all_editor) ? 'Đã chia sẻ' : 'Riêng tư'}</small>
         },
         {
             title: 'Đã chỉnh sửa',
             key: 'updated_at',
             dataIndex: 'updated_at',
-            render: (date) => <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
+            render: (date, record) =>   <>
+                                            {record.edit_by &&  <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>}
+                                            
+                                        </>
+            
+            
         },
         {
             title: 'Kích cỡ',

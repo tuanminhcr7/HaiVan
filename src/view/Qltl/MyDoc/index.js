@@ -35,7 +35,6 @@ class MyDoc extends Component {
 
     handleMyDoc = () => {
         axios.get('https://dev.api.qlnb.haivanexpress.vn/api/my-doc', this.myHeaders).then(res => {
-            console.log(res.data.data);
             this.setState({
                 myDocFiles: res.data.data.file,
                 // myDocFolders: res.data.folder

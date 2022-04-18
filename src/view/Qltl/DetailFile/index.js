@@ -177,7 +177,7 @@ const DetailFile = () => {
                             <h5 className="pt-2">Chi tiết</h5>
 
                             <h6 className="pt-2" style={{ fontSize: 14 }}>Dạng</h6>
-                            <div className="mt-3">
+                            <div className="mt-4">
                                 {renderImage(file.type)}
                             </div>
 
@@ -186,15 +186,15 @@ const DetailFile = () => {
 
                             <h6 style={{ fontSize: 14 }}>Chỉnh sửa gần đây</h6>
                             {
-                                file.updated_at &&
+                                file.edit_by &&
                                 <p style={{ fontSize: 14, color: '#8c8c8c' }}>
-                                    <Time value={new Date(file.updated_at)} format="DD-MM-YYYY HH:mm" /> bởi {file.create_by.name}
+                                    <Time value={new Date(file.updated_at)} format="DD-MM-YYYY HH:mm" /> bởi {file.edit_by.name}
                                 </p>
                             }
 
                             <h6 style={{ fontSize: 14 }}>Ngày tạo</h6>
                             <p style={{ fontSize: 14, color: '#8c8c8c' }}>
-                                <Time value={new Date(file.created_at)} format="DD-MM-YYYY HH:mm" />
+                                <Time value={new Date(file.created_at)} format="DD/MM/YYYY HH:mm" />
                             </p>
 
                             <h6 style={{ fontSize: 14 }}>Nơi lưu trữ bản cứng</h6>

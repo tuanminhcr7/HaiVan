@@ -93,7 +93,7 @@ const FolderMyDoc = ({ myDocFiles }, {myDocFolders}) => {
         {
             title: 'Chia sẻ',
             key: 'is_editor',
-            render: (text, record) => <small style={{ margin:0 }}>{record.is_all_viewer == 1 ? 'Đã chia sẻ' : 'Riêng tư'}</small>
+            render: (text, record) => <small style={{ margin:0 }}>{(record.is_all_viewer == 1 || record.is_all_editor == 1) ? 'Đã chia sẻ' : 'Riêng tư'}</small>
         },
         {
             title: 'Đã chỉnh sửa',

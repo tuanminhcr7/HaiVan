@@ -10,7 +10,8 @@ const BreadCrumbRender = ({data, fontSize}) => {
                     data && data.map((item, index) => {
                         return (
                             <Breadcrumb.Item key={index} style={{ fontSize: fontSize  }}>
-                                <Link to={`${item?.slug}`} style={{textDecoration:'none'}}>{item?.name}</Link></Breadcrumb.Item>
+                                <Link to={`${item?.slug}`} style={{textDecoration:'none'}}>{item?.name}</Link>
+                            </Breadcrumb.Item>
                         );
                     })
                 }

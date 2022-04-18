@@ -7,6 +7,8 @@ import { LogoutOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons"
 
 const Header = ({ users }) => {
 
+    
+
     return (
         <header style={{ width: '88vw' }}>
             <div className='row'>
@@ -16,6 +18,7 @@ const Header = ({ users }) => {
                             placeholder="Tìm kiếm tài liệu"
                             onSearch={value => console.log(value)}
                         />
+                        
                         <Upload className='mx-3'>
                             <Button type="primary" style={{ display: 'flex', alignItems: 'center' }} icon={<UploadOutlined className='m-0 p-0' />}>Tải lên</Button>
                         </Upload>
