@@ -4,6 +4,7 @@ import { FileOutlined, FolderOpenFilled } from "@ant-design/icons";
 import { Collapse, Space, Table, Tag } from "antd";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Time from 'react-time-format';
 
 const { Panel } = Collapse;
 
@@ -19,32 +20,36 @@ const FolderList = ({ data, title }) => {
       dataIndex: 'name',
       key: 'name',
       render: (text, record) => <div style={{ display: 'flex', alignItems: 'center' }}>
-                                  <img src={folder} width={20} height={20} />&nbsp;&nbsp;
-                                  <Link to={`/qltl/${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
-                                </div>
+        <img src={folder} width={20} height={20} />&nbsp;&nbsp;
+        <Link to={`/qltl/${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
+      </div>
     },
     {
       title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
-      render: (text, record) => <small style={{ margin: 0 }}>{record.description}</small>
+      render: (text, record) =>   <small style={{ margin: 0 }}>{record.description}</small>
     },
     {
       title: 'Ngày tạo',
       dataIndex: 'created_at',
       key: 'created_at',
-      render: (date) => <small>{new Intl.DateTimeFormat('vn-GB', { month: 'numeric', day: '2-digit', year: 'numeric' }).format(new Date(date))}</small>
+      render: (date) =>   <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
     },
     {
       title: 'Chỉnh sửa',
       key: 'edit_by_name',
-      render: (text, record) => <small style={{ margin: 0 }}>{record.edit_by?.name}</small>
+      render: (text, record) =>   <small style={{ margin: 0 }}>{record.edit_by?.name}</small>
     },
     {
       title: 'Đã chỉnh sửa',
       key: 'updated_at',
       dataIndex: 'updated_at',
-      render: (date) => <small>{new Intl.DateTimeFormat('vn-GB', { month: 'numeric', day: '2-digit', year: 'numeric' }).format(new Date(date))}</small>
+      render: (date, record) =>   <>
+                                    {record.edit_by && 
+                                      <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
+                                    }
+                                  </>
     },
     {
       title: 'Sở hữu',

@@ -16,7 +16,7 @@ const { Panel } = Collapse;
 
 
 
-const GridData = ({ data, title }) => {
+const GridDataFile = ({ data }) => {
     const renderImage = (type) => {
         switch (type) {
             case 'xlsx':
@@ -65,26 +65,22 @@ const GridData = ({ data, title }) => {
     }
 
     return (
-        <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
-            <Panel style={{ border: 'none', fontSize: '18px' }} header={title} key="1">
-                <div style={{ display: 'flex' }}>
-                    {data && data.map((item3) =>
-                        <Link to={`/qltl/${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>
-                            <div>
-                                <div style={{ padding:'5px 15px' }}>
-                                    {renderImage(item3.type)}
-                                </div>
-                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth:100 }}>{item3.name.length > 12 ? `${item3.name.substring(0, 12)}...` : item3.name }</p>
-                                <small className='px-4' style={{ fontSize: 'small', color: '#605e5c' }}>
-                                        <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
-                                </small>
-                            </div>
-                        </Link>
-                    )}
-                </div>
-            </Panel>
-        </Collapse>
+        <div style={{ display: 'flex' }}>
+            {data && data.map((item3) =>
+                <Link to={`/qltl/${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder' style={{ color: '#201f1e'}} title={item3.name}>
+                    <div>
+                        <div style={{ padding: '5px 15px' }}>
+                            {renderImage(item3.type)}
+                        </div>
+                        <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item3.name.length > 12 ? `${item3.name.substring(0, 12)}...` : item3.name}</p>
+                        <small className='px-4' style={{ fontSize: 'small', color: '#605e5c' }}>
+                            <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
+                        </small>
+                    </div>
+                </Link>
+            )}
+        </div>
     );
 }
 
-export default GridData;
+export default GridDataFile;

@@ -5,7 +5,7 @@ import DetailFolder from './view/Qltl/DetailFolder';
 import DetailFile from './view/Qltl/DetailFile';
 import MyDoc from './view/Qltl/MyDoc';
 import Shared from './view/Qltl/MyFileShared';
-import UploadFile from './view/Qltl/UploadFile';
+import UploadFile from './view/Qltl/UploadFile/uploadFile.js';
 import DocFavorite from './view/Qltl/DocFavorite';
 
 const routes = [

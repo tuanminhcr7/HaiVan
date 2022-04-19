@@ -1,13 +1,60 @@
 import avatar from '../../../images/T1.jpg';
 import Search from 'antd/lib/transfer/search';
 
-import { Button, Upload } from 'antd';
+import React, { useState } from 'react';
+import { Button, Input, Upload } from 'antd';
 import { LogoutOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
+import axios from 'axios';
 
 
 const Header = ({ users }) => {
 
-    
+    const myToken = '663|e2mCVApINDlAQzyeEGHRQ1w2fHXjUoACryFG5B9R';
+    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
+
+    const myHeaders = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${myToken}`
+        }
+    }
+
+    const adminHeaders = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${adminToken}`
+        }
+    }
+
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        const formData = new FormData();
+        formData.append("files", selectedFile);
+        formData.append("folder_id", 1);
+        // axios.post('https://dev.api.qlnb.haivanexpress.vn/api/files',  formData, myHeaders).then(res => {
+        //     console.log(res);
+        // }).catch(err => {
+        //     console.log(err);
+        // })
+        try {
+            const response = axios({
+                method: "post",
+                url: "https://dev.api.qlnb.haivanexpress.vn/api/files",
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data", 'Authorization': `Bearer ${myToken}` },
+            });
+        } catch (error) {
+            console.log(error)
+        }
+
+        
+    }
+
+    const handleFileSelect = (event) => {
+        setSelectedFile(event.target.files[0])
+    }
 
     return (
         <header style={{ width: '88vw' }}>
@@ -18,10 +65,12 @@ const Header = ({ users }) => {
                             placeholder="Tìm kiếm tài liệu"
                             onSearch={value => console.log(value)}
                         />
-                        
-                        <Upload className='mx-3'>
-                            <Button type="primary" style={{ display: 'flex', alignItems: 'center' }} icon={<UploadOutlined className='m-0 p-0' />}>Tải lên</Button>
-                        </Upload>
+
+                        <form onSubmit={handleSubmit} style={{ display:'flex' }}>
+                            <Input type="file" onChange={handleFileSelect} />
+                            <Input type="submit" value="Upload File" />
+                        </form>
+
                     </div>
                 </div>
 

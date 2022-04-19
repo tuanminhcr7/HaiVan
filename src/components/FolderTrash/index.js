@@ -15,7 +15,7 @@ import Time from 'react-time-format';
 
 const { Panel } = Collapse;
 
-const FolderTrash = ({ trashes }) => {
+const FolderTrash = ({ data }) => {
 
     const renderImage = (type) => {
         switch (type) {
@@ -118,7 +118,7 @@ const FolderTrash = ({ trashes }) => {
     ];
 
     return (
-        <Table style={{ width:'100vw' }} columns={columns} dataSource={trashes} pagination={false} />
+        <Table style={{ width:'100vw' }} columns={columns} dataSource={data} pagination={false} />
     );
 }
 

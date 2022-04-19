@@ -3,82 +3,79 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import FolderDocFavorite from '../../../components/FolderDocFavorite';
 
 import { Link } from 'react-router-dom';
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import axios from 'axios';
+import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import GridData from '../../../components/GridData';
+import GridDataFile from '../../../components/GridDataFile';
 
 
-class DocFavorite extends Component {
+const DocFavorite = () => {
 
-    myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
-    adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
+    const myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
+    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
 
-    myHeaders = {
+    const myHeaders = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.myToken}`
+            'Authorization': `Bearer ${myToken}`
         }
     }
 
-    adminHeaders = {
+    const adminHeaders = {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.adminToken}`
+            'Authorization': `Bearer ${adminToken}`
         }
     }
 
-    state = {
-        collapsed: false,
-        view: true,
-        docFavorites: []
-    };
+    const [docFavorites, setDocFavorite] = useState([]);
+    const [viewFile, setViewFile] = useState(false);
 
-    handleDocFavorite = () => {
-        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/doc-favorite', this.myHeaders).then(res => {
-            console.log(res.data.data);
-            this.setState({
-                docFavorites: res.data.data
-            })
+    const handleDocFavorite = () => {
+        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/doc-favorite', myHeaders).then(res => {
+            setDocFavorite(res.data.data);
         }).catch(err => {
             console.log(err);
         });
     }
 
-    componentDidMount() {
+    useEffect(() => {
         document.title = 'Tài liệu yêu thích';
-        this.handleDocFavorite();
+        handleDocFavorite();
+    }, []);
+
+    const changeFileGird = () => {
+        setViewFile(true);
     }
 
-    changeFolderGird = () => {
-        this.setState({
-            view: true
-        });
+    const changeFileList = () => {
+        setViewFile(false);
     }
 
-    changeFolderList = () => {
-        this.setState({
-            view: false
-        });
-    }
+    return (
+        <div>
 
-    render() {
-        return (
-            <div>
-
-                <div className='row px-1'>
-                    <p className='px-5' style={{ fontSize: '18px' }}>
-                        <Link to={'/qltl'} style={{ textDecoration: 'none', color: '#8c8c8c' }}>Quản lý tài liệu</Link>
-                        {' > '}
-                        <Link to={'/qltl/yeu-thich'} style={{ textDecoration: 'none', color: '#201f1e' }}>Yêu thích</Link>
-                    </p>
-                </div>
-                <div className='row px-5'>
-                    {(this.state.docFavorites == null) ? '' : <FolderDocFavorite data={this.state.docFavorites} />}
-                </div>
-
+            <div className='row px-1'>
+                <p className='px-5' style={{ fontSize: '18px' }}>
+                    <Link to={'/qltl'} style={{ textDecoration: 'none', color: '#8c8c8c' }}>Quản lý tài liệu</Link>
+                    {' > '}
+                    <Link to={'/qltl/yeu-thich'} style={{ textDecoration: 'none', color: '#201f1e' }}>Yêu thích</Link>
+                </p>
             </div>
-        );
-    }
 
+            <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
+                <Button onClick={changeFileGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
+                <Button onClick={changeFileList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
+            </div>
+            {docFavorites && 
+                <div className='row px-3 m-0'>
+                    {viewFile ? <GridDataFile data={docFavorites} /> : <FolderDocFavorite data={docFavorites} />}
+                </div>
+            }
+        </div>
+    );
 }
 
 export default DocFavorite;

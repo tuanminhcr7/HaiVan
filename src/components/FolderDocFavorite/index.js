@@ -98,7 +98,7 @@ const FolderDocFavorite = ({ data }) => {
             title: 'Đã chỉnh sửa',
             key: 'updated_at',
             dataIndex: 'updated_at',
-            render: (date) => <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
+            render: (date, record) => {record.edit_by && <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>}
         },
 
         {
