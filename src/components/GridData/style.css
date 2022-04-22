@@ -1,9 +1,9 @@
 .tool-file-grid {
-    margin-left: 5px;
+    margin-left: 15px;
     display: flex;
     display: none;
     transition: 0.9s;
-    margin-top:-70px;
+    margin-top: -50px;
     position: absolute;
 }
 
@@ -24,11 +24,11 @@
 }
 
 .tool-folder-grid {
-    margin-left: 5px;
+    margin-left: 15px;
     display: flex;
     display: none;
     transition: 0.9s;
-    margin-top: -70px;
+    margin-top: -50px;
     position: absolute;
 }
 
@@ -47,3 +47,21 @@
 .folder p {
     padding-left: 0;
 }
+
+.link-folder-grid {
+    display: block;
+    text-decoration: none;
+}
+
+.link-folder-grid:hover {
+    background-color: #f3f2f1;
+}
+
+.link-file-grid {
+    display: block;
+    text-decoration: none;
+  }
+  
+  .link-file-grid:hover {
+    background-color: #f3f2f1;
+  }

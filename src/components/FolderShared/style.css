@@ -1,0 +1,19 @@
+.button-tool {
+    padding-left: 5px;
+    display: flex;
+    display: none;
+    left: 250px;
+    position: absolute;
+}
+
+.button-tool>Button {
+    margin-right: 5px;
+}
+
+.data-file {
+    position: relative;
+}
+
+.data-file:hover .button-tool {
+    display: block;
+}

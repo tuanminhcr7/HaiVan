@@ -83,7 +83,7 @@ const GridData = ({ data, title }) => {
                             <>
                                 {data && data.map((item3) =>
                                     <div className='data-file'>
-                                        <Link to={`/qltl/${item3.id}/xem-tai-lieu-${item3.slug}`} className='px-2 link-folder-grid link-file-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item3.name}>
+                                        <Link to={`/qltl/${item3.id}/xem-tai-lieu-${item3.slug}`} className='px-2 link-file-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item3.name}>
                                             <div className='file'>
                                                 <div style={{ padding: '5px 15px' }}>
                                                     {renderImage(item3.type)}
@@ -114,12 +114,12 @@ const GridData = ({ data, title }) => {
                             <>
                                 {data && data.map((item3) =>
                                     <div className='data-folder'>
-                                        <Link to={`/qltl/${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder-grid link-file-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item3.name}>
+                                        <Link to={`/qltl/${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item3.name}>
                                             <div className='file'>
                                                 <div style={{ padding: '5px 15px' }}>
                                                     {renderImage(item3.type)}
                                                 </div>
-                                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item3.name.length > 10 ? `${item3.name.substring(0, 10)}...` : item3.name}</p>
+                                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item3.name.length > 13 ? `${item3.name.substring(0, 13)}...` : item3.name}</p>
                                                 <small className='px-4' style={{ fontSize: 'small', color: '#605e5c' }}>
                                                     <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
                                                 </small>

@@ -3,7 +3,7 @@ import Search from 'antd/lib/transfer/search';
 
 import React, { useState } from 'react';
 import { Button, Input, Upload } from 'antd';
-import { LogoutOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
+import { FolderAddOutlined, LogoutOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 const Header = ({ users }) => {
     const navigate = useNavigate();
 
-    const myToken = '663|e2mCVApINDlAQzyeEGHRQ1w2fHXjUoACryFG5B9R';
+    const myToken = users.token;
     const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
 
     const myHeaders = {
@@ -59,10 +59,12 @@ const Header = ({ users }) => {
     }
 
     const beforeUpload = (file, fileList) => {
-        
-        navigate("/qltl/upload-file", {state:{
-            files: fileList,
-        }});
+
+        navigate("/qltl/upload-file", {
+            state: {
+                files: fileList,
+            }
+        });
     }
 
     return (
@@ -96,7 +98,19 @@ const Header = ({ users }) => {
                                 Tải lên
                             </Button>
                         </Upload>
-
+                        {users.isAdmin == 1 && 
+                            <Button
+                                style={{
+                                    marginLeft: "15px",
+                                    background: "#008d47",
+                                    border: "none", display: 'flex', alignItems: 'center', color:'#fff'
+                                }}
+                                icon={<FolderAddOutlined />}
+                            >
+                                Tạo thư mục
+                            </Button>
+                        }
+                        
                     </div>
                 </div>
 

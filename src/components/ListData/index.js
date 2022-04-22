@@ -5,7 +5,7 @@ import move from '../../images/icon/move.svg';
 import download from '../../images/icon/download.svg';
 import del from '../../images/icon/delete.svg';
 import favorite from '../../images/icon/favorite.svg';
-import './style.css';
+import '../ListData/style.css';
 
 import { FileOutlined, FolderOpenFilled } from "@ant-design/icons";
 import { Button, Collapse, Space, Table, Tag, Tooltip } from "antd";
@@ -35,22 +35,21 @@ const ListData = ({ data, title }) => {
       },
       dataIndex: 'name',
       key: 'name',
-      render: (text, record) => <div className='data-folder' style={{ display: 'flex', alignItems: 'center', width: 400 }}>
-                                  <img src={folder} width={20} height={20} />&nbsp;&nbsp;
-                                  <Link to={`/qltl/${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
-                                  <div className='button-tool'>
-                                    <Tooltip title={'Xóa'}>
-                                      <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
-                                    </Tooltip>
-                                    <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
-                                      <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
-                                    </Tooltip>
-                                    <Tooltip title={'Chia sẻ'}>
-                                      <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
-                                    </Tooltip>
-                                    
+      render: (text, record) =>   <div className='data-folder' style={{ display: 'flex', alignItems: 'center', width: 400 }}>
+                                      <img src={folder} width={20} height={20} />&nbsp;&nbsp;
+                                      <Link to={`/qltl/${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
+                                      <div className='button-tool'>
+                                          <Tooltip title={'Xóa'}>
+                                              <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                                          </Tooltip>
+                                          <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
+                                              <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                                          </Tooltip>
+                                          <Tooltip title={'Chia sẻ'}>
+                                              <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                                          </Tooltip>                                        
+                                      </div>
                                   </div>
-                              </div>
     },
     {
       title: 'Mô tả',

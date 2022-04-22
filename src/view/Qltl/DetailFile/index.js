@@ -139,11 +139,11 @@ const DetailFile = () => {
                     <div className="row px-5">
                         <div className="col-8">
                             <div className="row my-3" style={{ display: 'flex' }}>
-                                <div className="col-1" style={{ marginRight:20 }}><Button style={buttonStyle} className="px-0"><img src={share} width={20} height={20} />&nbsp;Chia sẻ</Button></div>
-                                <div className="col-1" style={{ marginRight:20 }}><Button style={buttonStyle} className="px-0"><img src={download} width={20} height={20} />&nbsp;Tải xuống</Button></div>
-                                <div className="col-1" style={{ marginRight:20 }}><Button style={buttonStyle} className="px-0"><img src={move} width={20} height={20} />&nbsp;Di chuyển tới</Button></div>
-                                <div className="col-1" style={{ marginRight:20 }}><Button style={buttonStyle} className="px-0"><img src={edit} width={20} height={20} />&nbsp;Chỉnh sửa</Button></div>
-                                <div className="col-1" style={{ marginRight:20 }}><Button style={buttonStyle} className="px-0"><img src={del} width={20} height={20} />&nbsp;Xóa</Button></div>
+                                <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={share} width={20} height={20} />&nbsp;Chia sẻ</Button></div>
+                                <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={download} width={20} height={20} />&nbsp;Tải xuống</Button></div>
+                                <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={move} width={20} height={20} />&nbsp;Di chuyển tới</Button></div>
+                                <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={edit} width={20} height={20} />&nbsp;Chỉnh sửa</Button></div>
+                                <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={del} width={20} height={20} />&nbsp;Xóa</Button></div>
                             </div>
                             <div className="row">
                                 {file?.url && file?.type != "pdf" && file?.type != "txt" && file?.type != "csv" ? (

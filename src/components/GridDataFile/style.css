@@ -1,0 +1,20 @@
+.tool-file-grid {
+    margin-left: 10px;
+    display: flex;
+    display: none;
+    transition: 0.9s;
+    margin-top:-40px;
+    position: absolute;
+}
+
+.tool-file-grid>Button {
+    margin-right: 2px;
+}
+
+.data-file {
+    position: relative;
+}
+
+.data-file:hover .tool-file-grid {
+    display: block;
+}
