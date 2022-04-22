@@ -66,6 +66,10 @@ class Home extends Component {
             <MenuItem key="3" icon={<ProfileOutlined />}>
               <Link to={'#'} className='link' title='Quản lý chấm công'>Quản lý chấm công</Link>
             </MenuItem>
+
+            <MenuItem key="4" icon={<ProfileOutlined />}>
+              <Link to={'#'} className='link' title='Quản lý chấm công'>Quản lý quy trình</Link>
+            </MenuItem>
           </Menu>
           
           <Button type="default" onClick={this.toggleCollapsed} 

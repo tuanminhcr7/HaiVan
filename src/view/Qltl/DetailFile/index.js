@@ -12,11 +12,12 @@ import pdf from '../../../images/icon/pdf.svg';
 import ppt from '../../../images/icon/ppt.svg';
 import pptx from '../../../images/icon/pptx.svg';
 import folder from '../../../images/icon/folder.svg';
+import './style.css';
 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Link } from "react-router-dom";
+import { Button } from "antd";
 import Time from 'react-time-format';
 import { Breadcrumb } from "antd";
 
@@ -119,13 +120,12 @@ const DetailFile = () => {
         handleDetailFile();
     }, [id]);
 
-    const linkStyle = {
-        textDecoration: 'none',
+    const buttonStyle = {
         color: '#000',
-        display: 'inline',
         alignItems: 'center',
-        fontSize: 14
-    }
+        fontSize: 14,
+        border:'none',
+   }
 
     return (
         <div>
@@ -138,12 +138,12 @@ const DetailFile = () => {
 
                     <div className="row px-5">
                         <div className="col-8">
-                            <div className="row my-3" style={{ display: 'inline-block' }}>
-                                <Link to={''} style={linkStyle}><img src={share} width={20} height={20} />&nbsp;Chia sẻ</Link>
-                                <Link to={''} style={linkStyle}><img src={download} width={20} height={20} />&nbsp;Tải xuống</Link>
-                                <Link to={''} style={linkStyle}><img src={move} width={20} height={20} />&nbsp;Di chuyển tới</Link>
-                                <Link to={''} style={linkStyle}><img src={edit} width={20} height={20} />&nbsp;Chỉnh sửa</Link>
-                                <Link to={''} style={linkStyle}><img src={del} width={20} height={20} />&nbsp;Xóa</Link>
+                            <div className="row my-3" style={{ display: 'flex' }}>
+                                <div className="col-1" style={{ marginRight:20 }}><Button style={buttonStyle} className="px-0"><img src={share} width={20} height={20} />&nbsp;Chia sẻ</Button></div>
+                                <div className="col-1" style={{ marginRight:20 }}><Button style={buttonStyle} className="px-0"><img src={download} width={20} height={20} />&nbsp;Tải xuống</Button></div>
+                                <div className="col-1" style={{ marginRight:20 }}><Button style={buttonStyle} className="px-0"><img src={move} width={20} height={20} />&nbsp;Di chuyển tới</Button></div>
+                                <div className="col-1" style={{ marginRight:20 }}><Button style={buttonStyle} className="px-0"><img src={edit} width={20} height={20} />&nbsp;Chỉnh sửa</Button></div>
+                                <div className="col-1" style={{ marginRight:20 }}><Button style={buttonStyle} className="px-0"><img src={del} width={20} height={20} />&nbsp;Xóa</Button></div>
                             </div>
                             <div className="row">
                                 {file?.url && file?.type != "pdf" && file?.type != "txt" && file?.type != "csv" ? (

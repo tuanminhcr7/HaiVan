@@ -6,8 +6,15 @@ import pdf from '../../images/icon/pdf.svg';
 import ppt from '../../images/icon/ppt.svg';
 import pptx from '../../images/icon/pptx.svg';
 import folder from '../../images/icon/folder.svg';
+import edit from '../../images/icon/edit.svg';
+import share from '../../images/icon/share.svg';
+import move from '../../images/icon/move.svg';
+import download from '../../images/icon/download.svg';
+import del from '../../images/icon/delete.svg';
+import favorite from '../../images/icon/favorite.svg';
+import './style.css';
 
-import { Collapse } from "antd";
+import { Button, Collapse, Tooltip } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
@@ -64,26 +71,82 @@ const GridData = ({ data, title }) => {
         }
     }
 
+    const buttonStyle = { padding: 0, height: 23, width: 23, border: 'none', background: 'transparent' };
+    const imgStyle = { padding: 0, height: 23, width: 23, border: 'none', background: 'transparent' };
+
     return (
         <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
             <Panel style={{ border: 'none', fontSize: '18px' }} header={title} key="1">
                 <div style={{ display: 'flex' }}>
-                    {data && data.map((item3) =>
-                        <Link to={`/qltl/${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>
-                            <div>
-                                <div style={{ padding:'5px 15px' }}>
-                                    {renderImage(item3.type)}
-                                </div>
-                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth:100 }}>{item3.name.length > 12 ? `${item3.name.substring(0, 12)}...` : item3.name }</p>
-                                <small className='px-4' style={{ fontSize: 'small', color: '#605e5c' }}>
-                                        <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
-                                </small>
-                            </div>
-                        </Link>
-                    )}
+                    <>
+                        {(title == 'Được chia sẻ' || title == 'Tệp') ?
+                            <>
+                                {data && data.map((item3) =>
+                                    <div className='data-file'>
+                                        <Link to={`/qltl/${item3.id}/xem-tai-lieu-${item3.slug}`} className='px-2 link-folder-grid link-file-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item3.name}>
+                                            <div className='file'>
+                                                <div style={{ padding: '5px 15px' }}>
+                                                    {renderImage(item3.type)}
+                                                </div>
+                                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item3.name.length > 10 ? `${item3.name.substring(0, 10)}...` : item3.name}</p>
+                                                <small className='px-4' style={{ fontSize: 'small', color: '#605e5c' }}>
+                                                    <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
+                                                </small>
+                                            </div>
+                                        </Link>
+                                        <div className='tool-file-grid'>
+                                            <Tooltip title={'Chia sẻ'}>
+                                                <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                                            </Tooltip>
+                                            <Tooltip title={'Di chuyển'}>
+                                                <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                                            </Tooltip>
+                                            <Tooltip title={'Tải xuống'}>
+                                                <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                                            </Tooltip>
+                                            <Tooltip title={'Xóa'}>
+                                                <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                                            </Tooltip>
+                                        </div>
+                                    </div>
+                                )}
+                            </> :
+                            <>
+                                {data && data.map((item3) =>
+                                    <div className='data-folder'>
+                                        <Link to={`/qltl/${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder-grid link-file-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item3.name}>
+                                            <div className='file'>
+                                                <div style={{ padding: '5px 15px' }}>
+                                                    {renderImage(item3.type)}
+                                                </div>
+                                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item3.name.length > 10 ? `${item3.name.substring(0, 10)}...` : item3.name}</p>
+                                                <small className='px-4' style={{ fontSize: 'small', color: '#605e5c' }}>
+                                                    <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
+                                                </small>
+                                            </div>
+                                        </Link>
+                                        <div className='tool-folder-grid'>
+                                            <Tooltip title={'Chia sẻ'}>
+                                                <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                                            </Tooltip>
+                                            <Tooltip title={'Di chuyển'}>
+                                                <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                                            </Tooltip>
+                                            <Tooltip title={'Tải xuống'}>
+                                                <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                                            </Tooltip>
+                                            <Tooltip title={'Xóa'}>
+                                                <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                                            </Tooltip>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        }
+                    </>
                 </div>
-            </Panel>
-        </Collapse>
+            </Panel >
+        </Collapse >
     );
 }
 

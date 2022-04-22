@@ -1,0 +1,49 @@
+.tool-file-grid {
+    margin-left: 5px;
+    display: flex;
+    display: none;
+    transition: 0.9s;
+    margin-top:-70px;
+    position: absolute;
+}
+
+.tool-file-grid>Button {
+    margin-right: 2px;
+}
+
+.data-file {
+    position: relative;
+}
+
+.data-file:hover .tool-file-grid {
+    display: block;
+}
+
+.file p {
+    padding-left: 0;
+}
+
+.tool-folder-grid {
+    margin-left: 5px;
+    display: flex;
+    display: none;
+    transition: 0.9s;
+    margin-top: -70px;
+    position: absolute;
+}
+
+.tool-folder-grid>Button {
+    margin-right: 2px;
+}
+
+.data-folder {
+    position: relative;
+}
+
+.data-folder:hover .tool-folder-grid {
+    display: block;
+}
+
+.folder p {
+    padding-left: 0;
+}

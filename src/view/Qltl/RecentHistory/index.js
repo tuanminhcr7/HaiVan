@@ -64,7 +64,7 @@ const RecentHistory = () => {
                 </p>
             </div>
 
-            <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
+            <div className='mt-1' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
                 <Button onClick={changeFileGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
                 <Button onClick={changeFileList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
             </div>

@@ -5,9 +5,11 @@ import React, { useState } from 'react';
 import { Button, Input, Upload } from 'antd';
 import { LogoutOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const Header = ({ users }) => {
+    const navigate = useNavigate();
 
     const myToken = '663|e2mCVApINDlAQzyeEGHRQ1w2fHXjUoACryFG5B9R';
     const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
@@ -49,11 +51,18 @@ const Header = ({ users }) => {
             console.log(error)
         }
 
-        
+
     }
 
     const handleFileSelect = (event) => {
         setSelectedFile(event.target.files[0])
+    }
+
+    const beforeUpload = (file, fileList) => {
+        
+        navigate("/qltl/upload-file", {state:{
+            files: fileList,
+        }});
     }
 
     return (
@@ -66,10 +75,27 @@ const Header = ({ users }) => {
                             onSearch={value => console.log(value)}
                         />
 
-                        <form onSubmit={handleSubmit} style={{ display:'flex' }}>
+                        {/* <form onSubmit={handleSubmit} style={{ display:'flex' }}>
                             <Input type="file" onChange={handleFileSelect} />
                             <Input type="submit" value="Upload File" />
-                        </form>
+                        </form> */}
+                        <Upload
+                            beforeUpload={beforeUpload}
+                            showUploadList={false}
+                            multiple={true}
+                        >
+                            <Button
+                                style={{
+                                    marginLeft: "15px",
+                                    background: "#0078D4",
+                                    border: "none", display: 'flex', alignItems: 'center'
+                                }}
+                                type="primary"
+                                icon={<UploadOutlined />}
+                            >
+                                Tải lên
+                            </Button>
+                        </Upload>
 
                     </div>
                 </div>

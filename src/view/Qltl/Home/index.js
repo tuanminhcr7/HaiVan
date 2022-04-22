@@ -8,6 +8,7 @@ import React, { Component, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import axios from 'axios';
+import FolderShared from '../../../components/FolderShared';
 
 
 
@@ -118,7 +119,7 @@ const Home = () => {
                     </div>
 
                     <div className='row px-4'>
-                        {viewFile ? <GridData data={shared} title={'Tệp'} /> : <ListDataFile data={shared} />}
+                        {viewFile ? <GridData data={shared} title={'Được chia sẻ'}  /> : <ListDataFile data={shared} title={'Được chia sẻ'} />}
                     </div>
                 </>
             }

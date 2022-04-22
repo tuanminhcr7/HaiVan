@@ -101,7 +101,7 @@ const MyDoc = () => {
             </div>
             {myFiles &&
                 <div className='row px-4'>
-                    {viewFile ? <GridData title={'Tệp'} data={myFiles} /> : <ListDataFile data={myFiles} />}    
+                    {viewFile ? <GridData title={'Tệp'} data={myFiles} /> : <ListDataFile data={myFiles} title={'Tệp'} />}    
                 </div>
             }
 
