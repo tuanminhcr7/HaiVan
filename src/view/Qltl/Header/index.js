@@ -1,7 +1,8 @@
 import avatar from '../../../images/T1.jpg';
 import Search from 'antd/lib/transfer/search';
 
-import React, { useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Button, Input, Upload } from 'antd';
 import { FolderAddOutlined, LogoutOutlined, UploadOutlined, UserOutlined } from "@ant-design/icons";
 import axios from 'axios';
@@ -48,11 +49,13 @@ const Header = ({ users }) => {
                 headers: { "Content-Type": "multipart/form-data", 'Authorization': `Bearer ${myToken}` },
             });
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
 
 
     }
+
+    
 
     const handleFileSelect = (event) => {
         setSelectedFile(event.target.files[0])
@@ -66,6 +69,10 @@ const Header = ({ users }) => {
             }
         });
     }
+
+    useEffect(() => {
+        // getListFolder();
+    }, []);
 
     return (
         <header style={{ width: '88vw' }}>

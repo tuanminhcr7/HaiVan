@@ -5,9 +5,15 @@ import docx from '../../images/icon/docx.svg';
 import pdf from '../../images/icon/pdf.svg';
 import ppt from '../../images/icon/ppt.svg';
 import pptx from '../../images/icon/pptx.svg';
+import edit from '../../images/icon/edit.svg';
+import share from '../../images/icon/share.svg';
+import move from '../../images/icon/move.svg';
+import download from '../../images/icon/download.svg';
+import del from '../../images/icon/delete.svg';
+import favorite from '../../images/icon/favorite.svg';
 
 import { FileOutlined } from "@ant-design/icons";
-import { Collapse, Table } from "antd";
+import { Button, Collapse, Table, Tooltip } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
@@ -57,6 +63,16 @@ const FolderDocFavorite = ({ data }) => {
         }
     }
 
+    const buttonStyle = {
+        padding: 0,
+        height: 25,
+        width: 25,
+        border: 'none',
+        background: 'transparent'
+    }
+
+    const imgStyle = { margin: 0, padding: 0, marginBottom: 6, width: '100%', height: '100%' }
+
     const columns = [
         {
             title: () => {
@@ -67,9 +83,29 @@ const FolderDocFavorite = ({ data }) => {
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) =>   <div style={{ display: 'flex', alignItems: 'center' }}>
+            render: (text, record) =>   <div className='data-file' style={{ display: 'flex', alignItems: 'center', flexWrap:'wrap', width:450 }}>
                                             {renderImage(record.type)}
                                             <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}</Link>
+                                            <div className='button-tool'>
+                                                <Tooltip style={{ paddingLeft:50 }} title={'Chỉnh sửa'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                                                </Tooltip>
+                                                <Tooltip title={'Chia sẻ'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                                                </Tooltip>
+                                                <Tooltip title={'Di chuyển'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                                                </Tooltip>
+                                                <Tooltip title={'Tải xuống'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                                                </Tooltip>
+                                                <Tooltip title={'Xóa'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                                                </Tooltip>
+                                                <Tooltip title={'Yêu thích'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={favorite} /></Button>
+                                                </Tooltip>
+                                            </div>
                                         </div>
         },
         {

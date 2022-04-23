@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(function(config) {
-    let token = select(window.STORE.getState());
+    let token = "675|FgVgmO4ock1pwowWnJfD3Muj0Znd0IM8d9HROiI7";
     config.headers = {
         ...config.headers,
         Authorization: "Bearer " + token

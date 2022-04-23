@@ -1,29 +1,49 @@
-import { useEffect } from "react";
+import { getFolder } from '../../../api/folders.js';
+
+
+import { useEffect, useState } from "react";
 import { Form, Input, Button, Radio, Cascader } from 'antd';
 import { useLocation } from "react-router";
 
 
 const FormUploadFile = () => {
     const location = useLocation();
-    console.log(location);
-    console.log(location.state.files[0], 'files');
 
     useEffect(() => {
         document.title = "Tải tệp";
     }, []);
 
-    const options = [
-        {
-            value: 'dsffs',
-            label: 'Zhejdsfsdfsiang',
-            children: [
-                {
-                    value: 'hasángzhou',
-                    label: 'Hangzhou',
-                },
-            ],
-        },
-    ]
+    const renderListFolder = (list) => {
+        return list.map((items) => {
+            return {
+                value: items.id,
+                label: items.name,
+                children: renderListFolder(items.children)
+            };
+        });
+    }
+
+    const [listFolders, setListFolder] = useState([]);
+
+
+    const getListFolder = () => {
+        getFolder().then((res) => {
+            setListFolder(res.data.data);
+        });
+    }
+
+    const onChange = (value, selectedOptions) => {
+        console.log(value, selectedOptions);
+    };
+
+    const saveFileUpload = (id, name) => {
+        console.log(id);
+        console.log(name);
+    }
+
+    useEffect(() => {
+        getListFolder();
+    }, [])
 
     return (
         <>
@@ -41,10 +61,12 @@ const FormUploadFile = () => {
                     <div className="row mx-5 mb-3">
                         <label className="p-0"><span style={{ marginRight: 4, color: '#f00', fontSize: 18 }}>*</span>Chọn danh mục muốn tải tệp lên</label><br />
                         <Cascader
-                            defaultValue={['zhejiang', 'hangzhou']}
                             className="px-1"
-                            options={options}
+                            options={renderListFolder(listFolders)}
+                            onChange={onChange}
                             placeholder="Chọn danh mục muốn tải tệp lên"
+                            changeOnSelect
+                            expandTrigger='hover'
                         />
                     </div>
                     <div className="row mx-5 mb-3">

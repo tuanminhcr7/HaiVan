@@ -74,7 +74,7 @@ const FolderTrash = ({ data }) => {
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <div style={{ display: 'flex', alignItems: 'center' }}>
+            render: (text, record) => <div style={{ display: 'flex', alignItems: 'center', flexWrap:'wrap' }}>
                 {renderImage(record.type)}
                 <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 14, textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
             </div>

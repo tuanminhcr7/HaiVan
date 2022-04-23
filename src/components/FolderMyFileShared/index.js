@@ -86,7 +86,7 @@ const FolderMyFileShared = ({ data }) => {
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) =>   <div className='data-file' style={{ display: 'flex', alignItems: 'center' }}>
+            render: (text, record) =>   <div className='data-file' style={{ display: 'flex', alignItems: 'center', flexWrap:'wrap' }}>
                                             {renderImage(record.type)}
                                             <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}</Link>
                                             <div className='button-tool'>

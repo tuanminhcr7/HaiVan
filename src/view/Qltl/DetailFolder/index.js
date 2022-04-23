@@ -94,7 +94,7 @@ const DetailFolder = () => {
                     </div>
 
                     <div className='row px-4'>
-                        {viewFile ? <GridData data={files} title={'Tệp'} /> : <ListDataFile data={files} />}
+                        {viewFile ? <GridData data={files} title={'Tệp'} /> : <ListDataFile data={files} title={'Tệp'} />}
                     </div>
                 </>
             }

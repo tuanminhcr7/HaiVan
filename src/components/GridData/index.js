@@ -77,7 +77,7 @@ const GridData = ({ data, title }) => {
     return (
         <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
             <Panel style={{ border: 'none', fontSize: '18px' }} header={title} key="1">
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', flexWrap:'wrap' }}>
                     <>
                         {(title == 'Được chia sẻ' || title == 'Tệp') ?
                             <>

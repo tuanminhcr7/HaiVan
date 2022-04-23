@@ -75,7 +75,7 @@ const GridDataFile = ({ data }) => {
     const imgStyle = { padding: 0, height: 23, width: 23, border: 'none', background: 'transparent' };
 
     return (
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', flexWrap:'wrap' }}>
             {data && data.map((item3) =>
                 <div className='data-file'>
                     <Link to={`/qltl/${item3.id}/xem-tai-lieu-${item3.slug}`} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>

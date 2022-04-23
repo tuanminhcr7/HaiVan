@@ -180,6 +180,7 @@ h2 {
 .link-folder {
   display: block;
   text-decoration: none;
+  transition: 0.3s;
 }
 
 .link-folder:hover {

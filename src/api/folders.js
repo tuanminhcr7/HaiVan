@@ -15,6 +15,10 @@ export const getSearch = (params) => {
   return axios.get("api/search-elt?search=" + params)
 };
 
+export const getFolder = () => {
+  return axios.get("/api/folders");
+}
+
 export const getDataHome = async (params) => {
   return await axios
     .get("api/home")
