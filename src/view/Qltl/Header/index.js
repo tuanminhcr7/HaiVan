@@ -36,11 +36,6 @@ const Header = ({ users }) => {
         const formData = new FormData();
         formData.append("files", selectedFile);
         formData.append("folder_id", 1);
-        // axios.post('https://dev.api.qlnb.haivanexpress.vn/api/files',  formData, myHeaders).then(res => {
-        //     console.log(res);
-        // }).catch(err => {
-        //     console.log(err);
-        // })
         try {
             const response = axios({
                 method: "post",
@@ -51,11 +46,7 @@ const Header = ({ users }) => {
         } catch (error) {
             console.log(error);
         }
-
-
     }
-
-    
 
     const handleFileSelect = (event) => {
         setSelectedFile(event.target.files[0])

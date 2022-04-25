@@ -9,10 +9,6 @@ import { useLocation } from "react-router";
 const FormUploadFile = () => {
     const location = useLocation();
 
-    useEffect(() => {
-        document.title = "Tải tệp";
-    }, []);
-
     const renderListFolder = (list) => {
         return list.map((items) => {
             return {
@@ -24,7 +20,8 @@ const FormUploadFile = () => {
     }
 
     const [listFolders, setListFolder] = useState([]);
-
+    const [description, setDescription] = useState('');
+    const [locationFile, setLocationFile] = useState('');
 
     const getListFolder = () => {
         getFolder().then((res) => {
@@ -36,14 +33,19 @@ const FormUploadFile = () => {
         console.log(value, selectedOptions);
     };
 
-    const saveFileUpload = (id, name) => {
-        console.log(id);
-        console.log(name);
+    const saveFileUpload = () => {
+        const formData = {
+            'Name file': location.state.files[0].name,
+            'Description': description,
+            'Location': locationFile
+        }
+        console.log(formData);
     }
 
     useEffect(() => {
+        document.title = "Tải tệp";
         getListFolder();
-    }, [])
+    }, []);
 
     return (
         <>
@@ -59,12 +61,12 @@ const FormUploadFile = () => {
                     </div>
 
                     <div className="row mx-5 mb-3">
-                        <label className="p-0"><span style={{ marginRight: 4, color: '#f00', fontSize: 18 }}>*</span>Chọn danh mục muốn tải tệp lên</label><br />
+                        <label className="p-0"><span style={{ marginRight: 4, color: '#f00', fontSize: 18 }}>*</span>Chọn thư mục muốn tải tệp lên</label><br />
                         <Cascader
                             className="px-1"
                             options={renderListFolder(listFolders)}
                             onChange={onChange}
-                            placeholder="Chọn danh mục muốn tải tệp lên"
+                            placeholder="Chọn thư mục muốn tải tệp lên"
                             changeOnSelect
                             expandTrigger='hover'
                         />
@@ -73,19 +75,21 @@ const FormUploadFile = () => {
                         <label className="p-0">Mô tả</label>
                         <Input
                             placeholder="Mô tả ngắn tệp tin"
-                            name="name"
+                            name="description"
+                            onChange={e => setDescription(e.target.value)}
                         />
                     </div>
                     <div className="row mx-5 mb-3">
                         <label className="p-0">Nơi lưu trữ</label>
                         <Input
                             placeholder="Nơi lưu trữ bản cứng. Ví dụ: hòm 1, hòm 2, ..."
-                            name="name"
+                            name="location"
+                            onChange={e => setLocationFile(e.target.value)}
                         />
                     </div>
                     <div className="row mx-5">
                         <div className="col-5"></div>
-                        <div className="col-2"><Button style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button></div>
+                        <div className="col-2"><Button onClick={saveFileUpload} style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button></div>
                         <div className="col-5"></div>
 
                     </div>

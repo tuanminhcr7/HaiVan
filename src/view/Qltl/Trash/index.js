@@ -1,45 +1,22 @@
 import '../Qltl.css';
 import FolderTrash from '../../../components/FolderTrash';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import GridDataFile from '../../../components/GridDataFile';
+import { getTrash } from '../../../api/files';
 
 import { Link } from 'react-router-dom';
-import React, { Component, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import GridDataFile from '../../../components/GridDataFile';
 
 
 const Trash = () => {
 
-    const myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
-    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
-
-    const myHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${myToken}`
-        }
-    }
-
-    const adminHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${adminToken}`
-        }
-    }
-
     const [trash, setTrash] = useState([]);
     const [viewFile, setViewFile] = useState(false);
 
-    // state = {
-    //     collapsed: false,
-    //     view: true,
-    //     trashes: []
-    // };
-
     const handleTrash = () => {
-        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/trash', myHeaders).then(res => {
+        getTrash().then(res => {
             setTrash(res.data.data);
         }).catch(err => {
             console.log(err);

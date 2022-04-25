@@ -13,8 +13,8 @@ import ppt from '../../../images/icon/ppt.svg';
 import pptx from '../../../images/icon/pptx.svg';
 import folder from '../../../images/icon/folder.svg';
 import './style.css';
+import { getFileDetail } from "../../../api/files";
 
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Button } from "antd";
@@ -73,27 +73,10 @@ const DetailFile = () => {
         }
     }
 
-    const myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
-    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
-
-    const myHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${myToken}`
-        }
-    }
-
-    const adminHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${adminToken}`
-        }
-    }
-
     const { id } = useParams();
 
     const handleBreadCrumb = () => {
-        axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/files/${id}`, myHeaders).then(res => {
+        getFileDetail(id).then(res => {
             setBreadCrumb(res.data.data.breadCrumb);
         }).catch(err => {
             console.log(err);
@@ -101,18 +84,18 @@ const DetailFile = () => {
     }
 
     const handleDetailFile = () => {
-        axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/files/${id}`, myHeaders).then(res => {
+        getFileDetail(id).then(res => {
             setFile(res.data.data);
         }).catch(err => {
             console.log(err);
         })
     }
 
-    const downloadFile = () => {
-        axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/files/${id}`, myHeaders).then(res => {
+    // const downloadFile = () => {
+    //     getFileDetail(id).then(res => {
 
-        })
-    }
+    //     })
+    // }
 
     useEffect(() => {
         document.title = 'Chi tiết tệp';
@@ -125,6 +108,7 @@ const DetailFile = () => {
         alignItems: 'center',
         fontSize: 14,
         border:'none',
+        
    }
 
     return (

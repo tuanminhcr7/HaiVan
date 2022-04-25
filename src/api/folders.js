@@ -11,6 +11,10 @@ export const getMenu = async (params) => {
     });
 };
 
+export const getUsers = () => {
+  return axios.get("api/user");
+}
+
 export const getSearch = (params) => {
   return axios.get("api/search-elt?search=" + params)
 };

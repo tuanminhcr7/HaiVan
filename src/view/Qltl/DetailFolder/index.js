@@ -2,13 +2,12 @@ import GridData from "../../../components/GridData";
 import ListData from '../../../components/ListData';
 import ListDataFile from "../../../components/ListDataFile";
 import BreadCrumbRender from "../../../components/BreadCrumbRender";
+import { getFolderDetail } from "../../../api/folders";
 
 import { useEffect, useState } from "react";
-import { Breadcrumb, Button } from 'antd';
-import axios from "axios";
+import { Button } from 'antd';
 import { useParams } from "react-router";
 import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
-
 
 
 const DetailFolder = () => {
@@ -18,27 +17,10 @@ const DetailFolder = () => {
     const [viewFolder, setViewFolder] = useState(true);
     const [viewFile, setViewFile] = useState(false);
 
-    const myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
-    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
-
-    const myHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${myToken}`
-        }
-    }
-
-    const adminHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${adminToken}`
-        }
-    }
-
     const { id } = useParams();
 
     const handleDetail = () => {
-        axios.get(`https://dev.api.qlnb.haivanexpress.vn/api/folders/${id}`, myHeaders).then(res => {
+        getFolderDetail(id).then(res => {
             setFolders(res.data.data.folders);
             setFiles(res.data.data.files);
             setBreadCrumb(res.data.data.bread_crumb);

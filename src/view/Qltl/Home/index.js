@@ -2,14 +2,12 @@ import GridData from '../../../components/GridData';
 import ListData from '../../../components/ListData';
 import FolderRecent from '../../../components/FolderRecent';
 import ListDataFile from '../../../components/ListDataFile';
+import { getDataHome } from '../../../api/folders';
 
 import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
-import axios from 'axios';
-import FolderShared from '../../../components/FolderShared';
-
 
 
 const Home = () => {
@@ -20,25 +18,8 @@ const Home = () => {
     const [viewFolder, setViewFolder] = useState(true);
     const [viewFile, setViewFile] = useState(false);
 
-    const myToken = '662|yoj4Xgyc3za4o50IlPZdibSESGoPmQWSpsdpAKMx';
-    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
-
-    const myHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${myToken}`
-        }
-    }
-
-    const adminHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${adminToken}`
-        }
-    }
-
     const handleRecent = () => {
-        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/home', myHeaders).then(res => {
+        getDataHome().then(res => {
             setRecent(res.data.recent);
         }).catch(err => {
             console.log(err);
@@ -46,7 +27,7 @@ const Home = () => {
     }
 
     const handleShared = () => {
-        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/home', myHeaders).then(res => {
+        getDataHome().then(res => {
             setShared(res.data.shared);
         }).catch(err => {
             console.log(err);
@@ -54,7 +35,7 @@ const Home = () => {
     }
 
     const handleFolder = () => {
-        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/home', myHeaders).then(res => {
+        getDataHome().then(res => {
             setFolder(res.data.folder);
         }).catch(err => {
             console.log(err);
@@ -66,7 +47,7 @@ const Home = () => {
         handleRecent();
         handleFolder();
         handleShared();
-    }, [])
+    }, []);
 
     const changeFolderGird = () => {
         setViewFolder(true);

@@ -1,40 +1,23 @@
 import '../Qltl.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FolderDocFavorite from '../../../components/FolderDocFavorite';
+import GridDataFile from '../../../components/GridDataFile';
+import { docFavorite } from '../../../api/files';
 
 import { Link } from 'react-router-dom';
-import React, { Component, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import GridData from '../../../components/GridData';
-import GridDataFile from '../../../components/GridDataFile';
+
 
 
 const DocFavorite = () => {
-
-    const myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
-    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
-
-    const myHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${myToken}`
-        }
-    }
-
-    const adminHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${adminToken}`
-        }
-    }
 
     const [docFavorites, setDocFavorite] = useState([]);
     const [viewFile, setViewFile] = useState(false);
 
     const handleDocFavorite = () => {
-        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/doc-favorite', myHeaders).then(res => {
+        docFavorite().then(res => {
             setDocFavorite(res.data.data);
         }).catch(err => {
             console.log(err);

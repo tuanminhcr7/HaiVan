@@ -1,52 +1,25 @@
 import '../Qltl.css';
-import FolderMyDoc from '../../../components/FolderMyDoc';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ListDataFile from '../../../components/ListDataFile';
-import GridDataFile from '../../../components/GridDataFile';
 import GridData from '../../../components/GridData';
 import ListData from '../../../components/ListData'
+import { getMyDoc } from '../../../api/files';
 
 import { Link } from 'react-router-dom';
-import React, { Component, useEffect, useState } from 'react';
-import axios from 'axios';
-
+import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
 
 
 const MyDoc = () => {
 
-    const myToken = '596|Z33Poatv6hG7p0TsKErFFjaTg1X4cjZJUfs9Ixad';
-    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
-
-    const myHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${myToken}`
-        }
-    }
-
-    const adminHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${adminToken}`
-        }
-    }
-
     const [myFiles, setMyFile] = useState([]);
     const [myFolders, setMyFolder] = useState([]);
     const [viewFolder, setViewFolder] = useState(true);
     const [viewFile, setViewFile] = useState(false);
 
-    // state = {
-    //     collapsed: false,
-    //     view: true,
-    //     myDocFiles: [],
-    //     myDocFolders: []
-    // };
-
     const handleMyDoc = () => {
-        axios.get('https://dev.api.qlnb.haivanexpress.vn/api/my-doc', myHeaders).then(res => {
+        getMyDoc().then(res => {
             setMyFile(res.data.data.file);
             setMyFolder(res.data.data.folder);
         }).catch(err => {
