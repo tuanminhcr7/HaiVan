@@ -1,0 +1,7 @@
+.user-name-dropdown li button:hover {
+    background-color: #f3f2f1;
+}
+
+.user-name-dropdown {
+    transition: 0.3s;
+}

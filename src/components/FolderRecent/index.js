@@ -89,7 +89,7 @@ const FolderRecent = ({ data }) => {
             key: 'name',
             render: (text, record) => <div className='data-file' style={{ display: 'flex', alignItems: 'center', width: 470 }}>
                 {renderImage(record.type)}
-                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text.length > 26 ? `${text.substring(0, 26)}...` : text}</Link>
+                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text.length > 23 ? `${text.substring(0, 23)}...` : text}</Link>
                 <div className='button-tool'>
                     <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
                         <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>

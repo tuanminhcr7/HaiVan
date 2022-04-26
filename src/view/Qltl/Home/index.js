@@ -73,7 +73,7 @@ const Home = () => {
 
             {recents.length > 0 &&
                 <>
-                    <div className='row px-5'>
+                    <div className='row px-4'>
                         <FolderRecent data={recents} />
                     </div>
                 </>

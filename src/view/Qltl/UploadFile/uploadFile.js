@@ -4,6 +4,7 @@ import { getFolder } from '../../../api/folders.js';
 import { useEffect, useState } from "react";
 import { Form, Input, Button, Radio, Cascader } from 'antd';
 import { useLocation } from "react-router";
+import { uploadFile } from '../../../api/files.js';
 
 
 const FormUploadFile = () => {
@@ -22,6 +23,7 @@ const FormUploadFile = () => {
     const [listFolders, setListFolder] = useState([]);
     const [description, setDescription] = useState('');
     const [locationFile, setLocationFile] = useState('');
+    const [chooseFolder, setChooseFolder] = useState();
 
     const getListFolder = () => {
         getFolder().then((res) => {
@@ -30,16 +32,36 @@ const FormUploadFile = () => {
     }
 
     const onChange = (value, selectedOptions) => {
+        setChooseFolder(selectedOptions);
         console.log(value, selectedOptions);
     };
 
     const saveFileUpload = () => {
+
+        // const formData = new FormData();
+        
+        // // formData.append('files');
+        // formData.append('name', location.state.files[0].name);
+        // formData.append('description', description);
+        // formData.append('storage', locationFile);
+        // formData.append('folder_id', chooseFolder[chooseFolder.length - 1].value);
+        
+        
         const formData = {
-            'Name file': location.state.files[0].name,
-            'Description': description,
-            'Location': locationFile
+            'name': location.state.files[0].name,
+            'folder_id':chooseFolder[chooseFolder.length-1].value,
+            'description': description,
+            'storage': locationFile
         }
         console.log(formData);
+
+        uploadFile(formData, {headers: {
+            'content-type': 'multipart/form-data',
+          }}).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     useEffect(() => {

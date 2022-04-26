@@ -1,3 +1,7 @@
 Button:hover {
     cursor: pointer;
 }
+
+h5 {
+    width: 300px;
+}

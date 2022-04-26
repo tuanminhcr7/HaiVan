@@ -4,8 +4,9 @@ import Img from '../../images/bg-login.jpg';
 import { Input, Checkbox, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { apiLogin } from '../../api/auth';
 
 const Login = () => {
     const [form, setForm] = useState({
@@ -24,16 +25,16 @@ const Login = () => {
     };
 
     const handleSubmit = () => {
-        axios.post(`https://dev.api.qlnb.haivanexpress.vn/api/login`, form, {
-            headers: {
-              "Content-Type": "application/json",
-            },
-        }).then((res) => {
+        apiLogin(form).then((res) => {
             navigate("/");
         }).catch((err) => {
             console.log(err);
         });
     };
+
+    useEffect(() => {
+        document.title = 'Quản lý nội bộ';
+    }, []);
 
     return (
         <div className="App">
