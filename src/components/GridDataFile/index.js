@@ -6,12 +6,10 @@ import pdf from '../../images/icon/pdf.svg';
 import ppt from '../../images/icon/ppt.svg';
 import pptx from '../../images/icon/pptx.svg';
 import folder from '../../images/icon/folder.svg';
-import edit from '../../images/icon/edit.svg';
 import share from '../../images/icon/share.svg';
 import move from '../../images/icon/move.svg';
 import download from '../../images/icon/download.svg';
 import del from '../../images/icon/delete.svg';
-import favorite from '../../images/icon/favorite.svg';
 import './style.css';
 
 import { Button, Collapse, Tooltip } from "antd";
@@ -71,11 +69,24 @@ const GridDataFile = ({ data }) => {
         }
     }
 
-    const buttonStyle = { padding: 0, height: 23, width: 23, border: 'none', background: 'transparent' };
-    const imgStyle = { padding: 0, height: 23, width: 23, border: 'none', background: 'transparent' };
+    const buttonStyle = {
+        padding: 0,
+        height: 23,
+        width: 23,
+        border: 'none',
+        background: 'transparent'
+    };
+
+    const imgStyle = {
+        padding: 0,
+        height: 23,
+        width: 23,
+        border: 'none',
+        background: 'transparent'
+    };
 
     return (
-        <div style={{ display: 'flex', flexWrap:'wrap' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {data && data.map((item3) =>
                 <div className='data-file'>
                     <Link to={`/qltl/${item3.id}/xem-tai-lieu-${item3.slug}`} target={'_blank'} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>

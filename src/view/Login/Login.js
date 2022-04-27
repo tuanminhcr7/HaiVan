@@ -1,12 +1,12 @@
 import './Login.css';
 import Img from '../../images/bg-login.jpg';
+import { apiLogin } from '../../api/auth';
 
 import { Input, Checkbox, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { apiLogin } from '../../api/auth';
+
 
 const Login = () => {
     const [form, setForm] = useState({

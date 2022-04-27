@@ -71,13 +71,26 @@ const GridData = ({ data, title }) => {
         }
     }
 
-    const buttonStyle = { padding: 0, height: 23, width: 23, border: 'none', background: 'transparent' };
-    const imgStyle = { padding: 0, height: 23, width: 23, border: 'none', background: 'transparent' };
+    const buttonStyle = {
+        padding: 0,
+        height: 23,
+        width: 23,
+        border: 'none',
+        background: 'transparent'
+    };
+
+    const imgStyle = {
+        padding: 0,
+        height: 23,
+        width: 23,
+        border: 'none',
+        background: 'transparent'
+    };
 
     return (
         <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
             <Panel style={{ border: 'none', fontSize: '18px' }} header={title} key="1">
-                <div style={{ display: 'flex', flexWrap:'wrap' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                     <>
                         {(title == 'Được chia sẻ' || title == 'Tệp') ?
                             <>

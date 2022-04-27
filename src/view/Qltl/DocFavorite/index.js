@@ -10,7 +10,6 @@ import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons
 import { Button } from 'antd';
 
 
-
 const DocFavorite = () => {
 
     const [docFavorites, setDocFavorite] = useState([]);

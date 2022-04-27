@@ -1,9 +1,9 @@
 import '../Qltl.css';
 import FolderRecent from '../../../components/FolderRecent';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import GridDataFile from '../../../components/GridDataFile';
 import { getRecentHistory } from '../../../api/files';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';

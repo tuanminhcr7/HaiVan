@@ -62,8 +62,7 @@ const FolderMyDoc = ({ myDocFiles }, {myDocFolders}) => {
             title: () => {
                 return  <div style={{ display:'flex', alignItems:'center' }}>
                             <FileOutlined style={{ fontSize:18, color:'#605e5c' }} />
-                            <p className="mx-2" style={{ margin:'0', paddingTop:5 }}>Tên</p>
-                            
+                            <p className="mx-2" style={{ margin:'0', paddingTop:5 }}>Tên</p>                            
                         </div>
             },
             dataIndex: 'name',

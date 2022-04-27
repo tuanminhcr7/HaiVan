@@ -8,12 +8,11 @@ import ppt from '../../images/icon/ppt.svg';
 import pptx from '../../images/icon/pptx.svg';
 
 import { FileOutlined } from "@ant-design/icons";
-import { Collapse, Space, Table, Tag } from "antd";
-import React, { Component } from "react";
+import { Table } from "antd";
+import React from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
 
-const { Panel } = Collapse;
 
 const FolderTrash = ({ data }) => {
 
@@ -67,17 +66,17 @@ const FolderTrash = ({ data }) => {
     const columns = [
         {
             title: () => {
-                return <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <FileOutlined style={{ fontSize: 18, color: '#605e5c' }} />
-                    <p className="mx-2" style={{ margin: '0', paddingTop: 5 }}>Tên</p>
-                </div>
+                return  <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <FileOutlined style={{ fontSize: 18, color: '#605e5c' }} />
+                            <p className="mx-2" style={{ margin: '0', paddingTop: 5 }}>Tên</p>
+                        </div>
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <div style={{ display: 'flex', alignItems: 'center', flexWrap:'wrap' }}>
-                {renderImage(record.type)}
-                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 14, textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
-            </div>
+            render: (text, record) =>   <div style={{ display: 'flex', alignItems: 'center', flexWrap:'wrap' }}>
+                                            {renderImage(record.type)}
+                                            <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 14, textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
+                                        </div>
         },
         {
             title: 'Mô tả',

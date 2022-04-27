@@ -15,12 +15,11 @@ import favorite from '../../images/icon/favorite.svg';
 
 import { FileOutlined } from "@ant-design/icons";
 import { Button, Collapse, Table, Tooltip } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Time from "react-time-format";
 import axios from 'axios';
 import { useParams } from 'react-router';
-
 
 const { Panel } = Collapse;
 
@@ -41,7 +40,6 @@ const ListDataFile = ({ data, title }) => {
             'Authorization': `Bearer ${adminToken}`
         }
     }
-
 
     const renderImage = (type) => {
         switch (type) {
@@ -87,8 +85,7 @@ const ListDataFile = ({ data, title }) => {
 
     const [statusFavorite, setStatusFavorite] = useState(false);
 
-    const {id} = useParams();
-    // console.log(data);
+    const { id } = useParams();
 
     const btnFavorite = (id) => {
         axios.post(`https://dev.api.qlnb.haivanexpress.vn/api/doc-favorite/${id}`, myHeaders).then(res => {
@@ -104,7 +101,6 @@ const ListDataFile = ({ data, title }) => {
         })
     }
 
-
     const buttonStyle = {
         padding: 0,
         height: 25,
@@ -113,7 +109,13 @@ const ListDataFile = ({ data, title }) => {
         background: 'transparent'
     }
 
-    const imgStyle = { margin: 0, padding: 0, marginBottom: 6, width: '100%', height: '100%' }
+    const imgStyle = {
+        margin: 0,
+        padding: 0,
+        marginBottom: 6,
+        width: '100%',
+        height: '100%'
+    }
 
     const columns = [
         {
@@ -125,43 +127,42 @@ const ListDataFile = ({ data, title }) => {
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <div className='data-file' style={{ display: 'flex', alignItems: 'center', width: 450 }}>
-                {renderImage(record.type)}
-                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text.length > 26 ? `${text.substring(0, 26)}...` : text}</Link>
-                <div className='button-tool'>
-                    <Tooltip style={{ paddingLeft:50 }} title={'Chỉnh sửa'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Chia sẻ'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Di chuyển'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Tải xuống'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Xóa'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Yêu thích'}>
-                        <Button onClick={() => {
-                            axios.post(`https://dev.api.qlnb.haivanexpress.vn/api/doc-favorite/${record.id}`, myHeaders, statusFavorite).then(res => {
-                                console.log(res);
-                                // if (res.data.favorite == 1) {
-                                //     setStatusFavorite(false);
-                                // } else {
-                                //     setStatusFavorite(true);
-                                // }
-                    
-                            }).catch(err => {
-                                console.log(err);
-                            });
-                        }} style={buttonStyle}><img style={imgStyle} src={favorite} /></Button>
-                    </Tooltip>
-                </div>
-            </div>
+            render: (text, record) =>   <div className='data-file' style={{ display: 'flex', alignItems: 'center', width: 450 }}>
+                                            {renderImage(record.type)}
+                                            <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text.length > 26 ? `${text.substring(0, 26)}...` : text}</Link>
+                                            <div className='button-tool'>
+                                                <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                                                </Tooltip>
+                                                <Tooltip title={'Chia sẻ'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                                                </Tooltip>
+                                                <Tooltip title={'Di chuyển'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                                                </Tooltip>
+                                                <Tooltip title={'Tải xuống'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                                                </Tooltip>
+                                                <Tooltip title={'Xóa'}>
+                                                    <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                                                </Tooltip>
+                                                <Tooltip title={'Yêu thích'}>
+                                                    <Button onClick={() => {
+                                                        axios.post(`https://dev.api.qlnb.haivanexpress.vn/api/doc-favorite/${record.id}`, myHeaders, statusFavorite).then(res => {
+                                                            console.log(res);
+                                                            // if (res.data.favorite == 1) {
+                                                            //     setStatusFavorite(false);
+                                                            // } else {
+                                                            //     setStatusFavorite(true);
+                                                            // }
 
+                                                        }).catch(err => {
+                                                            console.log(err);
+                                                        });
+                                                    }} style={buttonStyle}><img style={imgStyle} src={favorite} /></Button>
+                                                </Tooltip>
+                                            </div>
+                                        </div>
         },
         {
             title: 'Mô tả',
@@ -189,13 +190,11 @@ const ListDataFile = ({ data, title }) => {
             title: 'Đã chỉnh sửa',
             key: 'updated_at',
             dataIndex: 'updated_at',
-            render: (date, record) => <>
-                {record.edit_by &&
-                    <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
-                }
-            </>
-            
-
+            render: (date, record) =>   <>
+                                            {record.edit_by &&
+                                                <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
+                                            }
+                                        </>
         },
         {
             title: 'Kích cỡ',

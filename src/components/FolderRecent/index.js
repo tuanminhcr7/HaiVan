@@ -13,8 +13,6 @@ import download from '../../images/icon/download.svg';
 import del from '../../images/icon/delete.svg';
 import favorite from '../../images/icon/favorite.svg';
 
-
-
 import { FileOutlined } from "@ant-design/icons";
 import { Button, Table, Tooltip } from "antd";
 import React from "react";
@@ -74,7 +72,13 @@ const FolderRecent = ({ data }) => {
         background: 'transparent'
     }
 
-    const imgStyle = { margin: 0, padding: 0, marginBottom: 6, width: '100%', height: '100%' }
+    const imgStyle = {
+        margin: 0,
+        padding: 0,
+        marginBottom: 6,
+        width: '100%',
+        height: '100%'
+    }
 
     const columns = [
         {
@@ -110,7 +114,6 @@ const FolderRecent = ({ data }) => {
                         <Button style={buttonStyle}><img style={imgStyle} src={favorite} /></Button>
                     </Tooltip>
                 </div>
-
             </div>
         },
         {

@@ -13,12 +13,11 @@ import del from '../../images/icon/delete.svg';
 import favorite from '../../images/icon/favorite.svg';
 
 import { FileOutlined } from "@ant-design/icons";
-import { Button, Collapse, Table, Tooltip } from "antd";
+import { Button, Table, Tooltip } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
 
-const { Panel } = Collapse;
 
 const FolderDocFavorite = ({ data }) => {
     const renderImage = (type) => {
@@ -71,7 +70,13 @@ const FolderDocFavorite = ({ data }) => {
         background: 'transparent'
     }
 
-    const imgStyle = { margin: 0, padding: 0, marginBottom: 6, width: '100%', height: '100%' }
+    const imgStyle = { 
+        margin: 0, 
+        padding: 0, 
+        marginBottom: 6, 
+        width: '100%', 
+        height: '100%' 
+    }
 
     const columns = [
         {

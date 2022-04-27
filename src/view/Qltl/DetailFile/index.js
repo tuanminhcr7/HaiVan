@@ -107,9 +107,8 @@ const DetailFile = () => {
         color: '#000',
         alignItems: 'center',
         fontSize: 14,
-        border:'none',
-        
-   }
+        border:'none',       
+    }
 
     return (
         <div>
@@ -199,7 +198,6 @@ const DetailFile = () => {
                     </div>
                 </>
             }
-
 
         </div>
     );

@@ -1,13 +1,13 @@
 import { getFolder } from '../../../api/folders.js';
-
+import { uploadFile } from '../../../api/files.js';
 
 import { useEffect, useState } from "react";
 import { Form, Input, Button, Radio, Cascader } from 'antd';
 import { useLocation } from "react-router";
-import { uploadFile } from '../../../api/files.js';
 
 
-const FormUploadFile = () => {
+
+const FormUploadFile = (props) => {
     const location = useLocation();
 
     const renderListFolder = (list) => {
@@ -24,6 +24,7 @@ const FormUploadFile = () => {
     const [description, setDescription] = useState('');
     const [locationFile, setLocationFile] = useState('');
     const [chooseFolder, setChooseFolder] = useState();
+    const [selectedFile, setSelectedFile] = useState(null);
 
     const getListFolder = () => {
         getFolder().then((res) => {
@@ -36,32 +37,31 @@ const FormUploadFile = () => {
         console.log(value, selectedOptions);
     };
 
-    const saveFileUpload = () => {
+    const saveFileUpload = (event) => {
+        event.preventDefault();
+        const formData = new FormData();
 
-        // const formData = new FormData();
-        
-        // // formData.append('files');
-        // formData.append('name', location.state.files[0].name);
-        // formData.append('description', description);
-        // formData.append('storage', locationFile);
-        // formData.append('folder_id', chooseFolder[chooseFolder.length - 1].value);
-        
-        
-        const formData = {
-            'name': location.state.files[0].name,
-            'folder_id':chooseFolder[chooseFolder.length-1].value,
-            'description': description,
-            'storage': locationFile
+        formData.append('files', location.state.files[0]);
+        formData.append('name', location.state.files[0].name);
+        formData.append('description', description);
+        formData.append('storage', locationFile);
+        formData.append('folder_id', chooseFolder[chooseFolder.length - 1].value);
+
+        try {
+            uploadFile(formData, {
+                headers: {
+                    'Content-Type': location.state.files.type,
+                }
+            }).then(res => {
+                const notification = document.getElementsByClassName("notification");
+                notification[0].innerHTML = "Tải tệp lên thành công";
+            }).catch(err => {
+                console.log(err);
+            });
+        } catch (error) {
+            console.log(error);
         }
-        console.log(formData);
 
-        uploadFile(formData, {headers: {
-            'content-type': 'multipart/form-data',
-          }}).then(res => {
-            console.log(res);
-        }).catch(err => {
-            console.log(err);
-        });
     }
 
     useEffect(() => {
@@ -99,6 +99,7 @@ const FormUploadFile = () => {
                             placeholder="Mô tả ngắn tệp tin"
                             name="description"
                             onChange={e => setDescription(e.target.value)}
+                      
                         />
                     </div>
                     <div className="row mx-5 mb-3">
@@ -113,7 +114,9 @@ const FormUploadFile = () => {
                         <div className="col-5"></div>
                         <div className="col-2"><Button onClick={saveFileUpload} style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button></div>
                         <div className="col-5"></div>
-
+                    </div>
+                    <div className="row mx-5">
+                        <span className='notification text-success'></span>
                     </div>
                 </div>
             </div>

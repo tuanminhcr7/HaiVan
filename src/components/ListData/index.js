@@ -16,6 +16,7 @@ import Time from 'react-time-format';
 const { Panel } = Collapse;
 
 const ListData = ({ data, title }) => {
+
   const buttonStyle = {
     padding: 0,
     height: 25,
@@ -24,31 +25,38 @@ const ListData = ({ data, title }) => {
     background: 'transparent'
   }
 
-  const imgStyle = { margin: 0, padding: 0, marginBottom: 6, width: '100%', height: '100%' }
+  const imgStyle = {
+    margin: 0,
+    padding: 0,
+    marginBottom: 6,
+    width: '100%',
+    height: '100%'
+  }
+
   const columns = [
     {
       title: () => {
-        return <div style={{ display: 'flex', alignItems: 'center' }}>
-          <FileOutlined style={{ fontSize: 18, color: '#605e5c' }} />
-          <p className="mx-2" style={{ margin: '0', paddingTop: 5 }}>Tên</p>
-        </div>
+        return  <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <FileOutlined style={{ fontSize: 18, color: '#605e5c' }} />
+                  <p className="mx-2" style={{ margin: '0', paddingTop: 5 }}>Tên</p>
+                </div>
       },
       dataIndex: 'name',
       key: 'name',
       render: (text, record) =>   <div className='data-folder' style={{ display: 'flex', alignItems: 'center', width: 400 }}>
-                                      <img src={folder} width={20} height={20} />&nbsp;&nbsp;
-                                      <Link to={`/qltl/${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
-                                      <div className='button-tool'>
-                                          <Tooltip title={'Xóa'}>
-                                              <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
-                                          </Tooltip>
-                                          <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
-                                              <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
-                                          </Tooltip>
-                                          <Tooltip title={'Chia sẻ'}>
-                                              <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
-                                          </Tooltip>                                        
-                                      </div>
+                                    <img src={folder} width={20} height={20} />&nbsp;&nbsp;
+                                    <Link to={`/qltl/${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 'lighter', fontSize: 16, textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
+                                    <div className='button-tool'>
+                                      <Tooltip title={'Xóa'}>
+                                        <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                                      </Tooltip>
+                                      <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
+                                        <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                                      </Tooltip>
+                                      <Tooltip title={'Chia sẻ'}>
+                                        <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                                      </Tooltip>
+                                    </div>
                                   </div>
     },
     {
