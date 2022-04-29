@@ -125,7 +125,7 @@ const Header = ({ users }) => {
                                 <ul className='user-name-dropdown shadow py-1 collapse show' style={{ listStyleType: 'none', width:250}}>
                                     <li><a href='/#' style={{ display: 'flex', alignItems: 'center' }}><UserOutlined />Tài khoản</a></li>
                                     {users.isAdmin == 1 && 
-                                    <li><a href='/#' style={{ display: 'flex', alignItems: 'center' }}><UserOutlined />Tài khoản</a></li>
+                                    <li><button style={{ padding: '5px 10px', display: 'flex', alignItems: 'center', width: '100%', border: 'none', background: 'transparent' }}><UserOutlined />&nbsp;&nbsp;Phân quyền</button></li>
                                     }
                                     <li><button onClick={logout} style={{ padding: '5px 10px', display: 'flex', alignItems: 'center', width: '100%', border: 'none', background: 'transparent' }}><LogoutOutlined />&nbsp;&nbsp;Đăng xuất</button></li>
                                 </ul>

@@ -11,12 +11,14 @@ import move from '../../images/icon/move.svg';
 import download from '../../images/icon/download.svg';
 import del from '../../images/icon/delete.svg';
 import favorite from '../../images/icon/favorite.svg';
+import favorited from '../../images/icon/favorited.svg';
 
 import { FileOutlined } from "@ant-design/icons";
 import { Button, Table, Tooltip } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
+import { updateFavorite } from '../../api/files';
 
 
 const FolderDocFavorite = ({ data }) => {
@@ -70,13 +72,15 @@ const FolderDocFavorite = ({ data }) => {
         background: 'transparent'
     }
 
-    const imgStyle = { 
-        margin: 0, 
-        padding: 0, 
-        marginBottom: 6, 
-        width: '100%', 
-        height: '100%' 
+    const imgStyle = {
+        margin: 0,
+        padding: 0,
+        marginBottom: 6,
+        width: '100%',
+        height: '100%'
     }
+
+    const [statusFavorite, setStatusFavorite] = useState(false);
 
     const columns = [
         {
@@ -88,30 +92,36 @@ const FolderDocFavorite = ({ data }) => {
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) =>   <div className='data-file' style={{ display: 'flex', alignItems: 'center', flexWrap:'wrap', width:450 }}>
-                                            {renderImage(record.type)}
-                                            <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}</Link>
-                                            <div className='button-tool'>
-                                                <Tooltip style={{ paddingLeft:50 }} title={'Chỉnh sửa'}>
-                                                    <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
-                                                </Tooltip>
-                                                <Tooltip title={'Chia sẻ'}>
-                                                    <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
-                                                </Tooltip>
-                                                <Tooltip title={'Di chuyển'}>
-                                                    <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
-                                                </Tooltip>
-                                                <Tooltip title={'Tải xuống'}>
-                                                    <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
-                                                </Tooltip>
-                                                <Tooltip title={'Xóa'}>
-                                                    <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
-                                                </Tooltip>
-                                                <Tooltip title={'Yêu thích'}>
-                                                    <Button style={buttonStyle}><img style={imgStyle} src={favorite} /></Button>
-                                                </Tooltip>
-                                            </div>
-                                        </div>
+            render: (text, record) => <div className='data-file' style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: 450 }}>
+                {renderImage(record.type)}
+                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}</Link>
+                <div className='button-tool'>
+                    <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
+                        <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                    </Tooltip>
+                    <Tooltip title={'Chia sẻ'}>
+                        <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                    </Tooltip>
+                    <Tooltip title={'Di chuyển'}>
+                        <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                    </Tooltip>
+                    <Tooltip title={'Tải xuống'}>
+                        <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                    </Tooltip>
+                    <Tooltip title={'Xóa'}>
+                        <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                    </Tooltip>
+                    <Tooltip title={'Yêu thích'}>
+                        <Button onClick={() => {
+                            updateFavorite(record.id).then(res => {
+                                setStatusFavorite(!statusFavorite);
+                            }).catch(err => {
+                                console.log(err);
+                            });
+                        }} style={buttonStyle}><img style={imgStyle} src={statusFavorite ? favorite : favorited} /></Button>
+                    </Tooltip>
+                </div>
+            </div>
         },
         {
             title: 'Mô tả',
@@ -139,7 +149,7 @@ const FolderDocFavorite = ({ data }) => {
             title: 'Đã chỉnh sửa',
             key: 'updated_at',
             dataIndex: 'updated_at',
-            render: (date, record) => {record.edit_by && <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>}
+            render: (date, record) => { record.edit_by && <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small> }
         },
 
         {

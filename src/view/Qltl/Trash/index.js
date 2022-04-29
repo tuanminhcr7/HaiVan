@@ -52,7 +52,7 @@ const Trash = () => {
             </div>
             {trash &&
                 <div className='row px-5'>
-                    {viewFile ? <GridDataFile data={trash}/> : <FolderTrash data={trash} />}    
+                    {viewFile ? <GridDataFile data={trash} tool={false}/> : <FolderTrash data={trash} />}    
                 </div>
             }
 

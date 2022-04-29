@@ -2,8 +2,9 @@ import { getFolder } from '../../../api/folders.js';
 import { uploadFile } from '../../../api/files.js';
 
 import { useEffect, useState } from "react";
-import { Form, Input, Button, Radio, Cascader } from 'antd';
+import { Form, Input, Button, Radio, Cascader, notification } from 'antd';
 import { useLocation } from "react-router";
+import { Link } from 'react-router-dom';
 
 
 
@@ -34,7 +35,7 @@ const FormUploadFile = (props) => {
 
     const onChange = (value, selectedOptions) => {
         setChooseFolder(selectedOptions);
-        console.log(value, selectedOptions);
+        // console.log(value, selectedOptions);
     };
 
     const saveFileUpload = (event) => {
@@ -53,6 +54,7 @@ const FormUploadFile = (props) => {
                     'Content-Type': location.state.files.type,
                 }
             }).then(res => {
+                setSelectedFile(res.data.data);
                 const notification = document.getElementsByClassName("notification");
                 notification[0].innerHTML = "Tải tệp lên thành công";
             }).catch(err => {
@@ -61,7 +63,6 @@ const FormUploadFile = (props) => {
         } catch (error) {
             console.log(error);
         }
-
     }
 
     useEffect(() => {
@@ -75,44 +76,94 @@ const FormUploadFile = (props) => {
                 <div className="p-5" style={{ border: '1px solid #ddd' }}>
                     <div className="row mx-5 mb-3">
                         <label className="p-0"><span style={{ marginRight: 4, color: '#f00', fontSize: 18 }}>*</span>Tên tài liệu</label>
-                        <Input
-                            placeholder="Nhập tên file"
-                            name="name"
-                            value={location.state.files[0].name}
-                        />
+                        {(selectedFile != null) ?
+                            <Input
+                                placeholder="Nhập tên file"
+                                name="name"
+                                value={location.state.files[0].name}
+                                disabled={true}
+                            /> :
+                            <Input
+                                placeholder="Nhập tên file"
+                                name="name"
+                                value={location.state.files[0].name}
+                            />
+                        }
+
                     </div>
 
                     <div className="row mx-5 mb-3">
                         <label className="p-0"><span style={{ marginRight: 4, color: '#f00', fontSize: 18 }}>*</span>Chọn thư mục muốn tải tệp lên</label><br />
-                        <Cascader
-                            className="px-1"
-                            options={renderListFolder(listFolders)}
-                            onChange={onChange}
-                            placeholder="Chọn thư mục muốn tải tệp lên"
-                            changeOnSelect
-                            expandTrigger='hover'
-                        />
+                        {(selectedFile != null) ?
+                            <Cascader
+                                className="px-1"
+                                options={renderListFolder(listFolders)}
+                                onChange={onChange}
+                                placeholder="Chọn thư mục muốn tải tệp lên"
+                                changeOnSelect
+                                expandTrigger='hover'
+                                disabled={true}
+                            /> :
+                            <Cascader
+                                className="px-1"
+                                options={renderListFolder(listFolders)}
+                                onChange={onChange}
+                                placeholder="Chọn thư mục muốn tải tệp lên"
+                                changeOnSelect
+                                expandTrigger='hover'
+                            />
+                        }
+
                     </div>
                     <div className="row mx-5 mb-3">
                         <label className="p-0">Mô tả</label>
-                        <Input
-                            placeholder="Mô tả ngắn tệp tin"
-                            name="description"
-                            onChange={e => setDescription(e.target.value)}
-                      
-                        />
+                        {(selectedFile != null) ?
+                            <Input
+                                placeholder="Mô tả ngắn tệp tin"
+                                name="description"
+                                onChange={e => setDescription(e.target.value)}
+                                disabled={true}
+                            /> :
+                            <Input
+                                placeholder="Mô tả ngắn tệp tin"
+                                name="description"
+                                onChange={e => setDescription(e.target.value)}
+
+                            />
+                        }
+
                     </div>
                     <div className="row mx-5 mb-3">
                         <label className="p-0">Nơi lưu trữ</label>
-                        <Input
-                            placeholder="Nơi lưu trữ bản cứng. Ví dụ: hòm 1, hòm 2, ..."
-                            name="location"
-                            onChange={e => setLocationFile(e.target.value)}
-                        />
+                        {(selectedFile != null) ?
+                            <Input
+                                placeholder="Nơi lưu trữ bản cứng. Ví dụ: hòm 1, hòm 2, ..."
+                                name="location"
+                                onChange={e => setLocationFile(e.target.value)}
+                                disabled={true}
+                            /> :
+                            <Input
+                                placeholder="Nơi lưu trữ bản cứng. Ví dụ: hòm 1, hòm 2, ..."
+                                name="location"
+                                onChange={e => setLocationFile(e.target.value)}
+                            />
+                        }
+
                     </div>
                     <div className="row mx-5">
                         <div className="col-5"></div>
-                        <div className="col-2"><Button onClick={saveFileUpload} style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button></div>
+                        <div className="col-2" style={{ display: 'flex' }}>
+                            {(selectedFile != null) ?
+                                <>
+                                    <Button disabled={true} onClick={saveFileUpload} style={{ backgroundColor: '#ccc', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button>
+                                    <Button className='mx-2' style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">
+                                        <Link target={'_blank'} to={`/qltl/${selectedFile.id}/xem-tai-lieu-${selectedFile.slug}`} style={{ textDecoration: 'none' }}>Xem tài liệu</Link>
+                                    </Button>
+                                </>
+                                :
+                                <Button onClick={saveFileUpload} style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button>
+                            }
+                        </div>
                         <div className="col-5"></div>
                     </div>
                     <div className="row mx-5">

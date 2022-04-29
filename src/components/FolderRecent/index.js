@@ -12,10 +12,12 @@ import move from '../../images/icon/move.svg';
 import download from '../../images/icon/download.svg';
 import del from '../../images/icon/delete.svg';
 import favorite from '../../images/icon/favorite.svg';
+import favorited from '../../images/icon/favorited.svg';
+import { updateFavorite } from '../../api/files';
 
 import { FileOutlined } from "@ant-design/icons";
 import { Button, Table, Tooltip } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Time from "react-time-format";
 
@@ -64,6 +66,9 @@ const FolderRecent = ({ data }) => {
         }
     }
 
+    const [statusFavorite, setStatusFavorite] = useState();
+    const [idFavorite, setIdFavorite] = useState();
+
     const buttonStyle = {
         padding: 0,
         height: 25,
@@ -83,38 +88,51 @@ const FolderRecent = ({ data }) => {
     const columns = [
         {
             title: () => {
-                return <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <FileOutlined style={{ fontSize: 18, color: '#605e5c' }} />
-                    <p className="mx-2" style={{ margin: '0', paddingTop: 5 }}>Tên</p>
-
-                </div>
+                return (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <FileOutlined style={{ fontSize: 18, color: '#605e5c' }} />
+                        <p className="mx-2" style={{ margin: '0', paddingTop: 5 }}>Tên</p>
+                    </div>
+                )
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <div className='data-file' style={{ display: 'flex', alignItems: 'center', width: 470 }}>
-                {renderImage(record.type)}
-                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text.length > 23 ? `${text.substring(0, 23)}...` : text}</Link>
-                <div className='button-tool'>
-                    <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Chia sẻ'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Di chuyển'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Tải xuống'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Xóa'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Yêu thích'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={favorite} /></Button>
-                    </Tooltip>
+            render: (text, record) => 
+                <div className='data-file' style={{ display: 'flex', alignItems: 'center', width: 470 }}>
+                    {renderImage(record.type)}
+                    <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text.length > 23 ? `${text.substring(0, 23)}...` : text}</Link>
+                    <div className='button-tool'>
+                        <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
+                            <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                        </Tooltip>
+                        <Tooltip title={'Chia sẻ'}>
+                            <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                        </Tooltip>
+                        <Tooltip title={'Di chuyển'}>
+                            <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                        </Tooltip>
+                        <Tooltip title={'Tải xuống'}>
+                            <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                        </Tooltip>
+                        <Tooltip title={'Xóa'}>
+                            <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                        </Tooltip>
+
+                        <Tooltip title={(record.favorite == 1) ? 'Bỏ yêu thích' : 'Yêu thích'}>
+                            <Button onClick={() => {
+                                setStatusFavorite(!record.favorite);
+                                updateFavorite(record.id).then(res => {
+                                    record.id = res.data.data.id;
+                                    setIdFavorite(record.id);
+                                    record.favorite = res.data.data.favorite;
+                                    setStatusFavorite(record.favorite);
+                                }).catch(err => {
+                                    setStatusFavorite(record.favorite);
+                                });
+                            }} style={buttonStyle}><img style={imgStyle} src={(record.favorite == 1) ? favorited : favorite} /></Button>
+                        </Tooltip>
+                    </div>
                 </div>
-            </div>
         },
         {
             title: 'Mô tả',
@@ -145,9 +163,7 @@ const FolderRecent = ({ data }) => {
             render: (date, record) =>
                 <>
                     {record.edit_by && <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>}
-
                 </>
-
         },
         {
             title: 'Kích cỡ',

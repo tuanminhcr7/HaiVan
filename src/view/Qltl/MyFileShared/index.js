@@ -52,7 +52,7 @@ const MyFileShared = () => {
             </div>
             {shared && 
                 <div className='row px-4'>
-                    {viewFile ? <GridDataFile data={shared} /> :<FolderMyFileShared data={shared} />}
+                    {viewFile ? <GridDataFile data={shared} tool={true} /> :<FolderMyFileShared data={shared} />}
                 </div>
             }
             

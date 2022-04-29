@@ -21,7 +21,7 @@ const { Panel } = Collapse;
 
 
 
-const GridDataFile = ({ data }) => {
+const GridDataFile = ({ data, tool }) => {
     const renderImage = (type) => {
         switch (type) {
             case 'xlsx':
@@ -100,20 +100,23 @@ const GridDataFile = ({ data }) => {
                             </small>
                         </div>
                     </Link>
-                    <div className='tool-file-grid'>
-                        <Tooltip title={'Chia sẻ'}>
-                            <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
-                        </Tooltip>
-                        <Tooltip title={'Di chuyển'}>
-                            <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
-                        </Tooltip>
-                        <Tooltip title={'Tải xuống'}>
-                            <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
-                        </Tooltip>
-                        <Tooltip title={'Xóa'}>
-                            <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
-                        </Tooltip>
-                    </div>
+                    {tool &&
+                        <div className='tool-file-grid'>
+                            <Tooltip title={'Chia sẻ'}>
+                                <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                            </Tooltip>
+                            <Tooltip title={'Di chuyển'}>
+                                <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                            </Tooltip>
+                            <Tooltip title={'Tải xuống'}>
+                                <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                            </Tooltip>
+                            <Tooltip title={'Xóa'}>
+                                <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                            </Tooltip>
+                        </div>
+                    }
+
                 </div>
             )}
         </div>

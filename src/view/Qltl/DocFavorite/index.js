@@ -53,7 +53,7 @@ const DocFavorite = () => {
             </div>
             {docFavorites && 
                 <div className='row px-3 m-0'>
-                    {viewFile ? <GridDataFile data={docFavorites} /> : <FolderDocFavorite data={docFavorites} />}
+                    {viewFile ? <GridDataFile data={docFavorites} tool={true} /> : <FolderDocFavorite data={docFavorites} />}
                 </div>
             }
         </div>

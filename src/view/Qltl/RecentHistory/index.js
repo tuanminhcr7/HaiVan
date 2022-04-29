@@ -52,7 +52,7 @@ const RecentHistory = () => {
             </div>
             {recents && 
                 <div className='row px-3'>
-                    {viewFile ? <GridDataFile data={recents}/> : <FolderRecent data={recents} />}                
+                    {viewFile ? <GridDataFile data={recents} tool={true} /> : <FolderRecent data={recents} />}                
                 </div>
             }
             

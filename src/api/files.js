@@ -55,7 +55,6 @@ export const updateShareFile = (params, id) => {
     return axios.post(`/api/share-file/${id}`, params);
 };
 
-
 export const myFileShared = (params) => {
     return axios.get(`/api/my-file-shared`, params);
 }
