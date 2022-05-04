@@ -16,6 +16,8 @@ import { Button, Collapse, Tooltip } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
+import { downloadFile } from '../../api/files';
+import fileDownload from 'js-file-download';
 
 const { Panel } = Collapse;
 
@@ -108,7 +110,13 @@ const GridDataFile = ({ data, tool }) => {
                             <Tooltip title={'Di chuyển'}>
                                 <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
                             </Tooltip>
-                            <Tooltip title={'Tải xuống'}>
+                            <Tooltip onClick={() => {
+                                downloadFile(item3.id).then(res => {
+                                    fileDownload(res.data, `${item3.name}.${item3.type}`);
+                                }).catch(err => {
+                                    console.log(err);
+                                })
+                            }} title={'Tải xuống'}>
                                 <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
                             </Tooltip>
                             <Tooltip title={'Xóa'}>
@@ -116,7 +124,6 @@ const GridDataFile = ({ data, tool }) => {
                             </Tooltip>
                         </div>
                     }
-
                 </div>
             )}
         </div>

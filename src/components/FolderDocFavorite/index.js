@@ -18,7 +18,8 @@ import { Button, Table, Tooltip } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
-import { updateFavorite } from '../../api/files';
+import { downloadFile, updateFavorite } from '../../api/files';
+import fileDownload from 'js-file-download';
 
 
 const FolderDocFavorite = ({ data }) => {
@@ -64,6 +65,9 @@ const FolderDocFavorite = ({ data }) => {
         }
     }
 
+    const [statusFavorite, setStatusFavorite] = useState();
+    const [idFavorite, setIdFavorite] = useState();
+
     const buttonStyle = {
         padding: 0,
         height: 25,
@@ -79,8 +83,6 @@ const FolderDocFavorite = ({ data }) => {
         width: '100%',
         height: '100%'
     }
-
-    const [statusFavorite, setStatusFavorite] = useState(false);
 
     const columns = [
         {
@@ -106,19 +108,30 @@ const FolderDocFavorite = ({ data }) => {
                         <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
                     </Tooltip>
                     <Tooltip title={'Tải xuống'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                        <Button onClick={() => {
+                            downloadFile(record.id).then(res => {
+                                fileDownload(res.data, `${record.name}.${record.type}`);
+                            }).catch(err => {
+                                console.log(err);
+                            })
+                        }} style={buttonStyle}><img style={imgStyle} src={download} /></Button>
                     </Tooltip>
                     <Tooltip title={'Xóa'}>
                         <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
                     </Tooltip>
-                    <Tooltip title={'Yêu thích'}>
+                    <Tooltip title={(record.favorite == 1) ? 'Bỏ yêu thích' : 'Yêu thích'}>
                         <Button onClick={() => {
+                            setStatusFavorite(!record.favorite);
                             updateFavorite(record.id).then(res => {
-                                setStatusFavorite(!statusFavorite);
+                                console.log(res);
+                                record.id = res.data.data.id;
+                                setIdFavorite(record.id);
+                                record.favorite = res.data.data.favorite;
+                                setStatusFavorite(record.favorite);
                             }).catch(err => {
-                                console.log(err);
+                                setStatusFavorite(record.favorite);
                             });
-                        }} style={buttonStyle}><img style={imgStyle} src={statusFavorite ? favorite : favorited} /></Button>
+                        }} style={buttonStyle}><img style={imgStyle} src={(record.favorite == 1) ? favorited : favorite} /></Button>
                     </Tooltip>
                 </div>
             </div>

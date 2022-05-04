@@ -13,13 +13,14 @@ import ppt from '../../../images/icon/ppt.svg';
 import pptx from '../../../images/icon/pptx.svg';
 import folder from '../../../images/icon/folder.svg';
 import './style.css';
-import { getFileDetail } from "../../../api/files";
+import { downloadFile, getFileDetail } from "../../../api/files";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Button } from "antd";
 import Time from 'react-time-format';
 import { Breadcrumb } from "antd";
+import fileDownload from "js-file-download";
 
 
 const DetailFile = () => {
@@ -91,12 +92,6 @@ const DetailFile = () => {
         })
     }
 
-    // const downloadFile = () => {
-    //     getFileDetail(id).then(res => {
-
-    //     })
-    // }
-
     useEffect(() => {
         document.title = 'Chi tiết tệp';
         handleBreadCrumb();
@@ -107,7 +102,7 @@ const DetailFile = () => {
         color: '#000',
         alignItems: 'center',
         fontSize: 14,
-        border:'none',       
+        border: 'none',
     }
 
     return (
@@ -123,7 +118,13 @@ const DetailFile = () => {
                         <div className="col-8">
                             <div className="row my-3" style={{ display: 'flex' }}>
                                 <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={share} width={20} height={20} />&nbsp;Chia sẻ</Button></div>
-                                <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={download} width={20} height={20} />&nbsp;Tải xuống</Button></div>
+                                <div className="col-2"><Button onClick={() => {
+                                    downloadFile(file.id).then(res => {
+                                        fileDownload(res.data, `${file.name}.${file.type}`);
+                                    }).catch(err => {
+                                        console.log(err);
+                                    })
+                                }} style={buttonStyle} className="px-0"><img src={download} width={20} height={20} />&nbsp;Tải xuống</Button></div>
                                 <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={move} width={20} height={20} />&nbsp;Di chuyển tới</Button></div>
                                 <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={edit} width={20} height={20} />&nbsp;Chỉnh sửa</Button></div>
                                 <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={del} width={20} height={20} />&nbsp;Xóa</Button></div>

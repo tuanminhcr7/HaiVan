@@ -12,12 +12,15 @@ import move from '../../images/icon/move.svg';
 import download from '../../images/icon/download.svg';
 import del from '../../images/icon/delete.svg';
 import favorite from '../../images/icon/favorite.svg';
+import favorited from '../../images/icon/favorited.svg';
 
 import { FileOutlined } from "@ant-design/icons";
 import { Button, Collapse, Table, Tooltip } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Time from "react-time-format";
+import { downloadFile, updateFavorite } from '../../api/files';
+import fileDownload from 'js-file-download';
 
 const { Panel } = Collapse;
 
@@ -65,6 +68,9 @@ const FolderMyFileShared = ({ data }) => {
         }
     }
 
+    const [statusFavorite, setStatusFavorite] = useState();
+    const [idFavorite, setIdFavorite] = useState();
+
     const buttonStyle = {
         padding: 0,
         height: 25,
@@ -106,13 +112,29 @@ const FolderMyFileShared = ({ data }) => {
                         <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
                     </Tooltip>
                     <Tooltip title={'Tải xuống'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                        <Button onClick={() => {
+                                downloadFile(record.id).then(res => {
+                                    fileDownload(res.data, `${record.name}.${record.type}`);
+                                }).catch(err => {
+                                    console.log(err);
+                                })
+                            }} style={buttonStyle}><img style={imgStyle} src={download} /></Button>
                     </Tooltip>
                     <Tooltip title={'Xóa'}>
                         <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
                     </Tooltip>
-                    <Tooltip title={'Yêu thích'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={favorite} /></Button>
+                    <Tooltip title={(record.favorite == 1) ? 'Bỏ yêu thích' : 'Yêu thích'}>
+                        <Button onClick={() => {
+                                setStatusFavorite(!record.favorite);
+                                updateFavorite(record.id).then(res => {
+                                    record.id = res.data.data.id;
+                                    setIdFavorite(record.id);
+                                    record.favorite = res.data.data.favorite;
+                                    setStatusFavorite(record.favorite);
+                                }).catch(err => {
+                                    setStatusFavorite(record.favorite);
+                                });
+                            }} style={buttonStyle}><img style={imgStyle} src={(record.favorite == 1) ? favorited : favorite} /></Button>
                     </Tooltip>
                 </div>
             </div>

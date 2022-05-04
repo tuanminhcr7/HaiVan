@@ -24,7 +24,7 @@
 }
 
 .tool-folder-grid {
-    margin-left: 15px;
+    margin-left: 25px;
     display: flex;
     display: none;
     transition: 0.9s;

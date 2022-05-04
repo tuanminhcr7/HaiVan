@@ -20,6 +20,8 @@ import { Button, Table, Tooltip } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Time from "react-time-format";
+import fileDownload from 'js-file-download';
+import { downloadFile } from '../../api/files';
 
 
 const FolderRecent = ({ data }) => {
@@ -112,7 +114,13 @@ const FolderRecent = ({ data }) => {
                             <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
                         </Tooltip>
                         <Tooltip title={'Tải xuống'}>
-                            <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                            <Button onClick={() => {
+                                downloadFile(record.id).then(res => {
+                                    fileDownload(res.data, `${record.name}.${record.type}`);
+                                }).catch(err => {
+                                    console.log(err);
+                                })
+                            }} style={buttonStyle}><img style={imgStyle} src={download} /></Button>
                         </Tooltip>
                         <Tooltip title={'Xóa'}>
                             <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>

@@ -18,6 +18,8 @@ import { Button, Collapse, Tooltip } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
+import { downloadFile } from '../../api/files';
+import fileDownload from 'js-file-download';
 
 const { Panel } = Collapse;
 
@@ -114,7 +116,13 @@ const GridData = ({ data, title }) => {
                                             <Tooltip title={'Di chuyển'}>
                                                 <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
                                             </Tooltip>
-                                            <Tooltip title={'Tải xuống'}>
+                                            <Tooltip onClick={() => {
+                                                downloadFile(item3.id).then(res => {
+                                                    fileDownload(res.data, `${item3.name}.${item3.type}`);
+                                                }).catch(err => {
+                                                    console.log(err);
+                                                })
+                                            }} title={'Tải xuống'}>
                                                 <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
                                             </Tooltip>
                                             <Tooltip title={'Xóa'}>
@@ -139,17 +147,14 @@ const GridData = ({ data, title }) => {
                                             </div>
                                         </Link>
                                         <div className='tool-folder-grid'>
-                                            <Tooltip title={'Chia sẻ'}>
-                                                <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
-                                            </Tooltip>
-                                            <Tooltip title={'Di chuyển'}>
-                                                <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
-                                            </Tooltip>
-                                            <Tooltip title={'Tải xuống'}>
-                                                <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
-                                            </Tooltip>
                                             <Tooltip title={'Xóa'}>
                                                 <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                                            </Tooltip>
+                                            <Tooltip title={'Đổi tên'}>
+                                                <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                                            </Tooltip>
+                                            <Tooltip title={'Chia sẻ'}>
+                                                <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
                                             </Tooltip>
                                         </div>
                                     </div>
