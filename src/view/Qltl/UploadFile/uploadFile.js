@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Form, Input, Button, Radio, Cascader, notification } from 'antd';
 import { useLocation } from "react-router";
 import { Link } from 'react-router-dom';
+import slugify from 'react-slugify';
 
 
 
@@ -69,6 +70,10 @@ const FormUploadFile = (props) => {
         document.title = "Tải tệp";
         getListFolder();
     }, []);
+
+    function convertToSlug(Text) {
+        return Text.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+    }
 
     return (
         <>
@@ -151,20 +156,23 @@ const FormUploadFile = (props) => {
 
                     </div>
                     <div className="row mx-5">
-                        <div className="col-5"></div>
-                        <div className="col-2" style={{ display: 'flex' }}>
+                        <div className="col-4"></div>
+                        <div className="col-4" style={{ display: 'flex' }}>
                             {(selectedFile != null) ?
                                 <>
                                     <Button disabled={true} onClick={saveFileUpload} style={{ backgroundColor: '#ccc', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button>
+                                    <Button className='mx-2' style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">
+                                        <Link to={`/qltl/${chooseFolder[0].value}/tai-lieu-${slugify(chooseFolder[0].label)}`} style={{ textDecoration: 'none' }}>Đi đến thư mục</Link>
+                                    </Button>
                                     <Button className='mx-2' style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">
                                         <Link target={'_blank'} to={`/qltl/${selectedFile.id}/xem-tai-lieu-${selectedFile.slug}`} style={{ textDecoration: 'none' }}>Xem tài liệu</Link>
                                     </Button>
                                 </>
                                 :
-                                <Button onClick={saveFileUpload} style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button>
+                                <Button onClick={saveFileUpload} style={{ backgroundColor: '#f5f5f5', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button>
                             }
                         </div>
-                        <div className="col-5"></div>
+                        <div className="col-4"></div>
                     </div>
                     <div className="row mx-5">
                         <span className='notification text-success'></span>
