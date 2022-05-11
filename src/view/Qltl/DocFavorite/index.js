@@ -12,7 +12,7 @@ import { Button } from 'antd';
 
 const DocFavorite = () => {
 
-    const [docFavorites, setDocFavorite] = useState([]);
+    const [docFavorites, setDocFavorite] = useState();
     const [viewFile, setViewFile] = useState(false);
 
     const handleDocFavorite = () => {

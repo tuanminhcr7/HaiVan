@@ -14,12 +14,14 @@ import favorite from '../../images/icon/favorite.svg';
 import favorited from '../../images/icon/favorited.svg';
 
 import { FileOutlined } from "@ant-design/icons";
-import { Button, Table, Tooltip } from "antd";
-import React, { useState } from "react";
+import { Button, message, Table, Tooltip } from "antd";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
-import { downloadFile, updateFavorite } from '../../api/files';
+import { downloadFile, editFile, removeFile, updateFavorite } from '../../api/files';
 import fileDownload from 'js-file-download';
+import EditForm from '../EditForm';
+import DeleteForm from '../DeleteForm';
 
 
 const FolderDocFavorite = ({ data }) => {
@@ -65,8 +67,25 @@ const FolderDocFavorite = ({ data }) => {
         }
     }
 
+    const [dataFile, setDataFile] = useState(data);
     const [statusFavorite, setStatusFavorite] = useState();
     const [idFavorite, setIdFavorite] = useState();
+    const [fileChoose, setFileChoose] = useState();
+    const [isModalEditFile, setIsModalEditFile] = useState(false);
+    const [isModalDeleteFile, setIsModalDeleteFile] = useState(false);
+
+    const showModalEditFile = () => {
+        setIsModalEditFile(true);
+    };
+
+    const showModalDeleteFile = () => {
+        setIsModalDeleteFile(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalEditFile(false);
+        setIsModalDeleteFile(false);
+    };
 
     const buttonStyle = {
         padding: 0,
@@ -96,10 +115,13 @@ const FolderDocFavorite = ({ data }) => {
             key: 'name',
             render: (text, record) => <div className='data-file' style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: 450 }}>
                 {renderImage(record.type)}
-                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text}</Link>
+                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, fontFamily: 'Roboto', textDecoration: 'none', color: '#000' }}>{text}</Link>
                 <div className='button-tool'>
                     <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                        <Button onClick={() => {
+                            showModalEditFile();
+                            setFileChoose(record);
+                        }} style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
                     </Tooltip>
                     <Tooltip title={'Chia sẻ'}>
                         <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
@@ -109,15 +131,20 @@ const FolderDocFavorite = ({ data }) => {
                     </Tooltip>
                     <Tooltip title={'Tải xuống'}>
                         <Button onClick={() => {
+
                             downloadFile(record.id).then(res => {
                                 fileDownload(res.data, `${record.name}.${record.type}`);
+                                message.success('Tệp đã được tải xuống');
                             }).catch(err => {
                                 console.log(err);
                             })
                         }} style={buttonStyle}><img style={imgStyle} src={download} /></Button>
                     </Tooltip>
                     <Tooltip title={'Xóa'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                        <Button onClick={() => {
+                            showModalDeleteFile();
+                            setFileChoose(record);
+                        }} style={buttonStyle}><img style={imgStyle} src={del} /></Button>
                     </Tooltip>
                     <Tooltip title={(record.favorite == 1) ? 'Bỏ yêu thích' : 'Yêu thích'}>
                         <Button onClick={() => {
@@ -177,8 +204,49 @@ const FolderDocFavorite = ({ data }) => {
         },
     ];
 
+    const editFileChoose = (id, name, description) => {
+        setDataFile(dataFile.map(item => {
+            if (item.id == id) {
+                return { ...item, name: name, description: description };
+            }
+            return item;
+        }));
+        editFile({ id: id, name: name, description: description }).then(res => {
+            setIsModalEditFile(false);
+            message.success('Cập nhật file thành công');
+        }).catch(err => {
+            let findFile = data.find(item => item.id == id)
+            setDataFile(dataFile.map(item => {
+                if (item.id == id) {
+                    return findFile;
+                }
+                return item;
+            }));
+        });
+    }
+
+    const deleteFileChoose = (id) => {
+        setDataFile(dataFile.map(item => {
+            if (item.id == id) {
+                return { ...item, id: id };
+            }
+            return item;
+        }));
+        removeFile(id).then(res => {
+            setIsModalDeleteFile(false);
+            message.success('Xóa file thành công');
+        }).catch(err => {
+
+        });
+    }
+
     return (
-        <Table columns={columns} dataSource={data} pagination={false} />
+        <>
+            <Table columns={columns} dataSource={dataFile} pagination={false} />
+            <EditForm show={isModalEditFile} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
+            <DeleteForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
+        </>
+
     );
 }
 

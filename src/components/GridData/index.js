@@ -11,21 +11,21 @@ import share from '../../images/icon/share.svg';
 import move from '../../images/icon/move.svg';
 import download from '../../images/icon/download.svg';
 import del from '../../images/icon/delete.svg';
-import favorite from '../../images/icon/favorite.svg';
 import './style.css';
 
-import { Button, Collapse, Tooltip } from "antd";
-import React from "react";
+import { Button, Collapse, message, Tooltip } from "antd";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
 import { downloadFile } from '../../api/files';
 import fileDownload from 'js-file-download';
+import EditForm from '../EditForm';
+import { editFolder } from '../../api/folders';
 
 const { Panel } = Collapse;
 
-
-
 const GridData = ({ data, title }) => {
+    
     const renderImage = (type) => {
         switch (type) {
             case 'xlsx':
@@ -89,6 +89,48 @@ const GridData = ({ data, title }) => {
         background: 'transparent'
     };
 
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [dataFolder, setDataFolder] = useState(data);
+    const [folderChoose, setFolderChoose] = useState();
+    
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
+    const editFolderChoose = (id, name, description) => {
+        setDataFolder(dataFolder.map(item => {
+            if (item.id == id) {
+                return {...item, name: name, description: description};
+            }
+            return item; 
+        }));
+        editFolder({id:id, name: name, description: description}).then(res => {
+            setIsModalVisible(false);
+            message.success('Cập nhật thành công');
+        }).catch(err => {
+            let findFolder = data.find(item => item.id == id)
+            setDataFolder(dataFolder.map(item => {
+                if (item.id == id) {
+                    return findFolder;
+                }
+                return item; 
+            }));
+        });
+    }
+    
+    useEffect(() => {
+        setDataFolder(data);
+    }, data);
+
     return (
         <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
             <Panel style={{ border: 'none', fontSize: '18px' }} header={title} key="1">
@@ -96,16 +138,16 @@ const GridData = ({ data, title }) => {
                     <>
                         {(title == 'Được chia sẻ' || title == 'Tệp') ?
                             <>
-                                {data && data.map((item3) =>
+                                {data && data.map((item) =>
                                     <div className='data-file'>
-                                        <Link to={`/qltl/${item3.id}/xem-tai-lieu-${item3.slug}`} className='px-2 link-file-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item3.name}>
+                                        <Link target={'_blank'} to={`/qltl/${item.id}/xem-tai-lieu-${item.slug}`} className='px-2 link-file-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item.name}>
                                             <div className='file'>
                                                 <div style={{ padding: '5px 15px' }}>
-                                                    {renderImage(item3.type)}
+                                                    {renderImage(item.type)}
                                                 </div>
-                                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item3.name.length > 10 ? `${item3.name.substring(0, 10)}...` : item3.name}</p>
+                                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item.name.length > 10 ? `${item.name.substring(0, 10)}...` : item.name}</p>
                                                 <small className='px-4' style={{ fontSize: 'small', color: '#605e5c' }}>
-                                                    <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
+                                                    <Time value={new Date(item.created_at)} format="DD-MM-YYYY" />
                                                 </small>
                                             </div>
                                         </Link>
@@ -117,8 +159,8 @@ const GridData = ({ data, title }) => {
                                                 <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
                                             </Tooltip>
                                             <Tooltip onClick={() => {
-                                                downloadFile(item3.id).then(res => {
-                                                    fileDownload(res.data, `${item3.name}.${item3.type}`);
+                                                downloadFile(item.id).then(res => {
+                                                    fileDownload(res.data, `${item.name}.${item.type}`);
                                                 }).catch(err => {
                                                     console.log(err);
                                                 })
@@ -133,16 +175,16 @@ const GridData = ({ data, title }) => {
                                 )}
                             </> :
                             <>
-                                {data && data.map((item3) =>
+                                {dataFolder && dataFolder.map((item) =>
                                     <div className='data-folder'>
-                                        <Link to={`/qltl/${item3.id}/tai-lieu-${item3.slug}`} className='px-2 link-folder-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item3.name}>
+                                        <Link to={`/qltl/${item.id}/tai-lieu-${item.slug}`} className='px-2 link-folder-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item.name}>
                                             <div className='file'>
                                                 <div style={{ padding: '5px 15px' }}>
-                                                    {renderImage(item3.type)}
+                                                    {renderImage(item.type)}
                                                 </div>
-                                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item3.name.length > 13 ? `${item3.name.substring(0, 13)}...` : item3.name}</p>
+                                                <p style={{ fontSize: 15, marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item.name.length > 13 ? `${item.name.substring(0, 13)}...` : item.name}</p>
                                                 <small className='px-4' style={{ fontSize: 'small', color: '#605e5c' }}>
-                                                    <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
+                                                    <Time value={new Date(item.created_at)} format="DD-MM-YYYY" />
                                                 </small>
                                             </div>
                                         </Link>
@@ -151,7 +193,10 @@ const GridData = ({ data, title }) => {
                                                 <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
                                             </Tooltip>
                                             <Tooltip title={'Đổi tên'}>
-                                                <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                                                <Button onClick={() => {
+                                                    showModal();
+                                                    setFolderChoose(item);
+                                                }} style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
                                             </Tooltip>
                                             <Tooltip title={'Chia sẻ'}>
                                                 <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
@@ -159,6 +204,7 @@ const GridData = ({ data, title }) => {
                                         </div>
                                     </div>
                                 )}
+                                <EditForm show={isModalVisible} showData={folderChoose} cancel={handleCancel} save={editFolderChoose} />
                             </>
                         }
                     </>

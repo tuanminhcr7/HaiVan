@@ -52,7 +52,7 @@ const DetailFolder = () => {
 
     return (
         <div>
-            <div className="row px-5">
+            <div className="row px-4">
                 <BreadCrumbRender data={breadCrumb} fontSize={18} separator=">" />
             </div>
 
@@ -62,7 +62,7 @@ const DetailFolder = () => {
                         <Button onClick={changeFolderGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
                         <Button onClick={changeFolderList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
                     </div>
-                    <div className='row px-3'>
+                    <div className='row px-2'>
                         {viewFolder ? <GridData data={folders} title={'Thư mục'} /> : <ListData data={folders} title={'Thư mục'} />}
                     </div>
                 </>

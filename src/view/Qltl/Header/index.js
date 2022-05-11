@@ -13,41 +13,7 @@ import { useNavigate } from 'react-router-dom';
 const Header = ({ users }) => {
     const navigate = useNavigate();
 
-    const myToken = users.token;
-    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
-
-    const myHeaders = {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${myToken}`
-        }
-    }
-
-    const adminHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${adminToken}`
-        }
-    }
-
     const [selectedFile, setSelectedFile] = useState(null);
-
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        const formData = new FormData();
-        formData.append("files", selectedFile);
-        formData.append("folder_id", 1);
-        try {
-            const response = axios({
-                method: "post",
-                url: "https://dev.api.qlnb.haivanexpress.vn/api/files",
-                data: formData,
-                headers: { "Content-Type": "multipart/form-data", 'Authorization': `Bearer ${myToken}` },
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     const handleFileSelect = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -71,8 +37,8 @@ const Header = ({ users }) => {
 
     return (
         <header style={{ width: '88vw' }}>
-            <div className='row'>
-                <div className='col p-0'>
+            <div className='row px-0'>
+                <div className='col px-0'>
                     <div className='px-5 pt-2' style={{ display: 'flex' }}>
                         <Search
                             placeholder="Tìm kiếm tài liệu"
@@ -113,12 +79,12 @@ const Header = ({ users }) => {
                     </div>
                 </div>
 
-                <div className='col p-0'>
+                <div className='col px-0'>
                     <ul className='user-name'>
                         <li className='pt-2 user-name-drop'>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <b>Chào, {users.name}</b>
-                                <img src={avatar} width={30} height={30} />
+                                <b style={{ fontSize:14 }}>Chào, {users.name}</b>
+                                <div style={{ width:30, height:30, borderRadius:'50%', background:'#fde3cf', display:'flex', alignItems:'center', paddingLeft:10, color:'#FF4D00' }}>{users.name.substring(0, 1)}</div>
                             </div>
 
                             <div style={{ paddingTop: 15, width:100 }}>

@@ -15,34 +15,20 @@ import favorite from '../../images/icon/favorite.svg';
 import favorited from '../../images/icon/favorited.svg';
 
 import { FileOutlined } from "@ant-design/icons";
-import { Button, Collapse, Table, Tooltip } from "antd";
-import React, { useState } from "react";
+import { Button, Collapse, message, Table, Tooltip } from "antd";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Time from "react-time-format";
 import axios from 'axios';
 import { useParams } from 'react-router';
-import { downloadFile, updateFavorite } from '../../api/files';
+import { downloadFile, editFile, removeFile, updateFavorite } from '../../api/files';
 import fileDownload from 'js-file-download';
+import EditForm from '../EditForm';
+import DeleteForm from '../DeleteForm';
 
 const { Panel } = Collapse;
 
 const ListDataFile = ({ data, title }) => {
-    const myToken = '672|5VLMRncWPkxVrw2tEFwFXfFUvNNixJaFq7WwXcPy';
-    const adminToken = '615|WDEA4EByOSvXW8Jfu7ou1J5N7jYi4HGfyfiqBlUT';
-
-    const myHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${myToken}`
-        }
-    }
-
-    const adminHeaders = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${adminToken}`
-        }
-    }
 
     const renderImage = (type) => {
         switch (type) {
@@ -85,22 +71,11 @@ const ListDataFile = ({ data, title }) => {
                 break;
         }
     }
-    const btnFavorite = (id) => {
-        axios.post(`https://dev.api.qlnb.haivanexpress.vn/api/doc-favorite/${id}`, myHeaders).then(res => {
-            console.log(res.data.favorite);
-            if (res.data.favorite == 1) {
-                setStatusFavorite(false);
-            } else {
-                setStatusFavorite(true);
-            }
-
-        }).catch(err => {
-            console.log(err);
-        })
-    }
 
     const [statusFavorite, setStatusFavorite] = useState();
     const [idFavorite, setIdFavorite] = useState();
+    const [fileChoose, setFileChoose] = useState();
+    const [dataFile, setDataFile] = useState(data);
 
     const buttonStyle = {
         padding: 0,
@@ -118,6 +93,28 @@ const ListDataFile = ({ data, title }) => {
         height: '100%'
     }
 
+    const [isModalEditFile, setIsModalEditFile] = useState(false);
+    const [isModalDeleteFile, setIsModalDeleteFile] = useState(false);
+
+    const showModalEditFile = () => {
+        setIsModalEditFile(true);
+    };
+
+    const showModalDeleteFile = () => {
+        setIsModalDeleteFile(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalEditFile(false);
+        setIsModalDeleteFile(false);
+    };
+
+    const smallStyle = {
+        margin:0,
+        fontFamily:'Roboto',
+        color:'#605e5c'
+    }
+
     const columns = [
         {
             title: () => {
@@ -130,10 +127,13 @@ const ListDataFile = ({ data, title }) => {
             key: 'name',
             render: (text, record) => <div className='data-file' style={{ display: 'flex', alignItems: 'center', width: 450 }}>
                 {renderImage(record.type)}
-                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, textDecoration: 'none', color: '#000' }}>{text.length > 26 ? `${text.substring(0, 26)}...` : text}</Link>
+                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 14, fontFamily:'Roboto', textDecoration: 'none', color: '#000' }}>{text.length > 26 ? `${text.substring(0, 26)}...` : text}</Link>
                 <div className='button-tool'>
                     <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                        <Button onClick={() => {
+                            showModalEditFile();
+                            setFileChoose(record);
+                        }} style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
                     </Tooltip>
                     <Tooltip title={'Chia sẻ'}>
                         <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
@@ -151,7 +151,10 @@ const ListDataFile = ({ data, title }) => {
                         }} style={buttonStyle}><img style={imgStyle} src={download} /></Button>
                     </Tooltip>
                     <Tooltip title={'Xóa'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                        <Button onClick={() => {
+                                showModalDeleteFile();
+                                setFileChoose(record);
+                            }} style={buttonStyle}><img style={imgStyle} src={del} /></Button>
                     </Tooltip>
                     <Tooltip title={(record.favorite == 1) ? 'Bỏ yêu thích' : 'Yêu thích'}>
                         <Button onClick={() => {
@@ -161,6 +164,12 @@ const ListDataFile = ({ data, title }) => {
                                 setIdFavorite(record.id);
                                 record.favorite = res.data.data.favorite;
                                 setStatusFavorite(record.favorite);
+                                
+                                if (record.favorite == 1) {
+                                    message.success('Yêu thích thành công');
+                                } else {
+                                    message.success('Bỏ yêu thích thành công');
+                                }
                             }).catch(err => {
                                 setStatusFavorite(record.favorite);
                             });
@@ -173,23 +182,23 @@ const ListDataFile = ({ data, title }) => {
             title: 'Mô tả',
             dataIndex: 'description',
             key: 'description',
-            render: (text, record) => <small style={{ margin: 0 }}>{record.description}</small>
+            render: (text, record) => <small style={smallStyle}>{record.description}</small>
         },
         {
             title: 'Ngày tạo',
             dataIndex: 'created_at',
             key: 'created_at',
-            render: (date) => <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
+            render: (date) => <small style={smallStyle}><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
         },
         {
             title: 'Chỉnh sửa',
             key: 'edit_by_name',
-            render: (text, record) => <small style={{ margin: 0 }}>{record.edit_by?.name}</small>
+            render: (text, record) => <small style={smallStyle}>{record.edit_by?.name}</small>
         },
         {
             title: 'Chia sẻ',
             key: 'is_editor',
-            render: (text, record) => <small style={{ margin: 0 }}>{(record.is_all_viewer == 1 || record.is_all_editor == 1) ? 'Đã chia sẻ' : 'Riêng tư'}</small>
+            render: (text, record) => <small style={smallStyle}>{(record.is_all_viewer == 1 || record.is_all_editor == 1) ? 'Đã chia sẻ' : 'Riêng tư'}</small>
         },
         {
             title: 'Đã chỉnh sửa',
@@ -197,14 +206,14 @@ const ListDataFile = ({ data, title }) => {
             dataIndex: 'updated_at',
             render: (date, record) => <>
                 {record.edit_by &&
-                    <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
+                    <small style={smallStyle}><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
                 }
             </>
         },
         {
             title: 'Kích cỡ',
             key: 'size',
-            render: (text, record) => <small style={{ margin: 0 }}>{(record.size * 1 * Math.pow(10, -6)).toFixed(2)}MB</small>
+            render: (text, record) => <small style={smallStyle}>{(record.size * 1 * Math.pow(10, -6)).toFixed(2)}MB</small>
         },
         {
             title: 'Sở hữu',
@@ -213,14 +222,60 @@ const ListDataFile = ({ data, title }) => {
         },
     ];
 
+    const editFileChoose = (id, name, description) => {
+        setDataFile(dataFile.map(item => {
+            if (item.id == id) {
+                return {...item, name: name, description: description};
+            }
+            return item; 
+        }));
+        editFile({id: id, name: name, description: description}).then(res => {
+            setIsModalEditFile(false);
+            message.success('Cập nhật file thành công');
+        }).catch(err => {
+            let findFile = data.find(item => item.id == id)
+            setDataFile(dataFile.map(item => {
+                if (item.id == id) {
+                    return findFile;
+                }
+                return item; 
+            }));
+        });
+    }
+
+    const deleteFileChoose = (id) => {
+        setDataFile(dataFile.map(item => {
+            if (item.id == id) {
+                return {...item, id: id};
+            }
+            return item; 
+        }));
+        removeFile(id).then(res => {
+            setIsModalDeleteFile(false);
+            message.success('Xóa file thành công');
+        }).catch(err => {
+
+        });
+    }
+
+    useEffect(() => {
+        setDataFile(data);
+    }, data);
+
     return (
-        <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
-            <Panel style={{ border: 'none', fontSize: '18px' }} header={title} key="1">
-                <div style={{ display: 'flex' }}>
-                    <Table style={{ width: '100vw' }} columns={columns} dataSource={data} pagination={false} />
-                </div>
-            </Panel>
-        </Collapse>
+        <div>
+            <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
+                <Panel style={{ border: 'none', fontSize: '18px' }} header={title} key="1">
+                    <div style={{ display: 'flex' }}>
+                        <Table style={{ width: '100vw' }} columns={columns} dataSource={dataFile} pagination={false} />
+                    </div>
+                </Panel>
+            </Collapse>
+            <EditForm show={isModalEditFile} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
+            <DeleteForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
+        </div>
+
+
     );
 }
 

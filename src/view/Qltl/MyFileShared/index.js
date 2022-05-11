@@ -12,7 +12,7 @@ import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons
 
 const MyFileShared = () => {
 
-    const [shared, setShared] = useState([]);
+    const [shared, setShared] = useState();
     const [viewFile, setViewFile] = useState(false);
 
     const handleFileShared = () => {

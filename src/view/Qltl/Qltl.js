@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import EditForm from '../../components/EditForm';
 
 
 const Qltl = () => {
@@ -50,6 +51,7 @@ const Qltl = () => {
                 <Header users={users} />
 
                 <section style={{ marginTop: '70px' }}>
+                    {/* <EditForm/> */}
                     <Routes>
                         {routes.map((route, idx) => {
                             return (

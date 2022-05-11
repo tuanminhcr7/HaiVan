@@ -63,61 +63,65 @@ const FolderTrash = ({ data }) => {
         }
     }
 
+    const smallStyle = {
+        margin: 0,
+        fontFamily: 'Roboto',
+        color: '#605e5c'
+    }
+
     const columns = [
         {
             title: () => {
-                return  <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <FileOutlined style={{ fontSize: 18, color: '#605e5c' }} />
-                            <p className="mx-2" style={{ margin: '0', paddingTop: 5 }}>Tên</p>
-                        </div>
+                return <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <FileOutlined style={{ fontSize: 18, color: '#605e5c' }} />
+                    <p className="mx-2" style={{ margin: '0', paddingTop: 5 }}>Tên</p>
+                </div>
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) =>   <div style={{ display: 'flex', alignItems: 'center', flexWrap:'wrap' }}>
-                                            {renderImage(record.type)}
-                                            <Link to={`/qltl/trash`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 14, textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
-                                        </div>
+            render: (text, record) => <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+                {renderImage(record.type)}
+                <Link to={`/qltl/trash`} style={{ fontWeight: 'bold', fontSize: 14, fontFamily: 'Roboto', textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
+            </div>
         },
         {
             title: 'Mô tả',
             dataIndex: 'description',
             key: 'description',
-            render: (text, record) => <small style={{ margin: 0 }}>{record.description}</small>
+            render: (text, record) => <small style={smallStyle}>{record.description}</small>
         },
         {
             title: 'Thư mục',
             dataIndex: 'folder',
             key: 'folder',
-            render: (text, record) => <small style={{ margin: 0 }}>{record.folder?.name}</small>
+            render: (text, record) => <small style={smallStyle}>{record.folder?.name}</small>
         },
         {
             title: 'Ngày tạo',
             dataIndex: 'created_at',
             key: 'created_at',
-            render: (date) => <small><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
+            render: (date) => <small style={smallStyle}><Time value={new Date(date)} format="DD-MM-YYYY" /></small>
         },
         {
             title: 'Sở hữu',
             key: 'create_by',
-            render: (text, record) => <small>{record.create_by?.name}</small>
+            render: (text, record) => <small style={smallStyle}>{record.create_by?.name}</small>
         },
         {
             title: 'Người xóa',
             key: 'deleted_by',
-            render: (text, record) => <small style={{ margin: 0 }}>{record.deleted_by?.name}</small>
+            render: (text, record) => <small style={smallStyle}>{record.deleted_by?.name}</small>
         },
         {
             title: 'Thời gian xóa',
             key: 'deleted_at',
             dataIndex: 'deleted_at',
-            render: (date) => <small>
-                <Time value={new Date(date)} format="DD-MM-YYYY HH:mm" />
-            </small>
+            render: (date) => <small style={smallStyle}><Time value={new Date(date)} format="DD-MM-YYYY HH:mm" /></small>
         },
     ];
 
     return (
-        <Table style={{ width:'100vw' }} columns={columns} dataSource={data} pagination={false} />
+        <Table style={{ width: '100vw' }} columns={columns} dataSource={data} pagination={false} />
     );
 }
 

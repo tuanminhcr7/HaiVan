@@ -13,19 +13,31 @@ import ppt from '../../../images/icon/ppt.svg';
 import pptx from '../../../images/icon/pptx.svg';
 import folder from '../../../images/icon/folder.svg';
 import './style.css';
-import { downloadFile, getFileDetail } from "../../../api/files";
+import { downloadFile, editFile, getFileDetail } from "../../../api/files";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import Time from 'react-time-format';
 import { Breadcrumb } from "antd";
 import fileDownload from "js-file-download";
+import EditForm from "../../../components/EditForm";
 
 
 const DetailFile = () => {
     const [file, setFile] = useState();
     const [breadCrumb, setBreadCrumb] = useState();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [dataFile, setDataFile] = useState(file);
+    const [fileChoose, setFileChoose] = useState();
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
 
     const renderImage = (type) => {
         switch (type) {
@@ -105,6 +117,22 @@ const DetailFile = () => {
         border: 'none',
     }
 
+    const editFileChoose = (id, name, description) => {
+        
+        editFile({id:id, name: name, description: description}).then(res => {
+            setIsModalVisible(false);
+            message.success('Cập nhật file thành công');
+        }).catch(err => {
+            let findFile = file.find(item => item.id == id)
+            setDataFile(dataFile.map(item => {
+                if (item.id == id) {
+                    return findFile;
+                }
+                return item; 
+            }));
+        });
+    }
+
     return (
         <div>
 
@@ -126,7 +154,10 @@ const DetailFile = () => {
                                     })
                                 }} style={buttonStyle} className="px-0"><img src={download} width={20} height={20} />&nbsp;Tải xuống</Button></div>
                                 <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={move} width={20} height={20} />&nbsp;Di chuyển tới</Button></div>
-                                <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={edit} width={20} height={20} />&nbsp;Chỉnh sửa</Button></div>
+                                <div className="col-2"><Button onClick={() => {
+                                    showModal();
+                                    setFileChoose(file);
+                                }} style={buttonStyle} className="px-0"><img src={edit} width={20} height={20} />&nbsp;Chỉnh sửa</Button></div>
                                 <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={del} width={20} height={20} />&nbsp;Xóa</Button></div>
                             </div>
                             <div className="row">
@@ -157,6 +188,7 @@ const DetailFile = () => {
                         </div>
                         <div className="col-4 mt-4 pt-4">
                             <h5 className="pt-1" >{file.name}</h5>
+                            <p style={{ fontSize: 14, color: '#8c8c8c' }}>{file.description}</p>
 
                             <h5 className="pt-2">Chi tiết</h5>
 
@@ -199,7 +231,7 @@ const DetailFile = () => {
                     </div>
                 </>
             }
-
+            <EditForm show={isModalVisible} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
         </div>
     );
 }

@@ -12,7 +12,7 @@ import download from '../../images/icon/download.svg';
 import del from '../../images/icon/delete.svg';
 import './style.css';
 
-import { Button, Collapse, Tooltip } from "antd";
+import { Button, Collapse, message, Tooltip } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
@@ -91,17 +91,31 @@ const GridDataFile = ({ data, tool }) => {
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {data && data.map((item3) =>
                 <div className='data-file'>
-                    <Link to={`/qltl/${item3.id}/xem-tai-lieu-${item3.slug}`} target={'_blank'} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>
-                        <div>
-                            <div style={{ padding: '5px 15px' }}>
-                                {renderImage(item3.type)}
+                    {tool ?
+                        <Link to={`/qltl/${item3.id}/xem-tai-lieu-${item3.slug}`} target={'_blank'} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>
+                            <div>
+                                <div style={{ padding: '5px 15px' }}>
+                                    {renderImage(item3.type)}
+                                </div>
+                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item3.name.length > 12 ? `${item3.name.substring(0, 12)}...` : item3.name}</p>
+                                <small className='px-3' style={{ fontSize: 'small', color: '#605e5c' }}>
+                                    <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
+                                </small>
                             </div>
-                            <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item3.name.length > 12 ? `${item3.name.substring(0, 12)}...` : item3.name}</p>
-                            <small className='px-3' style={{ fontSize: 'small', color: '#605e5c' }}>
-                                <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
-                            </small>
-                        </div>
-                    </Link>
+                        </Link> :
+                        <Link to={`/qltl/trash`} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>
+                            <div>
+                                <div style={{ padding: '5px 15px' }}>
+                                    {renderImage(item3.type)}
+                                </div>
+                                <p style={{ fontSize: '15px', marginBottom: '0', textAlign: 'center', maxWidth: 100 }}>{item3.name.length > 12 ? `${item3.name.substring(0, 12)}...` : item3.name}</p>
+                                <small className='px-3' style={{ fontSize: 'small', color: '#605e5c' }}>
+                                    <Time value={new Date(item3.created_at)} format="DD-MM-YYYY" />
+                                </small>
+                            </div>
+                        </Link>
+                    }
+
                     {tool &&
                         <div className='tool-file-grid'>
                             <Tooltip title={'Chia sẻ'}>
@@ -113,6 +127,7 @@ const GridDataFile = ({ data, tool }) => {
                             <Tooltip onClick={() => {
                                 downloadFile(item3.id).then(res => {
                                     fileDownload(res.data, `${item3.name}.${item3.type}`);
+                                    message.success('Tệp đã được tải xuống');
                                 }).catch(err => {
                                     console.log(err);
                                 })

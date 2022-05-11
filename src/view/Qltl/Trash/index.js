@@ -51,7 +51,7 @@ const Trash = () => {
                 <Button onClick={changeFileList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
             </div>
             {trash &&
-                <div className='row px-5'>
+                <div className='row px-4'>
                     {viewFile ? <GridDataFile data={trash} tool={false}/> : <FolderTrash data={trash} />}    
                 </div>
             }

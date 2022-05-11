@@ -3,6 +3,7 @@ import ListData from '../../../components/ListData';
 import FolderRecent from '../../../components/FolderRecent';
 import ListDataFile from '../../../components/ListDataFile';
 import { getDataHome } from '../../../api/folders';
+import EditForm from '../../../components/EditForm';
 
 import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import React, { useEffect, useState } from 'react';
@@ -15,6 +16,7 @@ const Home = () => {
     const [recents, setRecent] = useState([]);
     const [folders, setFolder] = useState([]);
     const [shared, setShared] = useState([]);
+    const [myDoc, setMyDoc] = useState([]);
     const [viewFolder, setViewFolder] = useState(true);
     const [viewFile, setViewFile] = useState(false);
 
@@ -42,11 +44,20 @@ const Home = () => {
         });
     }
 
+    const handleMyDoc = () => {
+        getDataHome().then(res => {
+            setMyDoc(res.data.file);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
     useEffect(() => {
         document.title = 'Quản lý tài liệu';
         handleRecent();
         handleFolder();
         handleShared();
+        handleMyDoc();
     }, []);
 
     const changeFolderGird = () => {
@@ -67,8 +78,9 @@ const Home = () => {
 
     return (
         <div>
+            {/* <EditForm/> */}
             <div className='row px-3'>
-                <p className='px-5' style={{ fontSize: '18px' }}><Link to={'/qltl'} style={{ textDecoration: 'none', color: '#201f1e' }}>{document.title}</Link></p>
+                <p className='px-4' style={{ fontSize: '18px' }}><Link to={'/qltl'} style={{ textDecoration: 'none', color: '#201f1e' }}>{document.title}</Link></p>
             </div>
 
             {recents.length > 0 &&
@@ -91,6 +103,19 @@ const Home = () => {
                 </>
             }
 
+            {myDoc.length > 0 &&
+                <>
+                    <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
+                        <Link to={'/qltl/cua-toi'} style={{ textDecoration: 'none', fontSize: 13, color: '#201f1e' }}>Xem tất cả</Link>
+                        <Button onClick={changeFolderGird} className='mx-2' style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
+                        <Button onClick={changeFolderList} style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
+                    </div>
+                    <div className='row px-2'>
+                        {viewFile ? <GridData data={myDoc} title={'Tài liệu của tôi'} /> : <ListDataFile data={myDoc} title={'Tài liệu của tôi'} />}
+                    </div>
+                </>
+            }
+
             {shared.length > 0 &&
                 <>
                     <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
@@ -99,8 +124,8 @@ const Home = () => {
                         <Button onClick={changeFileList} style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
                     </div>
 
-                    <div className='row px-3'>
-                        {viewFile ? <GridData data={shared} title={'Được chia sẻ'}  /> : <ListDataFile data={shared} title={'Được chia sẻ'} />}
+                    <div className='row px-2'>
+                        {viewFile ? <GridData data={shared} title={'Được chia sẻ'} /> : <ListDataFile data={shared} title={'Được chia sẻ'} />}
                     </div>
                 </>
             }

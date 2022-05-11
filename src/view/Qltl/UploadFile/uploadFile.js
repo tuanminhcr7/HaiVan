@@ -2,7 +2,7 @@ import { getFolder } from '../../../api/folders.js';
 import { uploadFile } from '../../../api/files.js';
 
 import { useEffect, useState } from "react";
-import { Form, Input, Button, Radio, Cascader, notification } from 'antd';
+import { Form, Input, Button, Radio, Cascader, notification, message } from 'antd';
 import { useLocation } from "react-router";
 import { Link } from 'react-router-dom';
 import slugify from 'react-slugify';
@@ -56,8 +56,7 @@ const FormUploadFile = (props) => {
                 }
             }).then(res => {
                 setSelectedFile(res.data.data);
-                const notification = document.getElementsByClassName("notification");
-                notification[0].innerHTML = "Tải tệp lên thành công";
+                message.success('File successfully uploaded');
             }).catch(err => {
                 console.log(err);
             });
@@ -169,7 +168,7 @@ const FormUploadFile = (props) => {
                                     </Button>
                                 </>
                                 :
-                                <Button onClick={saveFileUpload} style={{ backgroundColor: '#f5f5f5', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button>
+                                <Button onClick={saveFileUpload} style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button>
                             }
                         </div>
                         <div className="col-4"></div>

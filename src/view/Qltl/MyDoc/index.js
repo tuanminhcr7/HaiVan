@@ -13,8 +13,8 @@ import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons
 
 const MyDoc = () => {
 
-    const [myFiles, setMyFile] = useState([]);
-    const [myFolders, setMyFolder] = useState([]);
+    const [myFiles, setMyFile] = useState();
+    const [myFolders, setMyFolder] = useState();
     const [viewFolder, setViewFolder] = useState(true);
     const [viewFile, setViewFile] = useState(false);
 
@@ -63,7 +63,7 @@ const MyDoc = () => {
                 <Button onClick={changeFolderList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
             </div>
             {myFolders &&
-                <div className='row px-4'>
+                <div className='row px-2'>
                     {viewFolder ? <GridData title={'Thư mục'} data={myFolders} /> : <ListData title={'Thư mục'} data={myFolders} />}    
                 </div>
             }
@@ -73,7 +73,7 @@ const MyDoc = () => {
                 <Button onClick={changeFileList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
             </div>
             {myFiles &&
-                <div className='row px-4'>
+                <div className='row px-2'>
                     {viewFile ? <GridData title={'Tệp'} data={myFiles} /> : <ListDataFile data={myFiles} title={'Tệp'} />}    
                 </div>
             }

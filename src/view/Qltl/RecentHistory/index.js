@@ -12,7 +12,7 @@ import { InsertRowAboveOutlined, UnorderedListOutlined } from '@ant-design/icons
 
 const RecentHistory = () => {
 
-    const [recents, setRecent] = useState([]);
+    const [recents, setRecent] = useState();
     const [viewFile, setViewFile] = useState(false);
 
     const handleRecent = () => {
