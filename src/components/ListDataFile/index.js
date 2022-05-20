@@ -24,7 +24,8 @@ import { useParams } from 'react-router';
 import { downloadFile, editFile, removeFile, updateFavorite } from '../../api/files';
 import fileDownload from 'js-file-download';
 import EditForm from '../EditForm';
-import DeleteForm from '../DeleteForm';
+import DeleteFileForm from '../DeleteFileForm';
+import MoveForm from '../MoveForm';
 
 const { Panel } = Collapse;
 
@@ -77,6 +78,7 @@ const ListDataFile = ({ data, title }) => {
     const [fileChoose, setFileChoose] = useState();
     const [dataFile, setDataFile] = useState(data);
 
+    console.log(fileChoose, 'file choose');
     const buttonStyle = {
         padding: 0,
         height: 25,
@@ -90,11 +92,16 @@ const ListDataFile = ({ data, title }) => {
         padding: 0,
         marginBottom: 6,
         width: '100%',
-        height: '100%'
+        height: '100%', cursor:'default'
     }
 
     const [isModalEditFile, setIsModalEditFile] = useState(false);
     const [isModalDeleteFile, setIsModalDeleteFile] = useState(false);
+    const [isModalMoveFile, setIsModalMoveFile] = useState(false);
+    // const [dataMove, setDataMove] = useState();
+    // const [dataBreadCrumb, setDataBreadCrumb] = useState();
+    // const [dataFolder, setDataFolder] = useState();
+    const [idMoveFile, setIdMoveFile] = useState();
 
     const showModalEditFile = () => {
         setIsModalEditFile(true);
@@ -104,10 +111,21 @@ const ListDataFile = ({ data, title }) => {
         setIsModalDeleteFile(true);
     };
 
+    const showModalMoveFile = () => {
+        setIsModalMoveFile(true);
+    };
+
     const handleCancel = () => {
         setIsModalEditFile(false);
         setIsModalDeleteFile(false);
+        setIsModalMoveFile(false);
     };
+
+    const handleRemove = (id) => {
+        setDataFile(
+            dataFile.filter(item => item.id != id)
+        );
+    }
 
     const smallStyle = {
         margin:0,
@@ -125,7 +143,7 @@ const ListDataFile = ({ data, title }) => {
             },
             dataIndex: 'name',
             key: 'name',
-            render: (text, record) => <div className='data-file' style={{ display: 'flex', alignItems: 'center', width: 450 }}>
+            render: (text, record, key) => <div className='data-file' style={{ display: 'flex', alignItems: 'center', width: 450 }}>
                 {renderImage(record.type)}
                 <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 14, fontFamily:'Roboto', textDecoration: 'none', color: '#000' }}>{text.length > 26 ? `${text.substring(0, 26)}...` : text}</Link>
                 <div className='button-tool'>
@@ -139,12 +157,18 @@ const ListDataFile = ({ data, title }) => {
                         <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
                     </Tooltip>
                     <Tooltip title={'Di chuyển'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                        <Button onClick={() => {
+                            showModalMoveFile();
+                            setFileChoose(record);
+                            setIdMoveFile(record.folder_id);
+                            
+                        }} style={buttonStyle}><img style={imgStyle} src={move} /></Button>
                     </Tooltip>
                     <Tooltip title={'Tải xuống'}>
                         <Button onClick={() => {
                             downloadFile(record.id).then(res => {
                                 fileDownload(res.data, `${record.name}.${record.type}`);
+                                message.success('Tệp đã được tải xuống');
                             }).catch(err => {
                                 console.log(err);
                             })
@@ -253,9 +277,14 @@ const ListDataFile = ({ data, title }) => {
         removeFile(id).then(res => {
             setIsModalDeleteFile(false);
             message.success('Xóa file thành công');
+            handleRemove(id);
         }).catch(err => {
 
         });
+    }
+
+    const removeFileChoose = (id) => {
+
     }
 
     useEffect(() => {
@@ -271,8 +300,19 @@ const ListDataFile = ({ data, title }) => {
                     </div>
                 </Panel>
             </Collapse>
-            <EditForm show={isModalEditFile} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
-            <DeleteForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
+
+            {isModalEditFile &&
+                <EditForm show={isModalEditFile} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
+            }
+
+            {isModalDeleteFile &&
+                <DeleteFileForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
+            }
+            
+            {isModalMoveFile && 
+                <MoveForm fileChoosed={fileChoose} id={idMoveFile} show={isModalMoveFile} cancle={handleCancel} />
+            }
+            
         </div>
 
 

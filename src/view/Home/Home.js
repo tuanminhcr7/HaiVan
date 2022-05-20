@@ -2,7 +2,7 @@ import './Home.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import avatar from '../../images/T1.jpg';
 import Img2 from '../../images/bg-qlnb.png';
-import { logout as apiLogout } from '../../api/auth';
+import { getUser, logout as apiLogout } from '../../api/auth';
 
 import { Link } from 'react-router-dom';
 import {
@@ -19,10 +19,19 @@ import { useNavigate } from 'react-router-dom';
 const Home = () => {
 
   const navigate = useNavigate();
+
+  const [user, setUser] = useState();
+  const handleUser = () => {
+    getUser().then(res => {
+      setUser(res);
+    }).catch(err => {
+      console.log(err);
+    })
+  }
   
   useEffect(() => {
     document.title = "Quản lý nội bộ";
-
+    // handleUser();
   });
   const sectionStyle = {
     width: "100%",
@@ -73,7 +82,7 @@ const Home = () => {
           </MenuItem>
 
           <MenuItem key="4" icon={<ProfileOutlined />}>
-            <Link to={'#'} className='link' title='Quản lý chấm công'>Quản lý quy trình</Link>
+            <Link to={'#'} className='link' title='Quản lý quy trình'>Quản lý quy trình</Link>
           </MenuItem>
         </Menu>
 
@@ -93,13 +102,14 @@ const Home = () => {
         </Button>
       </div>
 
-      <div className='header-content' style={{ paddingLeft: 200 }}>
-        <header style={{ width: '88vw' }}>
+      <div className='header-content' style={collapsed ? {paddingLeft:80} : { paddingLeft: 185 }}>
+        <header style={collapsed ? {width:'95vw'} : { width: '88vw' }}>
           <div className='row'>
             <div className='col p-0'></div>
             <div className='col p-0'>
               <ul className='user-name'>
                 <li className='pt-2 user-name-drop'>
+                  {/* <b>Chào, {user.name}</b> */}
                   <b>Chào, Vũ Nguyễn Tuấn Minh</b>
                   <img src={avatar} width={30} height={30}></img>
 

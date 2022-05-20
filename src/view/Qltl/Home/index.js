@@ -107,8 +107,8 @@ const Home = () => {
                 <>
                     <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
                         <Link to={'/qltl/cua-toi'} style={{ textDecoration: 'none', fontSize: 13, color: '#201f1e' }}>Xem tất cả</Link>
-                        <Button onClick={changeFolderGird} className='mx-2' style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
-                        <Button onClick={changeFolderList} style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
+                        <Button onClick={changeFileGird} className='mx-2' style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
+                        <Button onClick={changeFileList} style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
                     </div>
                     <div className='row px-2'>
                         {viewFile ? <GridData data={myDoc} title={'Tài liệu của tôi'} /> : <ListDataFile data={myDoc} title={'Tài liệu của tôi'} />}

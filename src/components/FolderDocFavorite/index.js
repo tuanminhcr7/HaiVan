@@ -21,10 +21,11 @@ import Time from 'react-time-format';
 import { downloadFile, editFile, removeFile, updateFavorite } from '../../api/files';
 import fileDownload from 'js-file-download';
 import EditForm from '../EditForm';
-import DeleteForm from '../DeleteForm';
+import DeleteFileForm from '../DeleteFileForm';
+import MoveForm from '../MoveForm';
 
 
-const FolderDocFavorite = ({ data }) => {
+const FolderDocFavorite = ({ data }, props) => {
     const renderImage = (type) => {
         switch (type) {
             case 'xlsx':
@@ -73,6 +74,20 @@ const FolderDocFavorite = ({ data }) => {
     const [fileChoose, setFileChoose] = useState();
     const [isModalEditFile, setIsModalEditFile] = useState(false);
     const [isModalDeleteFile, setIsModalDeleteFile] = useState(false);
+    const [isModalMoveFile, setIsModalMoveFile] = useState(false);
+    const [idMoveFile, setIdMoveFile] = useState();
+
+    const handleRemoveDisfavorite = (id) => {
+        setDataFile(
+            dataFile.filter(item => item.favorite == 1)
+        );
+    };
+
+    const handleRemove = (id) => {
+        setDataFile(
+            dataFile.filter(item => item.id != id)
+        );
+    }
 
     const showModalEditFile = () => {
         setIsModalEditFile(true);
@@ -82,9 +97,14 @@ const FolderDocFavorite = ({ data }) => {
         setIsModalDeleteFile(true);
     };
 
+    const showModalMoveFile = () => {
+        setIsModalMoveFile(true);
+    }
+
     const handleCancel = () => {
         setIsModalEditFile(false);
         setIsModalDeleteFile(false);
+        setIsModalMoveFile(false);
     };
 
     const buttonStyle = {
@@ -92,7 +112,8 @@ const FolderDocFavorite = ({ data }) => {
         height: 25,
         width: 25,
         border: 'none',
-        background: 'transparent'
+        background: 'transparent',
+
     }
 
     const imgStyle = {
@@ -100,7 +121,7 @@ const FolderDocFavorite = ({ data }) => {
         padding: 0,
         marginBottom: 6,
         width: '100%',
-        height: '100%'
+        height: '100%', cursor: 'default'
     }
 
     const columns = [
@@ -115,7 +136,7 @@ const FolderDocFavorite = ({ data }) => {
             key: 'name',
             render: (text, record) => <div className='data-file' style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: 450 }}>
                 {renderImage(record.type)}
-                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, fontFamily: 'Roboto', textDecoration: 'none', color: '#000' }}>{text}</Link>
+                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 15, fontFamily: 'Roboto', textDecoration: 'none', color: '#000' }}>{text.length > 26 ? `${text.substring(0, 26)}...` : text}</Link>
                 <div className='button-tool'>
                     <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
                         <Button onClick={() => {
@@ -127,7 +148,10 @@ const FolderDocFavorite = ({ data }) => {
                         <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
                     </Tooltip>
                     <Tooltip title={'Di chuyển'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                        <Button onClick={() => {
+                            showModalMoveFile();
+                            setIdMoveFile(record.folder_id);
+                        }} style={buttonStyle}><img style={imgStyle} src={move} /></Button>
                     </Tooltip>
                     <Tooltip title={'Tải xuống'}>
                         <Button onClick={() => {
@@ -144,17 +168,19 @@ const FolderDocFavorite = ({ data }) => {
                         <Button onClick={() => {
                             showModalDeleteFile();
                             setFileChoose(record);
+
                         }} style={buttonStyle}><img style={imgStyle} src={del} /></Button>
                     </Tooltip>
-                    <Tooltip title={(record.favorite == 1) ? 'Bỏ yêu thích' : 'Yêu thích'}>
+                    <Tooltip title='Bỏ yêu thích'>
                         <Button onClick={() => {
                             setStatusFavorite(!record.favorite);
                             updateFavorite(record.id).then(res => {
-                                console.log(res);
                                 record.id = res.data.data.id;
                                 setIdFavorite(record.id);
                                 record.favorite = res.data.data.favorite;
                                 setStatusFavorite(record.favorite);
+                                message.success('Bỏ yêu thích thành công');
+                                handleRemoveDisfavorite(record.id);
                             }).catch(err => {
                                 setStatusFavorite(record.favorite);
                             });
@@ -235,16 +261,33 @@ const FolderDocFavorite = ({ data }) => {
         removeFile(id).then(res => {
             setIsModalDeleteFile(false);
             message.success('Xóa file thành công');
+            handleRemove(id);
         }).catch(err => {
-
+            let findFile = data.find(item => item.id == id)
+            setDataFile(dataFile.map(item => {
+                if (item.id == id) {
+                    return findFile;
+                }
+                return item;
+            }));
         });
     }
 
     return (
         <>
             <Table columns={columns} dataSource={dataFile} pagination={false} />
-            <EditForm show={isModalEditFile} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
-            <DeleteForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
+            
+            {isModalEditFile &&
+                <EditForm show={isModalEditFile} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
+            }
+
+            {isModalDeleteFile &&
+                <DeleteFileForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
+            }
+            
+            {isModalMoveFile && 
+                <MoveForm id={idMoveFile} show={isModalMoveFile} cancle={handleCancel} />
+            }
         </>
 
     );

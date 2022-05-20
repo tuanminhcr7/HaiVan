@@ -16,6 +16,7 @@ const Qltl = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [users, setUser] = useState([]);
     const [menus, setMenu] = useState([]);
+    const [headContent, setHeadContent] = useState({ paddingLeft: 200 });
 
     const user = () => {
         getUsers().then(res => {
@@ -37,18 +38,19 @@ const Qltl = () => {
         document.title = 'Quản lý tài liệu';
         user();
         handleMenu();
-    }, [])
+    }, []);
 
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
+        // setHeadContent({paddingLeft:80});
     };
 
     return (
         <div className="App">
             <MenuFolder collapsed={collapsed} menus={menus} toggleCollapsed={toggleCollapsed} />
 
-            <div className='header-content' style={{ paddingLeft: 200 }}>
-                <Header users={users} />
+            <div className='header-content' style={collapsed ? {paddingLeft:80} : {paddingLeft:200}}>
+                <Header users={users} collapsed={collapsed} />
 
                 <section style={{ marginTop: '70px' }}>
                     {/* <EditForm/> */}

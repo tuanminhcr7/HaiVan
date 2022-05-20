@@ -104,11 +104,7 @@ const DetailFile = () => {
         })
     }
 
-    useEffect(() => {
-        document.title = 'Chi tiết tệp';
-        handleBreadCrumb();
-        handleDetailFile();
-    }, [id]);
+
 
     const buttonStyle = {
         color: '#000',
@@ -118,8 +114,8 @@ const DetailFile = () => {
     }
 
     const editFileChoose = (id, name, description) => {
-        
-        editFile({id:id, name: name, description: description}).then(res => {
+
+        editFile({ id: id, name: name, description: description }).then(res => {
             setIsModalVisible(false);
             message.success('Cập nhật file thành công');
         }).catch(err => {
@@ -128,10 +124,15 @@ const DetailFile = () => {
                 if (item.id == id) {
                     return findFile;
                 }
-                return item; 
+                return item;
             }));
         });
     }
+    useEffect(() => {
+        document.title = 'Chi tiết tệp';
+        handleBreadCrumb();
+        handleDetailFile();
+    }, [id]);
 
     return (
         <div>
@@ -145,14 +146,18 @@ const DetailFile = () => {
                     <div className="row px-5">
                         <div className="col-8">
                             <div className="row my-3" style={{ display: 'flex' }}>
-                                <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={share} width={20} height={20} />&nbsp;Chia sẻ</Button></div>
-                                <div className="col-2"><Button onClick={() => {
-                                    downloadFile(file.id).then(res => {
-                                        fileDownload(res.data, `${file.name}.${file.type}`);
-                                    }).catch(err => {
-                                        console.log(err);
-                                    })
-                                }} style={buttonStyle} className="px-0"><img src={download} width={20} height={20} />&nbsp;Tải xuống</Button></div>
+                                <div className="col-2">
+                                    <Button style={buttonStyle} className="px-0"><img src={share} width={20} height={20} />&nbsp;Chia sẻ</Button>
+                                </div>
+                                <div className="col-2">
+                                    <Button onClick={() => {
+                                        downloadFile(file.id).then(res => {
+                                            fileDownload(res.data, `${file.name}.${file.type}`);
+                                            message.success('Tệp đã được tải xuống');
+                                        }).catch(err => {
+                                            console.log(err);
+                                        })
+                                    }} style={buttonStyle} className="px-0"><img src={download} width={20} height={20} />&nbsp;Tải xuống</Button></div>
                                 <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={move} width={20} height={20} />&nbsp;Di chuyển tới</Button></div>
                                 <div className="col-2"><Button onClick={() => {
                                     showModal();

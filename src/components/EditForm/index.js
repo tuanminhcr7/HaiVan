@@ -7,6 +7,8 @@ const EditForm = ({ show, save, cancel, showData }) => {
     const [stateFileName, setStateFileName] = useState(showData?.name);
     const [stateFileDescription, setStateFileDescription] = useState(showData?.description);
 
+    console.log(showData);
+
     const handleChangeName = (value) => {
         setStateFileName(value.target.value);
     }

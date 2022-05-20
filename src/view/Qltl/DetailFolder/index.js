@@ -16,6 +16,7 @@ const DetailFolder = () => {
     const [breadCrumb, setBreadCrumb] = useState();
     const [viewFolder, setViewFolder] = useState(true);
     const [viewFile, setViewFile] = useState(false);
+    const [detailFolder, setDetailFolder] = useState(folders);
 
     const { id } = useParams();
 
@@ -29,11 +30,7 @@ const DetailFolder = () => {
         })
     }
 
-    useEffect(() => {
-        document.title = "Chi tiết thư mục";
-        handleDetail();
-    }, [id]);
-
+    
     const changeFolderGird = () => {
         setViewFolder(true);
     }
@@ -49,6 +46,12 @@ const DetailFolder = () => {
     const changeFileList = () => {
         setViewFile(false);
     }
+
+    useEffect(() => {
+        document.title = "Chi tiết thư mục";
+        handleDetail();
+    }, [id]);
+
 
     return (
         <div>
@@ -76,7 +79,7 @@ const DetailFolder = () => {
                     </div>
 
                     <div className='row px-3'>
-                        {viewFile ? <GridData data={files} title={'Tệp'} /> : <ListDataFile data={files} title={'Tệp'} />}
+                        {viewFile ? <GridData data={files} title={'Tệp'} /> : <ListDataFile dataDetail={detailFolder} data={files} title={'Tệp'} />}
                     </div>
                 </>
             }

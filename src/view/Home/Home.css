@@ -57,6 +57,7 @@ header {
 
 .section-home {
   background-image: url('../../images/bg-qlnb.png');
+  background-repeat: no-repeat;
 }
 
 .toggle-menu {

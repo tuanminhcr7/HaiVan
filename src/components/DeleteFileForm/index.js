@@ -1,7 +1,7 @@
 import { Input, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 
-const DeleteForm = ({ show, save, cancel, showData }) => {
+const DeleteFileForm = ({ show, save, cancel, showData }) => {
 
     return (
         <Modal title="Xóa tệp"
@@ -22,4 +22,4 @@ const DeleteForm = ({ show, save, cancel, showData }) => {
     );
 }
 
-export default DeleteForm;
+export default DeleteFileForm;

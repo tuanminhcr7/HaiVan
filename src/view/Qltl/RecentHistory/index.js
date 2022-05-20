@@ -51,7 +51,7 @@ const RecentHistory = () => {
                 <Button onClick={changeFileList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
             </div>
             {recents && 
-                <div className='row px-3'>
+                <div className='row px-2'>
                     {viewFile ? <GridDataFile data={recents} tool={true} /> : <FolderRecent data={recents} />}                
                 </div>
             }

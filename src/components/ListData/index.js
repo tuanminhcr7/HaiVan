@@ -13,7 +13,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
 import EditForm from '../EditForm';
-import { editFolder } from '../../api/folders';
+import { editFolder, removeFolder } from '../../api/folders';
+import DeleteFolderForm from '../DeleteFolderForm';
 
 const { Panel } = Collapse;
 
@@ -32,7 +33,7 @@ const ListData = ({ data, title }) => {
     padding: 0,
     marginBottom: 6,
     width: '100%',
-    height: '100%'
+    height: '100%', cursor: 'default'
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -40,18 +41,28 @@ const ListData = ({ data, title }) => {
   const [statusFavorite, setStatusFavorite] = useState();
   const [idFavorite, setIdFavorite] = useState();
   const [folderChoose, setFolderChoose] = useState();
+  const [isModalEditFolder, setIsModalEditFolder] = useState(false);
+  const [isModalDeleteFolder, setIsModalDeleteFolder] = useState(false);
 
-  const showModal = () => {
-    setIsModalVisible(true);
+
+  const showModalEditFolder = () => {
+    setIsModalEditFolder(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const showModalDeleteFolder = () => {
+    setIsModalDeleteFolder(true);
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
+    setIsModalEditFolder(false);
+    setIsModalDeleteFolder(false);
   };
+
+  const handleRemoveFolder = (id) => {
+    setDataFolder(
+      dataFolder.filter(item => item.id != id)
+    );
+  }
 
   const smallStyle = {
     margin: 0,
@@ -74,11 +85,14 @@ const ListData = ({ data, title }) => {
         <Link to={`/qltl/${record.id}/tai-lieu-${record.slug}`} style={{ fontWeight: 300, fontSize: 15, fontFamily: 'Roboto', textDecoration: 'none', color: '#000' }}><b>{text}</b></Link>
         <div className='button-tool'>
           <Tooltip title={'Xóa'}>
-            <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+            <Button onClick={() => {
+              showModalDeleteFolder();
+              setFolderChoose(record);
+            }} style={buttonStyle}><img style={imgStyle} src={del} /></Button>
           </Tooltip>
           <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
             <Button onClick={() => {
-              showModal();
+              showModalEditFolder();
               setFolderChoose(record);
             }} style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
           </Tooltip>
@@ -143,6 +157,22 @@ const ListData = ({ data, title }) => {
     });
   }
 
+  const deleteFolderChoose = (id) => {
+    setDataFolder(dataFolder.map(item => {
+      if (item.id == id) {
+        return { ...item, id: id };
+      }
+      return item;
+    }));
+    removeFolder(id).then(res => {
+      setIsModalDeleteFolder(false);
+      message.success('Xóa thư mục thành công');
+      handleRemoveFolder(id);
+    }).catch(err => {
+
+    });
+  }
+
   useEffect(() => {
     setDataFolder(data);
   }, data);
@@ -156,7 +186,8 @@ const ListData = ({ data, title }) => {
           </div>
         </Panel>
       </Collapse>
-      <EditForm show={isModalVisible} cancel={handleCancel} showData={folderChoose} save={editFolderChoose} />
+      <EditForm show={isModalEditFolder} cancel={handleCancel} showData={folderChoose} save={editFolderChoose} />
+      <DeleteFolderForm show={isModalDeleteFolder} showData={folderChoose} cancel={handleCancel} save={deleteFolderChoose} />
     </div>
 
   );

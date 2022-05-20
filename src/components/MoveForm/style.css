@@ -1,0 +1,8 @@
+.folder {
+    cursor: pointer;
+}
+
+.folder:hover {
+    background-color: #f5f5f5;
+    transition: 0.5s;
+}

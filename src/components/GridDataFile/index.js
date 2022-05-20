@@ -13,11 +13,13 @@ import del from '../../images/icon/delete.svg';
 import './style.css';
 
 import { Button, Collapse, message, Tooltip } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
-import { downloadFile } from '../../api/files';
+import { downloadFile, removeFile } from '../../api/files';
 import fileDownload from 'js-file-download';
+import DeleteFileForm from '../DeleteFileForm';
+import MoveForm from '../MoveForm';
 
 const { Panel } = Collapse;
 
@@ -84,12 +86,57 @@ const GridDataFile = ({ data, tool }) => {
         height: 23,
         width: 23,
         border: 'none',
-        background: 'transparent'
+        background: 'transparent', cursor:'default'
     };
+
+    const [fileChoose, setFileChoose] = useState();
+    const [dataFile, setDataFile] = useState(data);
+    const [isModalDeleteFile, setIsModalDeleteFile] = useState(false);
+    const [isModalMoveFile, setIsModalMoveFile] = useState(false);
+    const [idMoveFile, setIdMoveFile] = useState();
+
+    const showModalDeleteFile = () => {
+        setIsModalDeleteFile(true);
+    };
+
+    const showModalMoveFile = () => {
+        setIsModalMoveFile(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalDeleteFile(false);
+        setIsModalMoveFile(false);
+    };
+
+    const handleRemoveFile = (id) => {
+        setDataFile(
+            dataFile.filter(item => item.id != id)
+        );
+    }
+
+    const deleteFileChoose = (id) => {
+        setDataFile(dataFile.map(item => {
+            if (item.id == id) {
+                return {...item, id: id};
+            }
+            return item; 
+        }));
+        removeFile(id).then(res => {
+            setIsModalDeleteFile(false);
+            message.success('Xóa file thành công');
+            handleRemoveFile(id);
+        }).catch(err => {
+
+        });
+    }
+
+    useEffect(() => {
+        setDataFile(data);
+    }, data);
 
     return (
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {data && data.map((item3) =>
+            {dataFile && dataFile.map((item3) =>
                 <div className='data-file'>
                     {tool ?
                         <Link to={`/qltl/${item3.id}/xem-tai-lieu-${item3.slug}`} target={'_blank'} className='px-2 link-folder' style={{ color: '#201f1e' }} title={item3.name}>
@@ -122,7 +169,10 @@ const GridDataFile = ({ data, tool }) => {
                                 <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
                             </Tooltip>
                             <Tooltip title={'Di chuyển'}>
-                                <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                                <Button onClick={() => {
+                                    showModalMoveFile();
+                                    setIdMoveFile(item3.folder_id);
+                                }} style={buttonStyle}><img style={imgStyle} src={move} /></Button>
                             </Tooltip>
                             <Tooltip onClick={() => {
                                 downloadFile(item3.id).then(res => {
@@ -135,12 +185,22 @@ const GridDataFile = ({ data, tool }) => {
                                 <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
                             </Tooltip>
                             <Tooltip title={'Xóa'}>
-                                <Button style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                                <Button onClick={() => {
+                                    showModalDeleteFile();
+                                    setFileChoose(item3);
+                                }} style={buttonStyle}><img style={imgStyle} src={del} /></Button>
                             </Tooltip>
                         </div>
                     }
                 </div>
             )}
+            {isModalDeleteFile &&
+                <DeleteFileForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
+            }
+            
+            {isModalMoveFile && 
+                <MoveForm id={idMoveFile} show={isModalMoveFile} cancle={handleCancel} />
+            }
         </div>
     );
 }

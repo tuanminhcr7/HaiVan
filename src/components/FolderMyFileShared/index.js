@@ -22,7 +22,8 @@ import Time from "react-time-format";
 import { downloadFile, editFile, removeFile, updateFavorite } from '../../api/files';
 import fileDownload from 'js-file-download';
 import EditForm from '../EditForm';
-import DeleteForm from '../DeleteForm';
+import DeleteFileForm from '../DeleteFileForm';
+import MoveForm from '../MoveForm';
 
 const { Panel } = Collapse;
 
@@ -95,6 +96,9 @@ const FolderMyFileShared = ({ data }) => {
 
     const [isModalEditFile, setIsModalEditFile] = useState(false);
     const [isModalDeleteFile, setIsModalDeleteFile] = useState(false);
+    const [isModalMoveFile, setIsModalMoveFile] = useState(false);
+
+    const [idMoveFile, setIdMoveFile] = useState();
 
     const showModalEditFile = () => {
         setIsModalEditFile(true);
@@ -104,10 +108,21 @@ const FolderMyFileShared = ({ data }) => {
         setIsModalDeleteFile(true);
     };
 
+    const showModalMoveFile = () => {
+        setIsModalMoveFile(true);
+    };
+
     const handleCancel = () => {
         setIsModalEditFile(false);
         setIsModalDeleteFile(false);
+        setIsModalMoveFile(false);
     };
+
+    const handleRemove = (id) => {
+        setDataFile(
+            dataFile.filter(item => item.id != id)
+        );
+    }
 
 
     const smallStyle = {
@@ -132,26 +147,24 @@ const FolderMyFileShared = ({ data }) => {
                     {text.length > 26 ? `${text.substring(0, 26)}...` : text}
                 </Link>
                 <div className='button-tool'>
-                    {record.is_editor == 1 &&
-                        <>
-                            <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
-                                <Button onClick={() => {
-                                    showModalEditFile();
-                                    setFileChoose(record);
-                                }} style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
-                            </Tooltip>
-                            <Tooltip title={'Chia sẻ'}>
-                                <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
-                            </Tooltip>
-                            <Tooltip title={'Di chuyển'}>
-                                <Button style={buttonStyle}><img style={imgStyle} src={move} /></Button>
-                            </Tooltip>
-                        </>
-                    }
-
+                    <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
+                        <Button onClick={() => {
+                            showModalEditFile();
+                            setFileChoose(record);
+                        }} style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                    </Tooltip>
+                    <Tooltip title={'Chia sẻ'}>
+                        <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                    </Tooltip>
+                    <Tooltip title={'Di chuyển'}>
+                        <Button onClick={() => {
+                            showModalMoveFile();
+                            setIdMoveFile(record.folder_id);
+                        }} style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                    </Tooltip>
                     <Tooltip title={'Tải xuống'}>
                         <Button onClick={() => {
-
+                            
                             downloadFile(record.id).then(res => {
                                 fileDownload(res.data, `${record.name}.${record.type}`);
                                 message.success('Tệp đã được tải xuống');
@@ -160,15 +173,12 @@ const FolderMyFileShared = ({ data }) => {
                             })
                         }} style={buttonStyle}><img style={imgStyle} src={download} /></Button>
                     </Tooltip>
-                    {record.is_editor == 1 &&
-                        <Tooltip title={'Xóa'}>
-                            <Button onClick={() => {
-                                showModalDeleteFile();
-                                setFileChoose(record);
-                            }} style={buttonStyle}><img style={imgStyle} src={del} /></Button>
-                        </Tooltip>
-                    }
-                    
+                    <Tooltip title={'Xóa'}>
+                        <Button onClick={() => {
+                            showModalDeleteFile();
+                            setFileChoose(record);
+                        }} style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                    </Tooltip>
                     <Tooltip title={(record.favorite == 1) ? 'Bỏ yêu thích' : 'Yêu thích'}>
                         <Button onClick={() => {
                             setStatusFavorite(!record.favorite);
@@ -267,6 +277,7 @@ const FolderMyFileShared = ({ data }) => {
         removeFile(id).then(res => {
             setIsModalDeleteFile(false);
             message.success('Xóa file thành công');
+            handleRemove(id);
         }).catch(err => {
 
         });
@@ -275,8 +286,18 @@ const FolderMyFileShared = ({ data }) => {
     return (
         <>
             <Table style={{ width: '100vw' }} columns={columns} dataSource={dataFile} pagination={false} />
-            <EditForm show={isModalEditFile} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
-            <DeleteForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
+            
+            {isModalEditFile &&
+                <EditForm show={isModalEditFile} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
+            }
+
+            {isModalDeleteFile &&
+                <DeleteFileForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
+            }
+            
+            {isModalMoveFile && 
+                <MoveForm id={idMoveFile} fileChoosed={fileChoose} show={isModalMoveFile} cancle={handleCancel} />
+            }
         </>
     );
 }
