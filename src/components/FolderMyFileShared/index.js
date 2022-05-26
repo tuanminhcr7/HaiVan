@@ -24,6 +24,7 @@ import fileDownload from 'js-file-download';
 import EditForm from '../EditForm';
 import DeleteFileForm from '../DeleteFileForm';
 import MoveForm from '../MoveForm';
+import ShareForm from '../ShareForm';
 
 const { Panel } = Collapse;
 
@@ -92,11 +93,10 @@ const FolderMyFileShared = ({ data }) => {
     const [fileChoose, setFileChoose] = useState();
     const [statusFavorite, setStatusFavorite] = useState();
     const [idFavorite, setIdFavorite] = useState();
-
-
     const [isModalEditFile, setIsModalEditFile] = useState(false);
     const [isModalDeleteFile, setIsModalDeleteFile] = useState(false);
     const [isModalMoveFile, setIsModalMoveFile] = useState(false);
+    const [isModalShareFile, setIsModalShareFile] = useState(false);
 
     const [idMoveFile, setIdMoveFile] = useState();
 
@@ -112,10 +112,15 @@ const FolderMyFileShared = ({ data }) => {
         setIsModalMoveFile(true);
     };
 
+    const showModalShareFile = () => {
+        setIsModalShareFile(true);
+    }
+
     const handleCancel = () => {
         setIsModalEditFile(false);
         setIsModalDeleteFile(false);
         setIsModalMoveFile(false);
+        setIsModalShareFile(false);
     };
 
     const handleRemove = (id) => {
@@ -123,7 +128,6 @@ const FolderMyFileShared = ({ data }) => {
             dataFile.filter(item => item.id != id)
         );
     }
-
 
     const smallStyle = {
         margin: 0,
@@ -154,7 +158,10 @@ const FolderMyFileShared = ({ data }) => {
                         }} style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
                     </Tooltip>
                     <Tooltip title={'Chia sẻ'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                        <Button onClick={() => {
+                            showModalShareFile();
+                            setFileChoose(record);
+                        }} style={buttonStyle}><img style={imgStyle} src={share} /></Button>
                     </Tooltip>
                     <Tooltip title={'Di chuyển'}>
                         <Button onClick={() => {
@@ -297,6 +304,10 @@ const FolderMyFileShared = ({ data }) => {
             
             {isModalMoveFile && 
                 <MoveForm id={idMoveFile} fileChoosed={fileChoose} show={isModalMoveFile} cancle={handleCancel} />
+            }
+
+            {isModalShareFile &&
+                <ShareForm showData={fileChoose} show={isModalShareFile} cancel={handleCancel} />
             }
         </>
     );

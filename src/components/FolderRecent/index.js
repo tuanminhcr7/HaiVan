@@ -91,7 +91,7 @@ const FolderRecent = ({ data }) => {
         padding: 0,
         marginBottom: 6,
         width: '100%',
-        height: '100%', cursor:'default'
+        height: '100%', cursor: 'default'
     }
 
     const [isModalEditFile, setIsModalEditFile] = useState(false);
@@ -123,14 +123,17 @@ const FolderRecent = ({ data }) => {
         setIsModalShareFile(false);
     };
 
+    const handleRemove = (id) => {
+        setDataFile(
+            dataFile.filter(item => item.id != id)
+        );
+    }
+
     const smallStyle = {
         margin: 0,
         fontFamily: 'Roboto',
         color: '#605e5c'
     }
-
-
-
 
     const columns = [
         {
@@ -147,7 +150,8 @@ const FolderRecent = ({ data }) => {
             render: (text, record, key) =>
                 <div className='data-file' style={{ display: 'flex', alignItems: 'center', width: 440 }}>
                     {renderImage(record.type)}
-                    <Link 
+                    
+                    <Link
                         to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`}
                         target={'_blank'}
                         style={{
@@ -160,6 +164,7 @@ const FolderRecent = ({ data }) => {
                     >
                         {record.name.length > 23 ? `${record.name.substring(0, 23)}...` : text}
                     </Link>
+
                     <div className='button-tool'>
                         {record.is_editor == 1 &&
                             <>
@@ -172,6 +177,7 @@ const FolderRecent = ({ data }) => {
                                 <Tooltip title={'Chia sẻ'}>
                                     <Button onClick={() => {
                                         showModalShareFile();
+                                        setFileChoose(record);
                                     }} style={buttonStyle}><img style={imgStyle} src={share} /></Button>
                                 </Tooltip>
                                 <Tooltip title={'Di chuyển'}>
@@ -194,6 +200,7 @@ const FolderRecent = ({ data }) => {
                                 });
                             }} style={buttonStyle}><img style={imgStyle} src={download} /></Button>
                         </Tooltip>
+
                         {record.is_editor == 1 &&
                             <Tooltip title={'Xóa'}>
                                 <Button onClick={() => {
@@ -203,25 +210,29 @@ const FolderRecent = ({ data }) => {
                             </Tooltip>
                         }
 
-
                         <Tooltip title={(record.favorite == 1) ? 'Bỏ yêu thích' : 'Yêu thích'}>
-                            <Button onClick={() => {
-                                setStatusFavorite(!record.favorite);
-                                updateFavorite(record.id).then(res => {
-                                    record.id = res.data.data.id;
-                                    setIdFavorite(record.id);
-                                    record.favorite = res.data.data.favorite;
-                                    setStatusFavorite(record.favorite);
+                            <Button
+                                onClick={() => {
+                                    setStatusFavorite(!record.favorite);
+                                    updateFavorite(record.id).then(res => {
+                                        record.id = res.data.data.id;
+                                        setIdFavorite(record.id);
+                                        record.favorite = res.data.data.favorite;
+                                        setStatusFavorite(record.favorite);
 
-                                    if (record.favorite == 1) {
-                                        message.success('Yêu thích thành công');
-                                    } else {
-                                        message.success('Bỏ yêu thích thành công');
-                                    }
-                                }).catch(err => {
-                                    setStatusFavorite(record.favorite);
-                                });
-                            }} style={buttonStyle}><img style={imgStyle} src={(record.favorite == 1) ? favorited : favorite} /></Button>
+                                        if (record.favorite == 1) {
+                                            message.success('Yêu thích thành công');
+                                        } else {
+                                            message.success('Bỏ yêu thích thành công');
+                                        }
+                                    }).catch(err => {
+                                        setStatusFavorite(record.favorite);
+                                    });
+                                }}
+                                style={buttonStyle}
+                            >
+                                <img style={imgStyle} src={(record.favorite == 1) ? favorited : favorite} />
+                            </Button>
                         </Tooltip>
                     </div>
                 </div>
@@ -300,6 +311,7 @@ const FolderRecent = ({ data }) => {
         removeFile(id).then(res => {
             setIsModalDeleteFile(false);
             message.success('Xóa file thành công');
+            handleRemove(id);
         }).catch(err => {
 
         });
@@ -315,14 +327,14 @@ const FolderRecent = ({ data }) => {
 
             {isModalDeleteFile &&
                 <DeleteFileForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
-            }           
+            }
 
-            {isModalMoveFile && 
+            {isModalMoveFile &&
                 <MoveForm fileChoosed={fileChoose} id={idMoveFile} show={isModalMoveFile} cancle={handleCancel} />
             }
-            
+
             {isModalShareFile &&
-                <ShareForm show={isModalShareFile} cancel={handleCancel} />
+                <ShareForm showData={fileChoose} show={isModalShareFile} cancel={handleCancel} />
             }
         </>
     );

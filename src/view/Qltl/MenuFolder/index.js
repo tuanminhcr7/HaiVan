@@ -1,14 +1,22 @@
 import MenuItem from 'antd/lib/menu/MenuItem';
 
 import React from 'react';
-import { Link , useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, Button } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined, DeleteOutlined, HistoryOutlined, FolderOutlined, TeamOutlined, HeartOutlined } from '@ant-design/icons';
+import { 
+    MenuUnfoldOutlined, 
+    MenuFoldOutlined, 
+    DeleteOutlined, 
+    HistoryOutlined, 
+    FolderOutlined, 
+    TeamOutlined, 
+    HeartOutlined 
+} from '@ant-design/icons';
 
 const { SubMenu } = Menu;
 
 const MenuFolder = ({ menus, collapsed, toggleCollapsed }) => {
-    
+
     const navigate = useNavigate();
 
     return (
@@ -17,16 +25,23 @@ const MenuFolder = ({ menus, collapsed, toggleCollapsed }) => {
                 mode="inline"
                 theme="light"
                 inlineCollapsed={collapsed}
-                style={{ background: '#f3f2f1', zIndex: '2', height: '100vh', overflow: 'auto', scrollbarWidth: 'thin', maxWidth: 200 }}
+                style={{
+                    background: '#f3f2f1',
+                    zIndex: '2',
+                    height: '100vh',
+                    overflow: 'auto',
+                    scrollbarWidth: 'thin',
+                    maxWidth: 200
+                }}
             >
-                <MenuItem style={{}}>
-                    <Link to={'/'} className='' style={{ display: 'block', textDecoration: 'none', fontWeight: 'bold', color: '#58595b', position:'fixed', top:10 }}><h2 style={{ fontWeight: 'bold' }}>{!collapsed && <b>HAIVAN</b>}</h2></Link>
+                <MenuItem>
+                    <Link to={'/'} className='' style={{ display: 'block', textDecoration: 'none', fontWeight: 'bold', color: '#58595b', position: 'fixed', top: 10 }}><h2 style={{ fontWeight: 'bold' }}>{!collapsed && <b>HAIVAN</b>}</h2></Link>
                 </MenuItem>
 
                 {!collapsed &&
-                    <>
-                        <div style={{}} className='py-3 px-4'><Link to={'/qltl'} style={{ textDecoration: 'none', color: '#201f1e', fontSize: '15px' }}>{!collapsed && <b>Quản lý tài liệu</b>}</Link></div>
-                    </>
+                    <div className='py-3 px-4'>
+                        <Link to={'/qltl'} style={{ textDecoration: 'none', color: '#201f1e', fontSize: '15px' }}>{!collapsed && <b>Quản lý tài liệu</b>}</Link>
+                    </div>
                 }
 
                 <MenuItem className='py-0 my-0' icon={<FolderOutlined />}>
@@ -46,22 +61,37 @@ const MenuFolder = ({ menus, collapsed, toggleCollapsed }) => {
                 </MenuItem>
 
                 {menus.map((folder) =>
-                    <SubMenu icon={<FolderOutlined />} to={`${folder.slug}`} className='py-0 my-0' title={folder.name} onTitleClick={(id, slug) => {
-                        id = folder.id;
-                        slug = folder.slug;
-                        const url = `/qltl/${id}/tai-lieu-${slug}`;
-                        navigate(url);
-                    }}>
+                    <SubMenu
+                        icon={<FolderOutlined />}
+                        to={`${folder.slug}`}
+                        className='py-0 my-0'
+                        title={folder.name}
+                        onTitleClick={(id, slug) => {
+                            id = folder.id;
+                            slug = folder.slug;
+                            const url = `/qltl/${id}/tai-lieu-${slug}`;
+                            navigate(url);
+                        }}
+                    >
                         {folder.children.map((item) =>
-                            <SubMenu style={{}} icon={<FolderOutlined />} title={item.name} onTitleClick={(id, slug) => {
-                                id = item.id;
-                                slug = item.slug;
-                                const url = `/qltl/${id}/tai-lieu-${slug}`;
-                                navigate(url);
-                            }}>
+                            <SubMenu
+                                icon={<FolderOutlined />}
+                                title={item.name}
+                                onTitleClick={(id, slug) => {
+                                    id = item.id;
+                                    slug = item.slug;
+                                    const url = `/qltl/${id}/tai-lieu-${slug}`;
+                                    navigate(url);
+                                }}
+                            >
                                 {item.children.map((item2) =>
-                                    <MenuItem style={{}} icon={<FolderOutlined />} className='py-0 my-0'>
-                                        <Link style={{ textDecoration: 'none' }} to={`/qltl/${item2.id}/tai-lieu-${item2.slug}`}>{item2.name}</Link>
+                                    <MenuItem icon={<FolderOutlined />} className='py-0 my-0'>
+                                        <Link 
+                                            style={{ textDecoration: 'none' }} 
+                                            to={`/qltl/${item2.id}/tai-lieu-${item2.slug}`}
+                                        >
+                                            {item2.name}
+                                        </Link>
                                     </MenuItem>
                                 )}
                             </SubMenu>
@@ -70,7 +100,9 @@ const MenuFolder = ({ menus, collapsed, toggleCollapsed }) => {
                 )}
             </Menu>
 
-            <Button type="default" onClick={toggleCollapsed}
+            <Button 
+                type="default" 
+                onClick={toggleCollapsed}
                 style={{
                     marginBottom: 16,
                     border: 'none',
@@ -82,7 +114,9 @@ const MenuFolder = ({ menus, collapsed, toggleCollapsed }) => {
                     left: '-60px'
                 }}
             >
-                {React.createElement((collapsed) ? MenuUnfoldOutlined : MenuFoldOutlined)}
+                {React.createElement(
+                    (collapsed) ? MenuUnfoldOutlined : MenuFoldOutlined
+                )}
             </Button>
         </div>
     );

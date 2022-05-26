@@ -17,6 +17,7 @@ const Qltl = () => {
     const [users, setUser] = useState([]);
     const [menus, setMenu] = useState([]);
     const [headContent, setHeadContent] = useState({ paddingLeft: 200 });
+    const [isModalCreateFolder, setIsModalCreateFolder] = useState(false);
 
     const user = () => {
         getUsers().then(res => {
@@ -32,6 +33,14 @@ const Qltl = () => {
         }).catch(err => {
             console.log(err);
         });
+    }
+
+    const showModalCreateFolder = () => {
+        setIsModalCreateFolder(true);
+    }
+
+    const handleCancel = () => {
+        setIsModalCreateFolder(false);
     }
 
     useEffect(() => {
@@ -50,7 +59,7 @@ const Qltl = () => {
             <MenuFolder collapsed={collapsed} menus={menus} toggleCollapsed={toggleCollapsed} />
 
             <div className='header-content' style={collapsed ? {paddingLeft:80} : {paddingLeft:200}}>
-                <Header users={users} collapsed={collapsed} />
+                <Header users={users} collapsed={collapsed} showModal={isModalCreateFolder} cancle={handleCancel} handleShow={showModalCreateFolder} />
 
                 <section style={{ marginTop: '70px' }}>
                     {/* <EditForm/> */}

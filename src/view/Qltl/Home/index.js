@@ -18,7 +18,8 @@ const Home = () => {
     const [shared, setShared] = useState([]);
     const [myDoc, setMyDoc] = useState([]);
     const [viewFolder, setViewFolder] = useState(true);
-    const [viewFile, setViewFile] = useState(false);
+    const [viewMyDoc, setViewMyDoc] = useState(false);
+    const [viewShared, setViewShared] = useState(false);
 
     const handleRecent = () => {
         getDataHome().then(res => {
@@ -68,12 +69,20 @@ const Home = () => {
         setViewFolder(false);
     }
 
-    const changeFileGird = () => {
-        setViewFile(true);
+    const changeMyDocGird = () => {
+        setViewMyDoc(true);
     }
 
-    const changeFileList = () => {
-        setViewFile(false);
+    const changeMyDocList = () => {
+        setViewMyDoc(false);
+    }
+
+    const changeSharedGird = () => {
+        setViewShared(true);
+    }
+
+    const changeSharedList = () => {
+        setViewShared(false);
     }
 
     return (
@@ -107,11 +116,11 @@ const Home = () => {
                 <>
                     <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
                         <Link to={'/qltl/cua-toi'} style={{ textDecoration: 'none', fontSize: 13, color: '#201f1e' }}>Xem tất cả</Link>
-                        <Button onClick={changeFileGird} className='mx-2' style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
-                        <Button onClick={changeFileList} style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
+                        <Button onClick={changeMyDocGird} className='mx-2' style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
+                        <Button onClick={changeMyDocList} style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
                     </div>
                     <div className='row px-2'>
-                        {viewFile ? <GridData data={myDoc} title={'Tài liệu của tôi'} /> : <ListDataFile data={myDoc} title={'Tài liệu của tôi'} />}
+                        {viewMyDoc ? <GridData data={myDoc} title={'Tài liệu của tôi'} /> : <ListDataFile data={myDoc} title={'Tài liệu của tôi'} />}
                     </div>
                 </>
             }
@@ -120,12 +129,12 @@ const Home = () => {
                 <>
                     <div className='mt-3' style={{ textAlign: 'right', width: '100%', paddingRight: 50 }}>
                         <Link to={'/qltl/chia-se'} style={{ textDecoration: 'none', fontSize: 13, color: '#201f1e' }}>Xem tất cả</Link>
-                        <Button onClick={changeFileGird} className='mx-2' style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
-                        <Button onClick={changeFileList} style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
+                        <Button onClick={changeSharedGird} className='mx-2' style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
+                        <Button onClick={changeSharedList} style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
                     </div>
 
                     <div className='row px-2'>
-                        {viewFile ? <GridData data={shared} title={'Được chia sẻ'} /> : <ListDataFile data={shared} title={'Được chia sẻ'} />}
+                        {viewShared ? <GridData data={shared} title={'Được chia sẻ'} /> : <ListDataFile key={'2'} data={shared} title={'Được chia sẻ'} />}
                     </div>
                 </>
             }

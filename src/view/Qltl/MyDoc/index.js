@@ -27,11 +27,6 @@ const MyDoc = () => {
         });
     }
 
-    useEffect(() => {
-        document.title = "Tài liệu của tôi";
-        handleMyDoc();
-    }, []);
-
     const changeFolderGird = () => {
         setViewFolder(true);
     }
@@ -48,13 +43,28 @@ const MyDoc = () => {
         setViewFile(false);
     }
 
+    useEffect(() => {
+        document.title = "Tài liệu của tôi";
+        handleMyDoc();
+    }, []);
+
     return (
         <div>
             <div className='row px-1'>
                 <p className='px-5' style={{ fontSize: '18px' }}>
-                    <Link to={'/qltl'} style={{ textDecoration: 'none', color: '#8c8c8c' }}>Quản lý tài liệu</Link>
+                    <Link
+                        to={'/qltl'}
+                        style={{ textDecoration: 'none', color: '#8c8c8c' }}
+                    >
+                        Quản lý tài liệu
+                    </Link>
                     {' > '}
-                    <Link to={'/qltl/cua-toi'} style={{ textDecoration: 'none', color: '#201f1e' }}>Tài liệu của tôi</Link>
+                    <Link
+                        to={'/qltl/cua-toi'}
+                        style={{ textDecoration: 'none', color: '#201f1e' }}
+                    >
+                        Tài liệu của tôi
+                    </Link>
                 </p>
             </div>
 
@@ -62,9 +72,10 @@ const MyDoc = () => {
                 <Button onClick={changeFolderGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
                 <Button onClick={changeFolderList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
             </div>
+
             {myFolders &&
                 <div className='row px-2'>
-                    {viewFolder ? <GridData title={'Thư mục'} data={myFolders} /> : <ListData title={'Thư mục'} data={myFolders} />}    
+                    {viewFolder ? <GridData title={'Thư mục'} data={myFolders} /> : <ListData title={'Thư mục'} data={myFolders} />}
                 </div>
             }
 
@@ -72,9 +83,10 @@ const MyDoc = () => {
                 <Button onClick={changeFileGird} style={{ width: 25, height: 25 }} icon={<InsertRowAboveOutlined />}></Button>
                 <Button onClick={changeFileList} className='mx-2' style={{ width: 25, height: 25 }} icon={<UnorderedListOutlined />}></Button>
             </div>
+            
             {myFiles &&
                 <div className='row px-2'>
-                    {viewFile ? <GridData title={'Tệp'} data={myFiles} /> : <ListDataFile data={myFiles} title={'Tệp'} />}    
+                    {viewFile ? <GridData title={'Tệp'} data={myFiles} /> : <ListDataFile data={myFiles} title={'Tệp'} />}
                 </div>
             }
 

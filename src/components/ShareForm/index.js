@@ -2,7 +2,12 @@ import { RightOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Modal } from 'antd';
 
 
-const ShareForm = ({ show, cancel }) => {
+const ShareForm = ({ show, cancel, showData }) => {
+    console.log(showData);
+
+    const changeIsEditor = () => {
+
+    }
 
     return (
         <Modal
@@ -14,10 +19,14 @@ const ShareForm = ({ show, cancel }) => {
             cancelText='Hủy'
             onCancel={cancel}
         >
-            <div style={{ height:450 }}>
+            <div style={{ height: 450 }}>
                 <div className="row px-1">
                     <span style={{ fontWeight: 'bold', fontFamily: 'Roboto' }}>Tên tài liệu</span>
-                    <p className="mt-3">dsadada</p>
+                    {showData?.type != 'folder' ?
+                        <p className="mt-3">{showData?.name}.{showData?.type}</p> :
+                        <p className="mt-3">{showData?.name}</p>
+                    }
+
                 </div>
 
                 <div className="row px-1">
@@ -40,10 +49,10 @@ const ShareForm = ({ show, cancel }) => {
                         <p>Tất cả mọi người</p>
                     </div>
                     <div className='col-2 text-center'>
-                        <Checkbox></Checkbox>
+                        <Checkbox checked={showData?.is_all_editor == 1 ? true : false}></Checkbox>
                     </div>
                     <div className='col-2 text-center'>
-                        <Checkbox></Checkbox>
+                        <Checkbox checked={showData?.is_all_viewer == 1 ? true : false}></Checkbox>
                     </div>
                     <div className='col-2 text-center'>
                         <Button style={{ border: 'none' }} icon={<RightOutlined />}></Button>
@@ -55,10 +64,10 @@ const ShareForm = ({ show, cancel }) => {
                         <p>Tất cả phòng ban</p>
                     </div>
                     <div className='col-2 text-center'>
-                        <Checkbox></Checkbox>
+                        <Checkbox checked={showData?.is_all_department_editor == 1 ? true : false}></Checkbox>
                     </div>
                     <div className='col-2 text-center'>
-                        <Checkbox></Checkbox>
+                        <Checkbox checked={showData?.is_all_department_viewer == 1 ? true : false}></Checkbox>
                     </div>
                     <div className='col-2 text-center'>
                         <Button style={{ border: 'none' }} icon={<RightOutlined />}></Button>

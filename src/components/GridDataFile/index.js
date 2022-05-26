@@ -11,19 +11,19 @@ import move from '../../images/icon/move.svg';
 import download from '../../images/icon/download.svg';
 import del from '../../images/icon/delete.svg';
 import './style.css';
+import MoveForm from '../MoveForm';
+import DeleteFileForm from '../DeleteFileForm';
+import { downloadFile, removeFile } from '../../api/files';
 
 import { Button, Collapse, message, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
-import { downloadFile, removeFile } from '../../api/files';
 import fileDownload from 'js-file-download';
-import DeleteFileForm from '../DeleteFileForm';
-import MoveForm from '../MoveForm';
+import ShareForm from '../ShareForm';
+
 
 const { Panel } = Collapse;
-
-
 
 const GridDataFile = ({ data, tool }) => {
     const renderImage = (type) => {
@@ -86,7 +86,7 @@ const GridDataFile = ({ data, tool }) => {
         height: 23,
         width: 23,
         border: 'none',
-        background: 'transparent', cursor:'default'
+        background: 'transparent', cursor: 'default'
     };
 
     const [fileChoose, setFileChoose] = useState();
@@ -94,6 +94,7 @@ const GridDataFile = ({ data, tool }) => {
     const [isModalDeleteFile, setIsModalDeleteFile] = useState(false);
     const [isModalMoveFile, setIsModalMoveFile] = useState(false);
     const [idMoveFile, setIdMoveFile] = useState();
+    const [isModalShareFile, setIsModalShareFile] = useState();
 
     const showModalDeleteFile = () => {
         setIsModalDeleteFile(true);
@@ -103,9 +104,14 @@ const GridDataFile = ({ data, tool }) => {
         setIsModalMoveFile(true);
     };
 
+    const showModalShareFile = () => {
+        setIsModalShareFile(true);
+    }
+
     const handleCancel = () => {
         setIsModalDeleteFile(false);
         setIsModalMoveFile(false);
+        setIsModalShareFile(false);
     };
 
     const handleRemoveFile = (id) => {
@@ -117,9 +123,9 @@ const GridDataFile = ({ data, tool }) => {
     const deleteFileChoose = (id) => {
         setDataFile(dataFile.map(item => {
             if (item.id == id) {
-                return {...item, id: id};
+                return { ...item, id: id };
             }
-            return item; 
+            return item;
         }));
         removeFile(id).then(res => {
             setIsModalDeleteFile(false);
@@ -166,23 +172,36 @@ const GridDataFile = ({ data, tool }) => {
                     {tool &&
                         <div className='tool-file-grid'>
                             <Tooltip title={'Chia sẻ'}>
-                                <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                                <Button onClick={() => {
+                                    showModalShareFile();
+                                    setFileChoose(item3);
+                                }} style={buttonStyle}><img style={imgStyle} src={share} /></Button>
                             </Tooltip>
                             <Tooltip title={'Di chuyển'}>
-                                <Button onClick={() => {
-                                    showModalMoveFile();
-                                    setIdMoveFile(item3.folder_id);
-                                }} style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                                <Button
+                                    onClick={() => {
+                                        showModalMoveFile();
+                                        setIdMoveFile(item3.folder_id);
+                                    }}
+                                    style={buttonStyle}
+                                >
+                                    <img style={imgStyle} src={move} />
+                                </Button>
                             </Tooltip>
-                            <Tooltip onClick={() => {
-                                downloadFile(item3.id).then(res => {
-                                    fileDownload(res.data, `${item3.name}.${item3.type}`);
-                                    message.success('Tệp đã được tải xuống');
-                                }).catch(err => {
-                                    console.log(err);
-                                })
-                            }} title={'Tải xuống'}>
-                                <Button style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                            <Tooltip title={'Tải xuống'}>
+                                <Button
+                                    onClick={() => {
+                                        downloadFile(item3.id).then(res => {
+                                            fileDownload(res.data, `${item3.name}.${item3.type}`);
+                                            message.success('Tệp đã được tải xuống');
+                                        }).catch(err => {
+                                            console.log(err);
+                                        })
+                                    }}
+                                    style={buttonStyle}
+                                >
+                                    <img style={imgStyle} src={download} />
+                                </Button>
                             </Tooltip>
                             <Tooltip title={'Xóa'}>
                                 <Button onClick={() => {
@@ -194,12 +213,17 @@ const GridDataFile = ({ data, tool }) => {
                     }
                 </div>
             )}
+
             {isModalDeleteFile &&
                 <DeleteFileForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
             }
-            
-            {isModalMoveFile && 
+
+            {isModalMoveFile &&
                 <MoveForm id={idMoveFile} show={isModalMoveFile} cancle={handleCancel} />
+            }
+
+            {isModalShareFile &&
+                <ShareForm show={isModalShareFile} showData={fileChoose} cancel={handleCancel} />
             }
         </div>
     );

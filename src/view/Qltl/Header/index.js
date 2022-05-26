@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import CreateFolderForm from '../../../components/CreateFolderForm';
 
 
-const Header = ({ users, collapsed }) => {
+const Header = ({ users, collapsed, showModal, cancle, handleShow }) => {
     const navigate = useNavigate();
 
     const [selectedFile, setSelectedFile] = useState(null);
@@ -76,9 +76,7 @@ const Header = ({ users, collapsed }) => {
                             </Upload>
                             {users.isAdmin == 1 &&
                                 <Button
-                                    onClick={() => {
-                                        showModalCreateFolder();
-                                    }}
+                                    onClick={handleShow}
                                     style={{
                                         marginLeft: "15px",
                                         background: "#008d47",
@@ -116,7 +114,7 @@ const Header = ({ users, collapsed }) => {
                 </div>
 
             </header>
-            {/* <CreateFolderForm show={isModalCreateFolder} cancel={handleCancel} /> */}
+            <CreateFolderForm show={showModal} cancel={cancle} />
         </>
 
     );

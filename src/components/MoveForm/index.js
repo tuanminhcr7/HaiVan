@@ -5,7 +5,7 @@ import { FolderAddOutlined, LeftOutlined } from "@ant-design/icons";
 import { Modal, Row, Col, Button, Input, message } from "antd";
 import { useEffect, useState } from "react";
 import React from "react";
-import { getFolderDetail } from '../../api/folders';
+import { addFolder, getFolderDetail } from '../../api/folders';
 import { moveFile } from '../../api/files';
 
 
@@ -14,7 +14,9 @@ const MoveForm = ({ show, cancle, id, fileChoosed }) => {
     const [file, setFile] = useState();
     const [idFileChoosed, setIdFileChoosed] = useState(fileChoosed?.id);
     const [isCreateFolder, setIsCreateFolder] = useState(false);
-    const [folderSelected, setFolderSelected] = useState(file?.bread_crumb[file?.bread_crumb.length - 1].id)
+    const [folderSelected, setFolderSelected] = useState(file?.bread_crumb[file?.bread_crumb.length - 1].id);
+    const [stateFileName, setStateFileName] = useState();
+    const [stateFileDescription, setStateFileDescription] = useState();
 
     const showCreateFolder = () => {
         setIsCreateFolder(true);
@@ -27,7 +29,9 @@ const MoveForm = ({ show, cancle, id, fileChoosed }) => {
     const getDataFile = (id) => {
         getFolderDetail(id).then(res => {
             setFile(res.data.data);
-            setFolderSelected(res.data.data.bread_crumb[res.data.data.bread_crumb.length - 1].id);
+            setFolderSelected(
+                res.data.data.bread_crumb[res.data.data.bread_crumb.length - 1].id
+            );
         }).catch(err => {
             console.log(err);
         });
@@ -39,16 +43,42 @@ const MoveForm = ({ show, cancle, id, fileChoosed }) => {
     }
 
     const handleMove = (idFile, idFolder) => {
-        moveFile({id: idFile, folder_id: idFolder}).then(res => {
+        moveFile({
+            id: idFile,
+            folder_id: idFolder
+        }).then(res => {
+            console.log(res);
             message.success('File successfully moved');
         }).catch(err => {
             console.log(err);
-        })
+        });
+    }
+
+    const handleChangeName = (value) => {
+        setStateFileName(value.target.value);
+    }
+
+    const handleChangeDescription = (value) => {
+        setStateFileDescription(value.target.value);
+    }
+
+    const handleAddFolder = (folderId, name, description) => {
+        addFolder({
+            folder_id: folderId,
+            name: name,
+            description: description
+        }).then(res => {
+            setIsCreateFolder(false);
+            message.success('Tạo folder thành công');
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     useEffect(() => {
         getDataFile(id);
-    }, [id]);
+        setFile(file);
+    }, [id], [file]);
 
 
     return (
@@ -68,9 +98,11 @@ const MoveForm = ({ show, cancle, id, fileChoosed }) => {
                                 }}
                             >
                                 {file?.bread_crumb.length > 1 &&
-                                    <LeftOutlined onClick={() => {
-                                        handleBack(file?.bread_crumb[file?.bread_crumb.length - 2].id);
-                                    }} />
+                                    <LeftOutlined
+                                        onClick={() => {
+                                            handleBack(file?.bread_crumb[file?.bread_crumb.length - 2].id);
+                                        }}
+                                    />
                                 }
                             </div>
                         </div>
@@ -79,7 +111,6 @@ const MoveForm = ({ show, cancle, id, fileChoosed }) => {
                         {file &&
                             <p style={{ padding: 5 }}>{file?.bread_crumb[file?.bread_crumb.length - 1].name}</p>
                         }
-
                     </Col>
                 </Row>
             }
@@ -88,31 +119,43 @@ const MoveForm = ({ show, cancle, id, fileChoosed }) => {
             footer={
                 <Row>
                     <Col style={{ width: '50%', textAlign: 'left' }}>
-                        <FolderAddOutlined style={{ fontSize: 25, color: '#0a7dd6' }} onClick={() => {
-                            showCreateFolder();
-                        }} />
+                        <FolderAddOutlined
+                            style={{ fontSize: 25, color: '#0a7dd6' }}
+                            onClick={() => {
+                                showCreateFolder();
+                            }}
+                        />
                         <Modal
                             title="Tạo folder"
                             visible={isCreateFolder}
                             onCancel={hideCreateFolder}
                             okText="Tạo"
                             cancelText="Hủy"
+                            onOk={() => {
+                                handleAddFolder(folderSelected, stateFileName, stateFileDescription)
+                            }}
                         >
                             <Row>
                                 <span>Tên (*)</span>
-                                <Input placeholder="Tên folder" />
+                                <Input defaultValue={''} onChange={handleChangeName} placeholder="Tên folder" />
                             </Row>
                             <Row className="mt-2">
                                 <span>Mô tả</span>
-                                <Input placeholder="Mô tả" />
+                                <Input defaultValue={''} onChange={handleChangeDescription} placeholder="Mô tả" />
                             </Row>
                         </Modal>
 
                     </Col>
                     <Col style={{ width: '50%' }}>
-                        <Button onClick={() => {
-                            handleMove(idFileChoosed, folderSelected);
-                        }} type="primary" style={{ border: 'none' }}>Di chuyển đến đây</Button>
+                        <Button
+                            onClick={() => {
+                                handleMove(idFileChoosed, folderSelected);
+                            }}
+                            type="primary"
+                            style={{ border: 'none' }}
+                        >
+                            Di chuyển đến đây
+                        </Button>
                     </Col>
                 </Row>
             }
@@ -120,14 +163,26 @@ const MoveForm = ({ show, cancle, id, fileChoosed }) => {
             <div style={{ height: 150 }}>
                 {file &&
                     file.folders.map(item => {
-                        return <div onDoubleClick={() => {
-                            getDataFile(item.id)
-                        }} className="row px-5">
-                            <span className='folder' style={{ display: 'flex', alignItems: 'center', padding:'2px 5px' }}>
-                                <img src={folder} width={20} height={20} />&nbsp;&nbsp;
-                                <span>{item.name}</span>
-                            </span>
-                        </div>
+                        return (
+                            <div
+                                onDoubleClick={() => {
+                                    getDataFile(item.id);
+                                }}
+                                className="row px-5"
+                            >
+                                <span
+                                    className='folder'
+                                    style={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        padding: '2px 5px' 
+                                    }}
+                                >
+                                    <img src={folder} width={20} height={20} />&nbsp;&nbsp;
+                                    <span>{item.name}</span>
+                                </span>
+                            </div>
+                        );
                     })
                 }
             </div>

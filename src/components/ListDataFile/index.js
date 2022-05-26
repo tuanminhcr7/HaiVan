@@ -1,3 +1,5 @@
+
+import './style.css';
 import xlsx from '../../images/icon/xlsx.svg';
 import csv from '../../images/icon/csv.svg';
 import txt from '../../images/icon/txt.svg';
@@ -5,7 +7,6 @@ import docx from '../../images/icon/docx.svg';
 import pdf from '../../images/icon/pdf.svg';
 import ppt from '../../images/icon/ppt.svg';
 import pptx from '../../images/icon/pptx.svg';
-import './style.css';
 import edit from '../../images/icon/edit.svg';
 import share from '../../images/icon/share.svg';
 import move from '../../images/icon/move.svg';
@@ -13,19 +14,19 @@ import download from '../../images/icon/download.svg';
 import del from '../../images/icon/delete.svg';
 import favorite from '../../images/icon/favorite.svg';
 import favorited from '../../images/icon/favorited.svg';
+import EditForm from '../EditForm';
+import DeleteFileForm from '../DeleteFileForm';
+import MoveForm from '../MoveForm';
+import { downloadFile, editFile, removeFile, updateFavorite } from '../../api/files';
 
 import { FileOutlined } from "@ant-design/icons";
 import { Button, Collapse, message, Table, Tooltip } from "antd";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Time from "react-time-format";
-import axios from 'axios';
-import { useParams } from 'react-router';
-import { downloadFile, editFile, removeFile, updateFavorite } from '../../api/files';
 import fileDownload from 'js-file-download';
-import EditForm from '../EditForm';
-import DeleteFileForm from '../DeleteFileForm';
-import MoveForm from '../MoveForm';
+import ShareForm from '../ShareForm';
+
 
 const { Panel } = Collapse;
 
@@ -78,7 +79,6 @@ const ListDataFile = ({ data, title }) => {
     const [fileChoose, setFileChoose] = useState();
     const [dataFile, setDataFile] = useState(data);
 
-    console.log(fileChoose, 'file choose');
     const buttonStyle = {
         padding: 0,
         height: 25,
@@ -92,16 +92,14 @@ const ListDataFile = ({ data, title }) => {
         padding: 0,
         marginBottom: 6,
         width: '100%',
-        height: '100%', cursor:'default'
+        height: '100%', cursor: 'default'
     }
 
     const [isModalEditFile, setIsModalEditFile] = useState(false);
     const [isModalDeleteFile, setIsModalDeleteFile] = useState(false);
     const [isModalMoveFile, setIsModalMoveFile] = useState(false);
-    // const [dataMove, setDataMove] = useState();
-    // const [dataBreadCrumb, setDataBreadCrumb] = useState();
-    // const [dataFolder, setDataFolder] = useState();
     const [idMoveFile, setIdMoveFile] = useState();
+    const [isModalShareFile, setIsModalShareFile] = useState(false);
 
     const showModalEditFile = () => {
         setIsModalEditFile(true);
@@ -115,10 +113,15 @@ const ListDataFile = ({ data, title }) => {
         setIsModalMoveFile(true);
     };
 
+    const showModalShareFile = () => {
+        setIsModalShareFile(true);
+    }
+
     const handleCancel = () => {
         setIsModalEditFile(false);
         setIsModalDeleteFile(false);
         setIsModalMoveFile(false);
+        setIsModalShareFile(false);
     };
 
     const handleRemove = (id) => {
@@ -128,9 +131,9 @@ const ListDataFile = ({ data, title }) => {
     }
 
     const smallStyle = {
-        margin:0,
-        fontFamily:'Roboto',
-        color:'#605e5c'
+        margin: 0,
+        fontFamily: 'Roboto',
+        color: '#605e5c'
     }
 
     const columns = [
@@ -145,59 +148,101 @@ const ListDataFile = ({ data, title }) => {
             key: 'name',
             render: (text, record, key) => <div className='data-file' style={{ display: 'flex', alignItems: 'center', width: 450 }}>
                 {renderImage(record.type)}
-                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 14, fontFamily:'Roboto', textDecoration: 'none', color: '#000' }}>{text.length > 26 ? `${text.substring(0, 26)}...` : text}</Link>
+                <Link to={`/qltl/${record.id}/xem-tai-lieu-${record.slug}`} target={'_blank'} style={{ fontWeight: 'bold', fontSize: 14, fontFamily: 'Roboto', textDecoration: 'none', color: '#000' }}>{text.length > 26 ? `${text.substring(0, 26)}...` : text}</Link>
                 <div className='button-tool'>
-                    <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
-                        <Button onClick={() => {
-                            showModalEditFile();
-                            setFileChoose(record);
-                        }} style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Chia sẻ'}>
-                        <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
-                    </Tooltip>
-                    <Tooltip title={'Di chuyển'}>
-                        <Button onClick={() => {
-                            showModalMoveFile();
-                            setFileChoose(record);
-                            setIdMoveFile(record.folder_id);
-                            
-                        }} style={buttonStyle}><img style={imgStyle} src={move} /></Button>
-                    </Tooltip>
+                    {record.is_editor == 1 &&
+                        <Tooltip style={{ paddingLeft: 50 }} title={'Chỉnh sửa'}>
+                            <Button
+                                onClick={() => {
+                                    showModalEditFile();
+                                    setFileChoose(record);
+                                }}
+                                style={buttonStyle}
+                            >
+                                <img style={imgStyle} src={edit} />
+                            </Button>
+                        </Tooltip>
+                    }
+
+                    {record.is_editor == 1 &&
+                        <Tooltip title={'Chia sẻ'}>
+                            <Button
+                                onClick={() => {
+                                    showModalShareFile();
+                                    setFileChoose(record);
+                                }}
+                            style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                        </Tooltip>
+                    }
+
+                    {record.is_editor == 1 &&
+                        <Tooltip title={'Di chuyển'}>
+                            <Button
+                                onClick={() => {
+                                    showModalMoveFile();
+                                    setFileChoose(record);
+                                    setIdMoveFile(record.folder_id);
+                                }}
+                                style={buttonStyle}
+                            >
+                                <img style={imgStyle} src={move} />
+                            </Button>
+                        </Tooltip>
+                    }
+
                     <Tooltip title={'Tải xuống'}>
-                        <Button onClick={() => {
-                            downloadFile(record.id).then(res => {
-                                fileDownload(res.data, `${record.name}.${record.type}`);
-                                message.success('Tệp đã được tải xuống');
-                            }).catch(err => {
-                                console.log(err);
-                            })
-                        }} style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                        <Button
+                            onClick={() => {
+                                downloadFile(record.id).then(res => {
+                                    fileDownload(res.data, `${record.name}.${record.type}`);
+                                    message.success('Tệp đã được tải xuống');
+                                }).catch(err => {
+                                    console.log(err);
+                                })
+                            }}
+                            style={buttonStyle}
+                        >
+                            <img style={imgStyle} src={download} />
+                        </Button>
                     </Tooltip>
-                    <Tooltip title={'Xóa'}>
-                        <Button onClick={() => {
-                                showModalDeleteFile();
-                                setFileChoose(record);
-                            }} style={buttonStyle}><img style={imgStyle} src={del} /></Button>
-                    </Tooltip>
+
+                    {record.is_editor == 1 &&
+                        <Tooltip title={'Xóa'}>
+                            <Button
+                                onClick={() => {
+                                    showModalDeleteFile();
+                                    setFileChoose(record);
+                                }}
+                                style={buttonStyle}
+                            >
+                                <img style={imgStyle} src={del} />
+                            </Button>
+                        </Tooltip>
+                    }
+
                     <Tooltip title={(record.favorite == 1) ? 'Bỏ yêu thích' : 'Yêu thích'}>
-                        <Button onClick={() => {
-                            setStatusFavorite(!record.favorite);
-                            updateFavorite(record.id).then(res => {
-                                record.id = res.data.data.id;
-                                setIdFavorite(record.id);
-                                record.favorite = res.data.data.favorite;
-                                setStatusFavorite(record.favorite);
-                                
-                                if (record.favorite == 1) {
-                                    message.success('Yêu thích thành công');
-                                } else {
-                                    message.success('Bỏ yêu thích thành công');
-                                }
-                            }).catch(err => {
-                                setStatusFavorite(record.favorite);
-                            });
-                        }} style={buttonStyle}><img style={imgStyle} src={(record.favorite == 1) ? favorited : favorite} /></Button>
+                        <Button
+                            onClick={() => {
+                                setStatusFavorite(!record.favorite);
+                                updateFavorite(record.id).then(res => {
+                                    record.id = res.data.data.id;
+                                    setIdFavorite(record.id);
+                                    record.favorite = res.data.data.favorite;
+                                    setStatusFavorite(record.favorite);
+
+                                    if (record.favorite == 1) {
+                                        message.success('Yêu thích thành công');
+                                    } else {
+                                        message.success('Bỏ yêu thích thành công');
+                                    }
+                                }).catch(err => {
+                                    setStatusFavorite(record.favorite);
+                                });
+                            }}
+                            style={buttonStyle}
+                        >
+                            <img style={imgStyle} src={(record.favorite == 1) ? favorited : favorite} />
+                        </Button>
                     </Tooltip>
                 </div>
             </div>
@@ -249,11 +294,11 @@ const ListDataFile = ({ data, title }) => {
     const editFileChoose = (id, name, description) => {
         setDataFile(dataFile.map(item => {
             if (item.id == id) {
-                return {...item, name: name, description: description};
+                return { ...item, name: name, description: description };
             }
-            return item; 
+            return item;
         }));
-        editFile({id: id, name: name, description: description}).then(res => {
+        editFile({ id: id, name: name, description: description }).then(res => {
             setIsModalEditFile(false);
             message.success('Cập nhật file thành công');
         }).catch(err => {
@@ -262,7 +307,7 @@ const ListDataFile = ({ data, title }) => {
                 if (item.id == id) {
                     return findFile;
                 }
-                return item; 
+                return item;
             }));
         });
     }
@@ -270,9 +315,9 @@ const ListDataFile = ({ data, title }) => {
     const deleteFileChoose = (id) => {
         setDataFile(dataFile.map(item => {
             if (item.id == id) {
-                return {...item, id: id};
+                return { ...item, id: id };
             }
-            return item; 
+            return item;
         }));
         removeFile(id).then(res => {
             setIsModalDeleteFile(false);
@@ -281,10 +326,6 @@ const ListDataFile = ({ data, title }) => {
         }).catch(err => {
 
         });
-    }
-
-    const removeFileChoose = (id) => {
-
     }
 
     useEffect(() => {
@@ -308,14 +349,16 @@ const ListDataFile = ({ data, title }) => {
             {isModalDeleteFile &&
                 <DeleteFileForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
             }
-            
-            {isModalMoveFile && 
+
+            {isModalMoveFile &&
                 <MoveForm fileChoosed={fileChoose} id={idMoveFile} show={isModalMoveFile} cancle={handleCancel} />
             }
-            
+
+            {isModalShareFile &&
+                <ShareForm showData={fileChoose} show={isModalShareFile} cancel={handleCancel} />
+            }
+
         </div>
-
-
     );
 }
 

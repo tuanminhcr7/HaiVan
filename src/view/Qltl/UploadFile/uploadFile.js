@@ -70,10 +70,6 @@ const FormUploadFile = (props) => {
         getListFolder();
     }, []);
 
-    function convertToSlug(Text) {
-        return Text.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-    }
-
     return (
         <>
             <div className="container p-5">
@@ -161,7 +157,7 @@ const FormUploadFile = (props) => {
                                 <>
                                     <Button disabled={true} onClick={saveFileUpload} style={{ backgroundColor: '#ccc', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">Lưu</Button>
                                     <Button className='mx-2' style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">
-                                        <Link to={`/qltl/${chooseFolder[0].value}/tai-lieu-${slugify(chooseFolder[0].label)}`} style={{ textDecoration: 'none' }}>Đi đến thư mục</Link>
+                                        <Link to={`/qltl/${chooseFolder[chooseFolder.length - 1].value}/tai-lieu-${slugify(chooseFolder[chooseFolder.length - 1].label)}`} style={{ textDecoration: 'none' }}>Đi đến thư mục</Link>
                                     </Button>
                                     <Button className='mx-2' style={{ backgroundColor: '#1890ff', border: 'none', display: 'flex', alignItems: 'center', color: '#fff' }} type="default">
                                         <Link target={'_blank'} to={`/qltl/${selectedFile.id}/xem-tai-lieu-${selectedFile.slug}`} style={{ textDecoration: 'none' }}>Xem tài liệu</Link>

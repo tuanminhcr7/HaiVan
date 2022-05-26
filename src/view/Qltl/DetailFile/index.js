@@ -13,30 +13,53 @@ import ppt from '../../../images/icon/ppt.svg';
 import pptx from '../../../images/icon/pptx.svg';
 import folder from '../../../images/icon/folder.svg';
 import './style.css';
-import { downloadFile, editFile, getFileDetail } from "../../../api/files";
+import { downloadFile, editFile, getFileDetail, removeFile } from "../../../api/files";
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Button, message } from "antd";
 import Time from 'react-time-format';
 import { Breadcrumb } from "antd";
 import fileDownload from "js-file-download";
 import EditForm from "../../../components/EditForm";
+import DeleteFileForm from "../../../components/DeleteFileForm";
+import MoveForm from "../../../components/MoveForm";
+import ShareForm from "../../../components/ShareForm";
 
 
 const DetailFile = () => {
+    const navigate = useNavigate();
     const [file, setFile] = useState();
     const [breadCrumb, setBreadCrumb] = useState();
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalEditFile, setIsModalEditFile] = useState(false);
+    const [isModalDeleteFile, setIsModalDeleteFile] = useState(false);
+    const [isModalMoveFile, setIsModalMoveFile] = useState(false);
     const [dataFile, setDataFile] = useState(file);
     const [fileChoose, setFileChoose] = useState();
+    const [idMoveFile, setIdMoveFile] = useState();
+    const [isModalShareFile, setIsModalShareFile] = useState(false);
 
-    const showModal = () => {
-        setIsModalVisible(true);
+    const showModalEditFile = () => {
+        setIsModalEditFile(true);
     };
 
+    const showModalDeleteFile = () => {
+        setIsModalDeleteFile(true);
+    };
+
+    const showModalMoveFile = () => {
+        setIsModalMoveFile(true);
+    }
+
+    const showModalShareFile = () => {
+        setIsModalShareFile(true);
+    }
+
     const handleCancel = () => {
-        setIsModalVisible(false);
+        setIsModalEditFile(false);
+        setIsModalDeleteFile(false);
+        setIsModalMoveFile(false);
+        setIsModalShareFile(false);
     };
 
     const renderImage = (type) => {
@@ -104,8 +127,6 @@ const DetailFile = () => {
         })
     }
 
-
-
     const buttonStyle = {
         color: '#000',
         alignItems: 'center',
@@ -116,8 +137,11 @@ const DetailFile = () => {
     const editFileChoose = (id, name, description) => {
 
         editFile({ id: id, name: name, description: description }).then(res => {
-            setIsModalVisible(false);
+            console.log(res);
+            setIsModalEditFile(false);
             message.success('Cập nhật file thành công');
+            setFile(res.data.data);
+            setBreadCrumb(res.data.data.breadCrumb);
         }).catch(err => {
             let findFile = file.find(item => item.id == id)
             setDataFile(dataFile.map(item => {
@@ -128,11 +152,35 @@ const DetailFile = () => {
             }));
         });
     }
+
+    const deleteFileChoose = (id) => {
+        // setDataFile(dataFile.map(item => {
+        //     if (item.id == id) {
+        //         return { ...item, id: id };
+        //     }
+        //     return item;
+        // }));
+        removeFile(id).then(res => {
+            setIsModalDeleteFile(false);
+            message.success('Xóa file thành công');
+            navigate(`/qltl/${breadCrumb[breadCrumb.length - 2].id}/tai-lieu-${breadCrumb[breadCrumb.length - 2].name}`);
+        }).catch(err => {
+            let findFile = file.find(item => item.id == id)
+            setDataFile(dataFile.map(item => {
+                if (item.id == id) {
+                    return findFile;
+                }
+                return item;
+            }));
+        });
+    }
+
     useEffect(() => {
         document.title = 'Chi tiết tệp';
         handleBreadCrumb();
         handleDetailFile();
-    }, [id]);
+        setFile(file);
+    }, [id], [file]);
 
     return (
         <div>
@@ -147,7 +195,10 @@ const DetailFile = () => {
                         <div className="col-8">
                             <div className="row my-3" style={{ display: 'flex' }}>
                                 <div className="col-2">
-                                    <Button style={buttonStyle} className="px-0"><img src={share} width={20} height={20} />&nbsp;Chia sẻ</Button>
+                                    <Button onClick={() => {
+                                        showModalShareFile();
+                                        setFileChoose(file);
+                                    }} style={buttonStyle} className="px-0"><img src={share} width={20} height={20} />&nbsp;Chia sẻ</Button>
                                 </div>
                                 <div className="col-2">
                                     <Button onClick={() => {
@@ -158,12 +209,26 @@ const DetailFile = () => {
                                             console.log(err);
                                         })
                                     }} style={buttonStyle} className="px-0"><img src={download} width={20} height={20} />&nbsp;Tải xuống</Button></div>
-                                <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={move} width={20} height={20} />&nbsp;Di chuyển tới</Button></div>
-                                <div className="col-2"><Button onClick={() => {
-                                    showModal();
-                                    setFileChoose(file);
-                                }} style={buttonStyle} className="px-0"><img src={edit} width={20} height={20} />&nbsp;Chỉnh sửa</Button></div>
-                                <div className="col-2"><Button style={buttonStyle} className="px-0"><img src={del} width={20} height={20} />&nbsp;Xóa</Button></div>
+                                <div className="col-2">
+                                    <Button onClick={() => {
+                                        showModalMoveFile();
+                                        setFileChoose(file);
+                                        setIdMoveFile(file.folder_id);
+                                    }} style={buttonStyle} className="px-0"><img src={move} width={20} height={20} />&nbsp;Di chuyển tới</Button>
+                                </div>
+                                <div className="col-2">
+                                    <Button onClick={() => {
+                                        showModalEditFile();
+                                        setFileChoose(file);
+                                    }} style={buttonStyle} className="px-0"><img src={edit} width={20} height={20} />&nbsp;Chỉnh sửa</Button>
+                                </div>
+
+                                <div className="col-2">
+                                    <Button onClick={() => {
+                                        showModalDeleteFile();
+                                        setFileChoose(file);
+                                    }} style={buttonStyle} className="px-0"><img src={del} width={20} height={20} />&nbsp;Xóa</Button>
+                                </div>
                             </div>
                             <div className="row">
                                 {file?.url && file?.type != "pdf" && file?.type != "txt" && file?.type != "csv" ? (
@@ -236,7 +301,22 @@ const DetailFile = () => {
                     </div>
                 </>
             }
-            <EditForm show={isModalVisible} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
+
+            {isModalEditFile &&
+                <EditForm show={isModalEditFile} cancel={handleCancel} showData={fileChoose} save={editFileChoose} />
+            }
+
+            {isModalDeleteFile &&
+                <DeleteFileForm show={isModalDeleteFile} cancel={handleCancel} showData={fileChoose} save={deleteFileChoose} />
+            }
+
+            {isModalMoveFile &&
+                <MoveForm show={isModalMoveFile} cancle={handleCancel} fileChoosed={fileChoose} id={idMoveFile} />
+            }
+
+            {isModalShareFile &&
+                <ShareForm show={isModalShareFile} cancel={handleCancel} showData={fileChoose} />
+            }
         </div>
     );
 }

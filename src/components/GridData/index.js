@@ -24,6 +24,7 @@ import { editFolder, removeFolder } from '../../api/folders';
 import DeleteFolderForm from '../DeleteFolderForm';
 import DeleteFileForm from '../DeleteFileForm';
 import MoveForm from '../MoveForm';
+import ShareForm from '../ShareForm';
 
 const { Panel } = Collapse;
 
@@ -92,7 +93,6 @@ const GridData = ({ data, title }) => {
         background: 'transparent', cursor: 'default'
     };
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
     const [dataFolder, setDataFolder] = useState(data);
     const [folderChoose, setFolderChoose] = useState();
     const [isModalEditFolder, setIsModalEditFolder] = useState(false);
@@ -102,6 +102,8 @@ const GridData = ({ data, title }) => {
     const [dataFile, setDataFile] = useState(data);
     const [isModalMoveFile, setIsModalMoveFile] = useState(false);
     const [idMoveFile, setIdMoveFile] = useState();
+    const [isModalShareFile, setIsModalShareFile] = useState(false);
+    const [isModalShareFolder, setIsModalShareFolder] = useState(false);
 
     const showModalEditFolder = () => {
         setIsModalEditFolder(true);
@@ -119,11 +121,21 @@ const GridData = ({ data, title }) => {
         setIsModalMoveFile(true);
     };
 
+    const showModalShareFile = () => {
+        setIsModalShareFile(true);
+    }
+
+    const showModalShareFolder = () => {
+        setIsModalShareFolder(true);
+    }
+
     const handleCancel = () => {
         setIsModalEditFolder(false);
         setIsModalDeleteFile(false);
         setIsModalDeleteFolder(false);
         setIsModalMoveFile(false);
+        setIsModalShareFile(false);
+        setIsModalShareFolder(false);
     };
 
     const handleRemoveFile = (id) => {
@@ -198,15 +210,28 @@ const GridData = ({ data, title }) => {
 
     return (
         <>
-            <Collapse defaultActiveKey={'1'} style={{ border: 'none', backgroundColor: '#fff' }} >
-                <Panel style={{ border: 'none', fontSize: '18px' }} header={title} key="1">
+            <Collapse
+                defaultActiveKey={'1'}
+                style={{ border: 'none', backgroundColor: '#fff' }}
+            >
+                <Panel
+                    style={{ border: 'none', fontSize: '18px' }}
+                    header={title}
+                    key="1"
+                >
                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                         <>
                             {(title == 'Được chia sẻ' || title == 'Tệp' || title == 'Tài liệu của tôi') ?
                                 <>
                                     {dataFile && dataFile.map((item) =>
                                         <div className='data-file'>
-                                            <Link target={'_blank'} to={`/qltl/${item.id}/xem-tai-lieu-${item.slug}`} className='px-2 link-file-grid' style={{ color: '#201f1e', textDecoration: 'none' }} title={item.name}>
+                                            <Link
+                                                target={'_blank'}
+                                                to={`/qltl/${item.id}/xem-tai-lieu-${item.slug}`}
+                                                className='px-2 link-file-grid'
+                                                style={{ color: '#201f1e', textDecoration: 'none' }}
+                                                title={item.name}
+                                            >
                                                 <div className='file'>
                                                     <div style={{ padding: '5px 15px' }}>
                                                         {renderImage(item.type)}
@@ -219,29 +244,47 @@ const GridData = ({ data, title }) => {
                                             </Link>
                                             <div className='tool-file-grid'>
                                                 <Tooltip title={'Chia sẻ'}>
-                                                    <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                                                    <Button onClick={() => {
+                                                        showModalShareFile();
+                                                        setFileChoose(item);
+                                                    }} style={buttonStyle}><img style={imgStyle} src={share} /></Button>
                                                 </Tooltip>
                                                 <Tooltip title={'Di chuyển'}>
-                                                    <Button onClick={() => {
-                                                        showModalMoveFile();
-                                                        setIdMoveFile(item.folder_id);
-                                                    }} style={buttonStyle}><img style={imgStyle} src={move} /></Button>
+                                                    <Button
+                                                        onClick={() => {
+                                                            showModalMoveFile();
+                                                            setIdMoveFile(item.folder_id);
+                                                        }}
+                                                        style={buttonStyle}
+                                                    >
+                                                        <img style={imgStyle} src={move} />
+                                                    </Button>
                                                 </Tooltip>
                                                 <Tooltip title={'Tải xuống'}>
-                                                    <Button onClick={() => {
-                                                        downloadFile(item.id).then(res => {
-                                                            fileDownload(res.data, `${item.name}.${item.type}`);
-                                                            message.success('Tệp đã được tải xuống');
-                                                        }).catch(err => {
-                                                            console.log(err);
-                                                        })
-                                                    }} style={buttonStyle}><img style={imgStyle} src={download} /></Button>
+                                                    <Button
+                                                        onClick={() => {
+                                                            downloadFile(item.id).then(res => {
+                                                                fileDownload(res.data, `${item.name}.${item.type}`);
+                                                                message.success('Tệp đã được tải xuống');
+                                                            }).catch(err => {
+                                                                console.log(err);
+                                                            })
+                                                        }}
+                                                        style={buttonStyle}
+                                                    >
+                                                        <img style={imgStyle} src={download} />
+                                                    </Button>
                                                 </Tooltip>
                                                 <Tooltip title={'Xóa'}>
-                                                    <Button onClick={() => {
-                                                        showModalDeleteFile();
-                                                        setFileChoose(item);
-                                                    }} style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                                                    <Button
+                                                        onClick={() => {
+                                                            showModalDeleteFile();
+                                                            setFileChoose(item);
+                                                        }}
+                                                        style={buttonStyle}
+                                                    >
+                                                        <img style={imgStyle} src={del} />
+                                                    </Button>
                                                 </Tooltip>
                                             </div>
                                         </div>
@@ -263,18 +306,32 @@ const GridData = ({ data, title }) => {
                                             </Link>
                                             <div className='tool-folder-grid'>
                                                 <Tooltip title={'Xóa'}>
-                                                    <Button onClick={() => {
-                                                        showModalDeleteFolder();
-                                                    }} style={buttonStyle}><img style={imgStyle} src={del} /></Button>
+                                                    <Button
+                                                        onClick={() => {
+                                                            showModalDeleteFolder();
+                                                            setFolderChoose(item);
+                                                        }}
+                                                        style={buttonStyle}
+                                                    >
+                                                        <img style={imgStyle} src={del} />
+                                                    </Button>
                                                 </Tooltip>
                                                 <Tooltip title={'Đổi tên'}>
-                                                    <Button onClick={() => {
-                                                        showModalEditFolder();
-                                                        setFolderChoose(item);
-                                                    }} style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
+                                                    <Button
+                                                        onClick={() => {
+                                                            showModalEditFolder();
+                                                            setFolderChoose(item);
+                                                        }}
+                                                        style={buttonStyle}
+                                                    >
+                                                        <img style={imgStyle} src={edit} />
+                                                    </Button>
                                                 </Tooltip>
                                                 <Tooltip title={'Chia sẻ'}>
-                                                    <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+                                                    <Button onClick={() => {
+                                                        showModalShareFolder();
+                                                        setFolderChoose(item);
+                                                    }} style={buttonStyle}><img style={imgStyle} src={share} /></Button>
                                                 </Tooltip>
                                             </div>
                                         </div>
@@ -300,6 +357,13 @@ const GridData = ({ data, title }) => {
                 <MoveForm id={idMoveFile} show={isModalMoveFile} cancle={handleCancel} />
             }
 
+            {isModalShareFile &&
+                <ShareForm show={isModalShareFile} showData={fileChoose} cancel={handleCancel} />
+            }
+
+            {isModalShareFolder &&
+                <ShareForm show={isModalShareFolder} showData={folderChoose} cancel={handleCancel} />
+            }
         </>
 
     );
