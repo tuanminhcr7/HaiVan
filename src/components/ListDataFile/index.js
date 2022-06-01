@@ -25,7 +25,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Time from "react-time-format";
 import fileDownload from 'js-file-download';
-import ShareForm from '../ShareForm';
+import ShareFileForm from '../ShareFileForm';
 
 
 const { Panel } = Collapse;
@@ -355,7 +355,7 @@ const ListDataFile = ({ data, title }) => {
             }
 
             {isModalShareFile &&
-                <ShareForm showData={fileChoose} show={isModalShareFile} cancel={handleCancel} />
+                <ShareFileForm showData={fileChoose} show={isModalShareFile} cancel={handleCancel} />
             }
 
         </div>

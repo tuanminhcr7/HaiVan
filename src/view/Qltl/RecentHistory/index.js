@@ -24,7 +24,7 @@ const RecentHistory = () => {
     }
 
     useEffect(() => {
-        document.title = 'Tài liệu gần đây';
+        window.document.title = 'Tài liệu gần đây';
         handleRecent();
     }, []);
 

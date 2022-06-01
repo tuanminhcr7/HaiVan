@@ -81,7 +81,7 @@ const FolderTrash = ({ data }) => {
             key: 'name',
             render: (text, record) => <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
                 {renderImage(record.type)}
-                <Link to={`/qltl/trash`} style={{ fontWeight: 'bold', fontSize: 14, fontFamily: 'Roboto', textDecoration: 'none', color: '#000' }}>{text}.{record.type}</Link>
+                <Link to={`/qltl/trash`} style={{ fontWeight: 'bold', fontSize: 14, fontFamily: 'Roboto', textDecoration: 'none', color: '#000', cursor:'pointer' }}>{text}.{record.type}</Link>
             </div>
         },
         {

@@ -8,7 +8,7 @@ const CreateFolderForm = ({ show, cancel }) => {
     const navigate = useNavigate();
 
     const objNewFolder = {
-        "folderId": null,
+        "folderId": 0,
         "name": null,
         "description": null
     }
@@ -32,15 +32,12 @@ const CreateFolderForm = ({ show, cancel }) => {
         });
     }
 
-    const onChangeFolder = (value, selectedOptions) => {
-        // setChooseFolder(selectedOptions);
-        console.log(value, selectedOptions);
+    const onChangeFolder = (value) => {
         if (value == null) {
             setState({ ...state, folderId: 0 });
         } else {
             setState({ ...state, folderId: value[value.length - 1] });
         }
-
     };
 
     const onChangeName = (event) => {
@@ -57,11 +54,14 @@ const CreateFolderForm = ({ show, cancel }) => {
         } else {
             addFolder({ folder_id: folderId, name: name, description: description }).then(res => {
                 console.log(res);
+                message.success('Tạo folder thành công');
             }).catch(err => {
                 console.log(err);
             });
         }
     }
+
+    console.log(state);
 
     useEffect(() => {
         getListFolder();
@@ -91,7 +91,7 @@ const CreateFolderForm = ({ show, cancel }) => {
                     placeholder="Chọn nơi muốn tạo thư mục"
                     changeOnSelect
                     expandTrigger='hover'
-                    defaultValue={''}
+                    defaultValue={null}
                 />
             </Row>
             <Row className="mt-2">

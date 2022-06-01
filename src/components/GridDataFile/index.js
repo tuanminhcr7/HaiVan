@@ -20,7 +20,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Time from 'react-time-format';
 import fileDownload from 'js-file-download';
-import ShareForm from '../ShareForm';
+import ShareFileForm from '../ShareFileForm';
 
 
 const { Panel } = Collapse;
@@ -223,7 +223,7 @@ const GridDataFile = ({ data, tool }) => {
             }
 
             {isModalShareFile &&
-                <ShareForm show={isModalShareFile} showData={fileChoose} cancel={handleCancel} />
+                <ShareFileForm show={isModalShareFile} showData={fileChoose} cancel={handleCancel} />
             }
         </div>
     );

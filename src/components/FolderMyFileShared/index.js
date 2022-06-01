@@ -24,7 +24,7 @@ import fileDownload from 'js-file-download';
 import EditForm from '../EditForm';
 import DeleteFileForm from '../DeleteFileForm';
 import MoveForm from '../MoveForm';
-import ShareForm from '../ShareForm';
+import ShareFileForm from '../ShareFileForm';
 
 const { Panel } = Collapse;
 
@@ -307,7 +307,7 @@ const FolderMyFileShared = ({ data }) => {
             }
 
             {isModalShareFile &&
-                <ShareForm showData={fileChoose} show={isModalShareFile} cancel={handleCancel} />
+                <ShareFileForm showData={fileChoose} show={isModalShareFile} cancel={handleCancel} />
             }
         </>
     );

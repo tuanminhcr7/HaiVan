@@ -24,7 +24,7 @@ import fileDownload from "js-file-download";
 import EditForm from "../../../components/EditForm";
 import DeleteFileForm from "../../../components/DeleteFileForm";
 import MoveForm from "../../../components/MoveForm";
-import ShareForm from "../../../components/ShareForm";
+import ShareFileForm from "../../../components/ShareFileForm";
 
 
 const DetailFile = () => {
@@ -176,7 +176,7 @@ const DetailFile = () => {
     }
 
     useEffect(() => {
-        document.title = 'Chi tiết tệp';
+        window.document.title = 'Chi tiết tệp';
         handleBreadCrumb();
         handleDetailFile();
         setFile(file);
@@ -315,7 +315,7 @@ const DetailFile = () => {
             }
 
             {isModalShareFile &&
-                <ShareForm show={isModalShareFile} cancel={handleCancel} showData={fileChoose} />
+                <ShareFileForm show={isModalShareFile} cancel={handleCancel} showData={fileChoose} />
             }
         </div>
     );

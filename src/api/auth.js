@@ -11,3 +11,7 @@ export const logout = async (params) => {
 export const getUser = async (params) => {
     return await axios.get("/api/user", params);
 }
+
+export const getAdmin = async (params) => {
+    return await axios.get("/api/admin", params);
+}

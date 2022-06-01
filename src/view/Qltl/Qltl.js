@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect, useState } from 'react';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import EditForm from '../../components/EditForm';
 
 
 const Qltl = () => {
@@ -16,7 +15,6 @@ const Qltl = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [users, setUser] = useState([]);
     const [menus, setMenu] = useState([]);
-    const [headContent, setHeadContent] = useState({ paddingLeft: 200 });
     const [isModalCreateFolder, setIsModalCreateFolder] = useState(false);
 
     const user = () => {
@@ -47,11 +45,11 @@ const Qltl = () => {
         document.title = 'Quản lý tài liệu';
         user();
         handleMenu();
+        // setMenu(menus);
     }, []);
 
     const toggleCollapsed = () => {
         setCollapsed(!collapsed);
-        // setHeadContent({paddingLeft:80});
     };
 
     return (
@@ -62,7 +60,6 @@ const Qltl = () => {
                 <Header users={users} collapsed={collapsed} showModal={isModalCreateFolder} cancle={handleCancel} handleShow={showModalCreateFolder} />
 
                 <section style={{ marginTop: '70px' }}>
-                    {/* <EditForm/> */}
                     <Routes>
                         {routes.map((route, idx) => {
                             return (

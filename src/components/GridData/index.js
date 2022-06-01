@@ -24,7 +24,8 @@ import { editFolder, removeFolder } from '../../api/folders';
 import DeleteFolderForm from '../DeleteFolderForm';
 import DeleteFileForm from '../DeleteFileForm';
 import MoveForm from '../MoveForm';
-import ShareForm from '../ShareForm';
+import ShareFileForm from '../ShareFileForm';
+import ShareFolderForm from '../ShareFolderForm';
 
 const { Panel } = Collapse;
 
@@ -358,11 +359,11 @@ const GridData = ({ data, title }) => {
             }
 
             {isModalShareFile &&
-                <ShareForm show={isModalShareFile} showData={fileChoose} cancel={handleCancel} />
+                <ShareFileForm show={isModalShareFile} showData={fileChoose} cancel={handleCancel} />
             }
 
             {isModalShareFolder &&
-                <ShareForm show={isModalShareFolder} showData={folderChoose} cancel={handleCancel} />
+                <ShareFolderForm show={isModalShareFolder} showData={folderChoose} cancel={handleCancel} />
             }
         </>
 

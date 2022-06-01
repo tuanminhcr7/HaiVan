@@ -25,7 +25,7 @@ import { downloadFile } from '../../api/files';
 import EditForm from '../EditForm';
 import DeleteFileForm from '../DeleteFileForm';
 import MoveForm from '../MoveForm';
-import ShareForm from '../ShareForm';
+import ShareForm from '../ShareFileForm';
 
 
 const FolderRecent = ({ data }) => {

@@ -69,19 +69,19 @@ const Home = () => {
             <Link to={'/'} className='pt-3' style={{ display: 'block', textDecoration: 'none', fontWeight: 'bold', color: '#58595b' }}><h2 style={{ fontWeight: 'bold' }}>{!collapsed && <b>HAIVAN</b>}</h2></Link>
           </MenuItem>
 
-          <MenuItem key="1" icon={<FolderOpenOutlined />}>
+          <MenuItem icon={<FolderOpenOutlined />}>
             <Link to={'/qltl'} className='link' title='Quản lý tài liệu'>Quản lý tài liệu</Link>
           </MenuItem>
 
-          <MenuItem key="2" icon={<ProfileOutlined />}>
+          <MenuItem icon={<ProfileOutlined />}>
             <Link to={'/qlcv'} className='link' title='Quản lý công việc'>Quản lý công việc</Link>
           </MenuItem>
 
-          <MenuItem key="3" icon={<ProfileOutlined />}>
+          <MenuItem icon={<ProfileOutlined />}>
             <Link to={'#'} className='link' title='Quản lý chấm công'>Quản lý chấm công</Link>
           </MenuItem>
 
-          <MenuItem key="4" icon={<ProfileOutlined />}>
+          <MenuItem icon={<ProfileOutlined />}>
             <Link to={'#'} className='link' title='Quản lý quy trình'>Quản lý quy trình</Link>
           </MenuItem>
         </Menu>

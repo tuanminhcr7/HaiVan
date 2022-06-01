@@ -15,6 +15,7 @@ import Time from 'react-time-format';
 import EditForm from '../EditForm';
 import { editFolder, removeFolder } from '../../api/folders';
 import DeleteFolderForm from '../DeleteFolderForm';
+import ShareFolderForm from '../ShareFolderForm';
 
 const { Panel } = Collapse;
 
@@ -43,7 +44,7 @@ const ListData = ({ data, title }) => {
   const [folderChoose, setFolderChoose] = useState();
   const [isModalEditFolder, setIsModalEditFolder] = useState(false);
   const [isModalDeleteFolder, setIsModalDeleteFolder] = useState(false);
-
+  const [isModalShareFolder, setIsModalShareFolder] = useState(false);
 
   const showModalEditFolder = () => {
     setIsModalEditFolder(true);
@@ -53,9 +54,14 @@ const ListData = ({ data, title }) => {
     setIsModalDeleteFolder(true);
   };
 
+  const showModalShareFolder = () => {
+    setIsModalShareFolder(true);
+  }
+
   const handleCancel = () => {
     setIsModalEditFolder(false);
     setIsModalDeleteFolder(false);
+    setIsModalShareFolder(false);
   };
 
   const handleRemoveFolder = (id) => {
@@ -97,7 +103,10 @@ const ListData = ({ data, title }) => {
             }} style={buttonStyle}><img style={imgStyle} src={edit} /></Button>
           </Tooltip>
           <Tooltip title={'Chia sẻ'}>
-            <Button style={buttonStyle}><img style={imgStyle} src={share} /></Button>
+            <Button onClick={() => {
+              showModalShareFolder();
+              setFolderChoose(record);
+            }} style={buttonStyle}><img style={imgStyle} src={share} /></Button>
           </Tooltip>
         </div>
       </div>
@@ -186,8 +195,18 @@ const ListData = ({ data, title }) => {
           </div>
         </Panel>
       </Collapse>
-      <EditForm show={isModalEditFolder} cancel={handleCancel} showData={folderChoose} save={editFolderChoose} />
-      <DeleteFolderForm show={isModalDeleteFolder} showData={folderChoose} cancel={handleCancel} save={deleteFolderChoose} />
+
+      {isModalEditFolder &&
+        <EditForm show={isModalEditFolder} cancel={handleCancel} showData={folderChoose} save={editFolderChoose} />
+      }
+
+      {isModalDeleteFolder &&
+        <DeleteFolderForm show={isModalDeleteFolder} showData={folderChoose} cancel={handleCancel} save={deleteFolderChoose} />
+      }
+
+      {isModalShareFolder &&
+        <ShareFolderForm show={isModalShareFolder} showData={folderChoose} cancel={handleCancel} />
+      }
     </div>
 
   );
